@@ -1,7 +1,7 @@
 Browser-optimized paged export for Typst
 with videos, speaker notes, and custom elements.
 
-## Usage
+## Usage with Typst
 
 ```typst
 #import "@preview/yap:0.1.0": video, notes
@@ -22,9 +22,19 @@ You can also find more usage examples and the full API spec there.
 
 When you're done, press `enter` in the viewer to save the document to disk.
 
+## Usage with Inkscape, Illustrator, Core
+
+Typst may not be the best solution for everyone in every situation,
+so yap now supports these.
+
+1. Create a rectangle and name the object `vid://` plus the file name,
+   for example, `vid://omni.mp4`
+2. Export as SVG and call it `slide`
+
 ## Extending
 
 There are 2 files to play with:
+
 - `theme.css` if you want to change how the viewer looks
 - `extend.js` if you need custom behavior
 
@@ -34,7 +44,7 @@ function in `extend.js`.
 
 ## Background
 
-YapTyp was initially built for a talk at my uni
+yap was initially built for a talk at my uni
 because different versions of PowerPoint and LibreOffice
 handle videos and speaker notes differently and don't play together,
 but the browser is the same-ish everywhere.
