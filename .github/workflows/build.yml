@@ -23,6 +23,7 @@ jobs:
         run: |
           typst compile doc.typ --font-path=. slide{p}.svg
           cp inkscape.svg slide3.svg
+          touch theme.css
       - name: upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
