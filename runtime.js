@@ -150,10 +150,12 @@ function showSlide(idx, quiet = false) {
 }
 
 function findNotes(parent) {
-  return Array.from(parent.querySelectorAll("[data-typst-label]"))
-    .filter((element) => element.dataset.typstLabel)
-    .filter((element) => element.dataset.typstLabel.startsWith("note://"))
-    .map((element) => element.dataset.typstLabel.replace("note://", ""))
+  return Array.from(findLabel(parent))
+    .filter(({ label }) => label.startsWith("note://"))
+    .map(
+      ({ label, element }) =>
+        label.replace("note://", "") || element.textContent,
+    )
     .join("\n");
 }
 
@@ -235,7 +237,6 @@ function createVideos(root) {
           </g>
         `;
         image = root.querySelector(`[data-label="${label}"]`);
-        console.log(image);
       }
       const src = label.replace("vid://", "");
       video.src = src.startsWith("http") ? src : "./" + src;
