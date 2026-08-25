@@ -24,11 +24,11 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      inkscape:zoom="2.096401"
-     inkscape:cx="461.26672"
+     inkscape:cx="461.26671"
      inkscape:cy="400.4482"
      inkscape:window-width="1085"
      inkscape:window-height="1392"
-     inkscape:window-x="1465"
+     inkscape:window-x="859"
      inkscape:window-y="10"
      inkscape:window-maximized="0"
      inkscape:current-layer="layer1"
@@ -152,7 +152,8 @@
        width="79.725563"
        height="56.187531"
        x="21.899637"
-       y="44.3582" /><path
+       y="44.3582"
+       inkscape:label="vid://omni.mp4" /><path
        style="fill:#2f3030;fill-opacity:1;stroke:#030303;stroke-width:0.497016;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
        d="M 145.47302,8.401073 V 147.56587"
        id="path7" /><g
