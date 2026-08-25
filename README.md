@@ -22,7 +22,7 @@ You can also find more usage examples and the full API spec there.
 
 When you're done, press `enter` in the viewer to save the document to disk.
 
-## Usage with Inkscape, Illustrator, Core
+## Usage with Inkscape, Illustrator, Corel
 
 Typst may not be the best solution for everyone in every situation,
 so yap now supports these.
