@@ -154,7 +154,7 @@ function findNotes(parent) {
     .filter(({ label }) => label.startsWith("note://"))
     .map(
       ({ label, element }) =>
-        label.replace("note://", "") || `<p>${element.textContent}</p>`
+        label.replace("note://", "") || `<p>${element.textContent}</p>`,
     )
     .join("\n");
 }

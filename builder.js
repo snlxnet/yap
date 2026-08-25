@@ -7,14 +7,21 @@ async function load() {
   slides.forEach((slide) => slide.remove());
   let idx = 1;
 
-  while (true) {
-    const response = await fetch(`/slide${idx}.svg`, {
-      cache: "no-cache",
-    }).catch(() => false);
-    if (!response || response.status > 299) break;
-    document.body.innerHTML += await response.text();
-    idx++;
-  }
+  const svgs = await Promise.all(
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(async (idx) => {
+      const response = await fetch(`/slide${idx}.svg`, {
+        cache: "no-cache",
+      });
+      return {
+        idx,
+        body: await response.text(),
+      };
+    }),
+  );
+  document.body.innerHTML += svgs
+    .sort((a, b) => a.idx < b.idx)
+    .map(({ body }) => body)
+    .join("");
 
   const input = document.createElement("input");
   input.type = "file";
