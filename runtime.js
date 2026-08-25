@@ -19,6 +19,7 @@ function reload() {
     createImages(document.body);
   } catch (e) {
     console.log("Images and videos appear to alerady be in place");
+    console.warn(e);
   }
   showSlide(currentSlide);
 }
@@ -149,10 +150,12 @@ function showSlide(idx, quiet = false) {
 }
 
 function findNotes(parent) {
-  return Array.from(parent.querySelectorAll("[data-typst-label]"))
-    .filter((element) => element.dataset.typstLabel)
-    .filter((element) => element.dataset.typstLabel.startsWith("note://"))
-    .map((element) => element.dataset.typstLabel.replace("note://", ""))
+  return Array.from(findLabel(parent))
+    .filter(({ label }) => label.startsWith("note://"))
+    .map(
+      ({ label, element }) =>
+        label.replace("note://", "") || `<p>${element.textContent}</p>`
+    )
     .join("\n");
 }
 
@@ -189,19 +192,53 @@ function prettifyNumber(x) {
   return ("00" + Math.floor(x)).slice(-2);
 }
 
+function decodeXUriComponent(s) {
+  return s.replace(/_x([0-9A-Fa-f]{2,4})_/g, (_, hex) =>
+    String.fromCharCode(parseInt(hex, 16)),
+  );
+}
+
+function findLabel(root, label = "") {
+  const value = label ? `="${label}"` : "";
+
+  const typst = Array.from(
+    root.querySelectorAll(`[data-typst-label${value}]`),
+  ).map((element) => ({ element, label: element.dataset.typstLabel }));
+  const inkscape = Array.from(
+    root.querySelectorAll(`[inkscape\\:label${value}]`),
+  ).map((element) => ({
+    element,
+    label: decodeXUriComponent(element.getAttribute("inkscape:label")),
+  }));
+  const illustratorCorel = Array.from(
+    root.querySelectorAll(`svg [id${value}]`),
+  ).map((element) => ({ element, label: decodeXUriComponent(element.id) }));
+
+  return [...typst, ...inkscape, ...illustratorCorel];
+}
+
 function createVideos(root) {
-  Array.from(root.querySelectorAll("[data-typst-label]"))
-    .filter((element) => element.dataset.typstLabel?.startsWith("vid://"))
-    .map((anchor) => {
+  Array.from(findLabel(root))
+    .filter(({ label }) => label.startsWith("vid://"))
+    .map(({ label, element }) => {
       const video = document.createElement("video");
-      const fill = anchor.querySelector(".typst-shape");
+      const fill = element.querySelector(".typst-shape");
       fill?.remove();
-      const image = anchor.querySelector("image");
+      let image = element.querySelector("image");
       if (!image) {
-        console.error("Failed to create video", anchor);
-        return;
+        const width = element.width.baseVal.value;
+        const height = element.height.baseVal.value;
+        const x = element.x.baseVal.value;
+        const y = element.y.baseVal.value;
+        element.outerHTML = `
+          <g>
+            <rect transform="translate(${x} ${y})" fill="red" width="${width}" height="${height}" data-label="${label}">
+            </rect>
+          </g>
+        `;
+        image = root.querySelector(`[data-label="${label}"]`);
       }
-      const src = anchor.dataset.typstLabel.replace("vid://", "");
+      const src = label.replace("vid://", "");
       video.src = src.startsWith("http") ? src : "./" + src;
       video.loop = true;
       video.preload = "auto";
@@ -228,7 +265,12 @@ function createImages(root) {
 }
 
 function getTypstLabel(label) {
-  const anchor = document.querySelector(`[data-typst-label="${label}"]`);
+  const anchor = findLabel(document, label)[0]?.element;
+
+  if (!anchor) {
+    return undefined;
+  }
+
   const existing = anchor.querySelector("foreignObject");
 
   if (existing) {

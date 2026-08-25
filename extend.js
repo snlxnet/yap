@@ -12,14 +12,20 @@ function extend() {
 
 function toggleBook() {
   const book = document.body.classList.toggle("book-mode");
-  console.log(book)
+  console.log(book);
 
   if (book) {
-    document.body.innerHTML = document.body.innerHTML.replaceAll("note://", "not-a-note://")
+    document.body.innerHTML = document.body.innerHTML.replaceAll(
+      "note://",
+      "not-a-note://",
+    );
   } else {
-    document.body.innerHTML = document.body.innerHTML.replaceAll("not-a-note://", "note://")
+    document.body.innerHTML = document.body.innerHTML.replaceAll(
+      "not-a-note://",
+      "note://",
+    );
   }
 
-  reload()
+  reload();
   getTypstLabel("book").onclick = toggleBook;
 }
