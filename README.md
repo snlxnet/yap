@@ -29,7 +29,7 @@ so yap now supports these.
 
 1. Create a rectangle and name the object `vid://` plus the file name,
    for example, `vid://omni.mp4`
-2. Export as SVG and call it `slide`
+2. Export as SVG and call it `slide1.svg`, `slide2.svg`, etc.
 
 ## Extending
 
