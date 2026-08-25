@@ -7,8 +7,8 @@
 #let teal = flavor.colors.teal.rgb
 #let white = flavor.colors.text.rgb
 
-#set text(font: "JetBrains Mono", size: 14pt)
-#show raw: set text(font: "JetBrains Mono", size: 14pt)
+#set text(font: "JetBrainsMono NF", size: 14pt)
+#show raw: set text(font: "JetBrainsMono NF", size: 14pt)
 #set align(horizon)
 #show: catppuccin.with(flavor)
 
@@ -60,13 +60,10 @@ With videos and speaker notes
 #h(2mm)
 #button(teal)[Folder with SVGs]<dir>\
 
+#align(bottom)[enter = save]
+
 #notes[
-  Press one of the buttons on the right.
-
-  *Folders* are for the local compiler & support *auto-reload*.
-
-  When your presentation is done, press *enter* to *save*
-  it as a standalone file.
+  yap is a presentation builder with video and speaker note support.
 ]
 
 #pagebreak()
@@ -83,7 +80,7 @@ With videos and speaker notes
   caption: "Example video",
 )
 
-#notes[Quick start]
+#notes[Usage w/ Typst]
 ```
 
 #figure(
@@ -91,10 +88,12 @@ With videos and speaker notes
   caption: "Example video",
 )
 
-#notes[Quick start]
+#notes[Here's how to use it with Typst]
 
-#pagebreak()
 #set page(columns: 1)
+#pagebreak()
+\*This slide should be overwritten by one made with Inkscape\*
+#pagebreak()
 
 #text(size: 24pt)[Slide mode & Book mode]
 
