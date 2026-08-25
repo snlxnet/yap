@@ -7,8 +7,8 @@
 #let teal = flavor.colors.teal.rgb
 #let white = flavor.colors.text.rgb
 
-#set text(font: "JetBrainsMono NF", size: 14pt)
-#show raw: set text(font: "JetBrainsMono NF", size: 14pt)
+#set text(font: "JetBrains Mono", size: 14pt)
+#show raw: set text(font: "JetBrains Mono", size: 14pt)
 #set align(horizon)
 #show: catppuccin.with(flavor)
 
