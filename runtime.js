@@ -11,7 +11,7 @@ window.addEventListener("load", () => {
 });
 
 function reload() {
-  slides = document.querySelectorAll("body>svg");
+  slides = document.querySelectorAll("#root>svg");
 
   updateDisplayMode();
   try {
