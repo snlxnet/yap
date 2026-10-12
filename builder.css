@@ -1,0 +1,49 @@
+#card-wrapper {
+  width: 100%;
+  height: 100svh;
+  display: flex;
+  transform: scale(0.6);
+}
+
+body {
+  background: #121212;
+}
+
+#button-text,
+#tail {
+  display: inline !important;
+  pointer-events: none;
+  user-select: none;
+}
+#button-new,
+#button-open {
+  transition: 0.1s ease-in-out;
+}
+#button-new:hover,
+#button-open:hover {
+  fill: #a8a5ff !important;
+}
+body:has(#card) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#text-book,
+#text-presentation,
+#lower-page,
+#page-book {
+  user-select: none;
+  pointer-events: none;
+}
+#bg-book,
+#bg-presentation {
+  transition: 0.1s ease-in-out;
+}
+#bg-book:hover,
+#bg-presentation:hover {
+  fill: #a8a5ff !important;
+}
+#card:has(#bg-presentation:hover) #text-presentation * {
+  fill: #2e2d38 !important;
+}
