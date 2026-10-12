@@ -28,6 +28,25 @@ body:has(#card) {
   justify-content: center;
   align-items: center;
 }
+
+#text-book,
+#text-presentation,
+#lower-page,
+#page-book {
+  user-select: none;
+  pointer-events: none;
+}
+#bg-book,
+#bg-presentation {
+  transition: 0.1s ease-in-out;
+}
+#bg-book:hover,
+#bg-presentation:hover {
+  fill: #a8a5ff !important;
+}
+#card:has(#bg-presentation:hover) #text-presentation * {
+  fill: #2e2d38 !important;
+}
 </style>
 
 <div id="card"></div>
