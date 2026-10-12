@@ -28,9 +28,14 @@ async function loadMain() {
   })
 }
 
+const assoc = new Map()
+let fs
+
 async function loadA4() {
+  fs = await navigator.storage.getDirectory()
+
   const root = document.getElementById("root")
-  const svg = await loadCard(root, "/a4.svg")
+  await loadCard(root, "/a4.svg")
 
   let hoverTarget = null
   addEventListener("dragover", (e) => {
@@ -39,7 +44,7 @@ async function loadA4() {
     if (hoverTarget?.style) {
       hoverTarget.style.filter = ""
     }
-    if (e.target.tagName === "svg") {
+    if (e.target.tagName === "svg" || !e.target.id) {
       hoverTarget = null
       return
     }
@@ -47,17 +52,54 @@ async function loadA4() {
     hoverTarget.style.transition = "0.2s ease-in-out"
     hoverTarget.style.filter = "brightness(0.7)"
   })
-  addEventListener("drop", (e) => {
+  addEventListener("drop", async (e) => {
     if (hoverTarget?.style) {
       hoverTarget.style.filter = ""
     }
     if ([...e.dataTransfer.items].some((item) => item.kind === "file")) {
       e.preventDefault();
     }
-    const files = [...e.dataTransfer.items].map(i => i.getAsFile())
-    console.log(files)
-    // TODO save to OPFS
+    const file = e.dataTransfer.items[0]?.getAsFile()
+    if (!file) {
+      return
+    }
+
+    console.log(file)
+
+    const handle = await fs.getFileHandle(file.name, { create: true })
+    const wr = await handle.createWritable()
+    await wr.write(await file.bytes())
+    await wr.close()
+    console.log("written")
+    assoc.set(e.target.id, file.name)
+    e.target.dataset.typstLabel = "vid://"
+
+    insertAssociated()
   })
 }
 
 loadA4()
+
+async function insertAssociated() {
+  assoc.forEach((_, id) => {
+    const container = document.getElementById(id)
+    if (container.tagName.toLowerCase() !== "video") {
+      container.dataset.typstLabel = "vid://"
+    }
+  })
+  createVideos(document)
+
+  assoc.forEach(async (filename, id) => {
+    const element = document.getElementById(id)
+    if (!element) {
+      return
+    }
+
+    const handle = await fs.getFileHandle(filename)
+    const file = await handle.getFile()
+    const url = URL.createObjectURL(file);
+    const bytes = await file.bytes()
+    console.log({file, url, bytes})
+    element.src = url
+  })
+}

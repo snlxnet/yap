@@ -221,6 +221,7 @@ function createVideos(root) {
   Array.from(findLabel(root))
     .filter(({ label }) => label.startsWith("vid://"))
     .map(({ label, element }) => {
+      console.log({label, element})
       const video = document.createElement("video");
       const fill = element.querySelector(".typst-shape");
       fill?.remove();
@@ -230,6 +231,8 @@ function createVideos(root) {
         const height = element.height.baseVal.value;
         const x = element.x.baseVal.value;
         const y = element.y.baseVal.value;
+        video.id = element.id
+        video.style.borderRadius = (element.rx.baseVal.value || element.ry.baseVal.value || 0) + "px"
         element.outerHTML = `
           <g>
             <rect transform="translate(${x} ${y})" fill="red" width="${width}" height="${height}" data-label="${label}">
