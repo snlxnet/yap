@@ -16,7 +16,8 @@ async function selectTemplate(card) {
   })
 }
 
-async function load() {
+// main greeting
+async function loadMain() {
   const card = document.createElement("div")
   card.id = "card-wrapper"
   document.body.appendChild(card)
@@ -27,4 +28,36 @@ async function load() {
   })
 }
 
-load()
+async function loadA4() {
+  const root = document.getElementById("root")
+  const svg = await loadCard(root, "/a4.svg")
+
+  let hoverTarget = null
+  addEventListener("dragover", (e) => {
+    e.preventDefault()
+
+    if (hoverTarget?.style) {
+      hoverTarget.style.filter = ""
+    }
+    if (e.target.tagName === "svg") {
+      hoverTarget = null
+      return
+    }
+    hoverTarget = e.target
+    hoverTarget.style.transition = "0.2s ease-in-out"
+    hoverTarget.style.filter = "brightness(0.7)"
+  })
+  addEventListener("drop", (e) => {
+    if (hoverTarget?.style) {
+      hoverTarget.style.filter = ""
+    }
+    if ([...e.dataTransfer.items].some((item) => item.kind === "file")) {
+      e.preventDefault();
+    }
+    const files = [...e.dataTransfer.items].map(i => i.getAsFile())
+    console.log(files)
+    // TODO save to OPFS
+  })
+}
+
+loadA4()
