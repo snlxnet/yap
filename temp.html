@@ -52,14 +52,30 @@ body:has(#card) {
 <div id="card"></div>
 
 <script>
-fetch("/card.svg").then(res => res.text()).then(text => card.outerHTML = text).then(main)
+async function loadCard(file) {
+  const response = await fetch(file)
+  const svg = await response.text()
+
+  card.outerHTML = svg
+}
+
+loadCard("/card.svg").then(main)
 
 function main() {
-  document.getElementById("button-new").addEventListener("click", () => {
-    alert("new")
-  })
+  document.getElementById("button-new").addEventListener("click", selectTemplate)
   document.getElementById("button-open").addEventListener("click", () => {
     alert("open")
+  })
+}
+
+async function selectTemplate() {
+  await loadCard("/format.svg")
+
+  document.getElementById("bg-book").addEventListener("click", () => {
+    alert("create book")
+  })
+  document.getElementById("bg-presentation").addEventListener("click", () => {
+    alert("create presentation")
   })
 }
 </script>
