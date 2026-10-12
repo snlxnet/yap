@@ -15,9 +15,9 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"><sodipodi:namedview
      inkscape:document-units="mm"
-     inkscape:zoom="2.0000001"
-     inkscape:cx="150.5"
-     inkscape:cy="207.74999"
+     inkscape:zoom="8.0000004"
+     inkscape:cx="112.87499"
+     inkscape:cy="165.43749"
      id="namedview1"
      pagecolor="#ffffff"
      bordercolor="#000000"
@@ -32,7 +32,7 @@
      inkscape:window-x="721"
      inkscape:window-y="10"
      inkscape:window-maximized="0"
-     inkscape:current-layer="g1" /><defs
+     inkscape:current-layer="layer1" /><defs
      id="defs1"><clipPath
        clipPathUnits="userSpaceOnUse"
        id="clipPath9"><path
@@ -96,7 +96,7 @@
        y="0"
        rx="3"
        clip-path="url(#clipPath30)" /><path
-       style="display:inline;fill:#868e96;stroke:none;stroke-width:0.499999;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;fill-opacity:1"
+       style="display:inline;fill:#2e2d39;stroke:none;stroke-width:0.499999;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;fill-opacity:1"
        d="m 44.251562,0 c -0.926041,5.6223958 1.91823,8.4005206 1.785938,12.038542 -0.132292,3.63802 -5.093229,9.061979 -4.960938,14.684375 0.132292,5.622395 5.027084,16.734374 1.852084,28.277084 H 0 V 0 Z"
        id="lower-page"
        sodipodi:nodetypes="csscccc"

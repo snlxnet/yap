@@ -1,0 +1,22 @@
+<style>
+#zone {
+  width: 100%;
+  height: 100svh;
+}
+</style>
+
+<div id="zone">drag n drop zone</div>
+
+<script>
+zone.addEventListener("dragover", (e) => {
+  e.preventDefault()
+})
+zone.addEventListener("drop", (e) => {
+  if ([...e.dataTransfer.items].some((item) => item.kind === "file")) {
+    e.preventDefault();
+  }
+  const files = [...e.dataTransfer.items].map(i => i.getAsFile())
+  console.log(files)
+  // TODO save to OPFS
+})
+</script>
