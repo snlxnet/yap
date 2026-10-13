@@ -36,7 +36,6 @@ async function loadA4() {
 
   const root = document.getElementById("root")
   await loadCard(root, "/a4.svg")
-  deconstructOriginal()
 
   let hoverTarget = null
   addEventListener("dragover", (e) => {
@@ -65,7 +64,7 @@ async function loadA4() {
       return
     }
 
-    console.log({hoverTarget, e, p: e.composedPath()})
+    console.log(file)
 
     const handle = await fs.getFileHandle(file.name, { create: true })
     const wr = await handle.createWritable()
@@ -116,25 +115,4 @@ function showPage({x, y}) {
   const view = document.querySelector("#root>svg").viewBox.baseVal
   view.x = x
   view.y = y
-}
-
-function deconstructOriginal() {
-  const svg = document.querySelector("#root>svg")
-  svg.innerHTML = '<defs><g id="world">' + svg.innerHTML + '</g></defs><use href="#world" />'
-}
-
-function createPage({x, y}) {
-  const original = document.querySelector("#root>svg")
-  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
-
-  const attributes = [...original.attributes]
-  attributes.forEach((attr) => {
-    if (attr.name == "id") return
-    svg.setAttribute(attr.name, attr.value)
-  })
-
-  root.appendChild(svg)
-  const use = document.createElementNS("http://www.w3.org/2000/svg", "use")
-  use.setAttribute("href", "#world")
-  svg.appendChild(use)
 }
