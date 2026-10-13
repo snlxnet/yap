@@ -234,7 +234,6 @@ function createVideos(root) {
         video.id = element.id
         element.id = "path-" + element.id
         delete element.dataset.typstLabel
-        video.style.borderRadius = (element.rx?.baseVal.value || element.ry?.baseVal.value || 0) + "px"
         element.outerHTML = `
           <defs>
             <clipPath id="clip-${element.id}">
