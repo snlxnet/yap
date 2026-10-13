@@ -23,9 +23,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
-     inkscape:zoom="1.0482005"
-     inkscape:cx="348.21583"
-     inkscape:cy="566.20848"
+     inkscape:zoom="0.52410025"
+     inkscape:cx="663.9951"
+     inkscape:cy="634.42061"
      inkscape:window-width="2540"
      inkscape:window-height="1392"
      inkscape:window-x="10"
@@ -78,5 +78,24 @@
        style="fill:#a8a5ff;fill-opacity:1;stroke-width:0.683726;stroke-linecap:round;stroke-linejoin:round"
        d="m 30.164065,222.74693 v -57.60072 h 92.990985 l -15.43407,57.60072 z"
        id="path2" />
+    <rect
+       style="fill:#121212;fill-opacity:1;stroke-width:0.499999;stroke-linecap:round;stroke-linejoin:round"
+       id="rect4"
+       width="210"
+       height="297"
+       x="241.31038"
+       y="0"
+       rx="3" />
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:24.9694px;line-height:1.3;font-family:Comfortaa;-inkscape-font-specification:'Comfortaa Bold';writing-mode:lr-tb;direction:ltr;fill:#a8a5ff;fill-opacity:1;stroke-width:1.24847;stroke-linecap:round;stroke-linejoin:round"
+       x="302.55154"
+       y="155.41653"
+       id="text4"><tspan
+         sodipodi:role="line"
+         id="tspan4"
+         style="fill:#a8a5ff;fill-opacity:1;stroke-width:1.24847"
+         x="302.55154"
+         y="155.41653">Page 2</tspan></text>
   </g>
 </svg>
