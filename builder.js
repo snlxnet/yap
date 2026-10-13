@@ -18,7 +18,7 @@ async function load() {
       };
     }),
   );
-  document.body.innerHTML += svgs
+  root.innerHTML += svgs
     .sort((a, b) => a.idx < b.idx)
     .map(({ body }) => body)
     .join("");
@@ -69,9 +69,9 @@ async function onFileSelect(event) {
   oldSlides.forEach((slide) => slide.remove());
 
   if (files[0].type.includes("zip")) {
-    document.body.innerHTML += await readZip(files[0]);
+    root.innerHTML += await readZip(files[0]);
   } else {
-    document.body.innerHTML += await readSvgArray(files);
+    root.innerHTML += await readSvgArray(files);
   }
 
   reload();

@@ -7,6 +7,7 @@ let lastIntervalId = 0;
 const channel = new BroadcastChannel("control");
 window.addEventListener("load", () => {
   reload();
+  firstSlide()
   channel.addEventListener("message", ({ data: idx }) => showSlide(idx, true));
 });
 
@@ -82,6 +83,8 @@ document.body.addEventListener("fullscreenchange", () => {
 });
 
 function firstSlide() {
+  createTimer();
+
   showSlide(0);
 }
 function lastSlide() {
@@ -112,10 +115,6 @@ function showAll() {
 }
 
 function showSlide(idx, quiet = false) {
-  if (idx === 0) {
-    createTimer();
-  }
-
   document
     .querySelectorAll(".note-title")
     .forEach((el) => el.classList.remove("highlight"));
