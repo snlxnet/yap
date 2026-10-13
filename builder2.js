@@ -36,6 +36,7 @@ async function loadA4() {
 
   const root = document.getElementById("root")
   await loadCard(root, "/a4.svg")
+  createPages()
 
   let hoverTarget = null
   addEventListener("dragover", (e) => {
@@ -64,7 +65,7 @@ async function loadA4() {
       return
     }
 
-    console.log(file)
+    console.log(e.target, hoverTarget)
 
     const handle = await fs.getFileHandle(file.name, { create: true })
     const wr = await handle.createWritable()
@@ -89,7 +90,7 @@ async function insertAssociated() {
   })
   createVideos(document)
 
-  assoc.forEach(async (filename, id) => {
+  await Promise.all(assoc.entries().map(async ([id, filename]) => {
     const element = document.getElementById(id)
     if (!element) {
       return
@@ -101,14 +102,18 @@ async function insertAssociated() {
     const bytes = await file.bytes()
     console.log({file, url, bytes})
     element.src = url
-  })
+  }))
+
+  createPages()
 }
 
 function createPages() {
+  const old = document.querySelectorAll(".generated-page")
+
   const first = document.querySelector("#root>svg")
   const { width, height } = first.viewBox.baseVal
 
-  const pages = [...document.querySelectorAll(`rect[width="${width}"][height="${height}"]`)]
+  const pages = [...first.querySelectorAll(`rect[width="${width}"][height="${height}"]`)]
     .map(element => ({x: element.x.baseVal.value, y: element.y.baseVal.value}))
     .filter(page => page.x !== 0 || page.y !== 0)
 
@@ -125,12 +130,10 @@ function createPages() {
 
     svg.setAttribute("viewBox", [page.x, page.y, width, height].join(" "))
     svg.innerHTML = first.innerHTML
+    svg.classList.add("generated-page")
     root.appendChild(svg)
   })
+
+  old.forEach(el => el.remove())
 }
 
-function showPage({x, y}) {
-  const view = document.querySelector("#root>svg").viewBox.baseVal
-  view.x = x
-  view.y = y
-}
