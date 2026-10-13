@@ -23,9 +23,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
-     inkscape:zoom="0.74118967"
-     inkscape:cx="292.09797"
-     inkscape:cy="630.74273"
+     inkscape:zoom="0.26205012"
+     inkscape:cx="408.31883"
+     inkscape:cy="559.05336"
      inkscape:window-width="1171"
      inkscape:window-height="1392"
      inkscape:window-x="1379"
@@ -39,7 +39,15 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:#cdd6f4;stroke-width:0.499999;stroke-linecap:round;stroke-linejoin:round"
+       style="fill:#121212;fill-opacity:1;stroke-width:0.499999;stroke-linecap:round;stroke-linejoin:round"
+       id="rect3"
+       width="210"
+       height="297"
+       x="0"
+       y="0"
+       rx="3" />
+    <rect
+       style="fill:#ffffff;stroke-width:0.499999;stroke-linecap:round;stroke-linejoin:round;fill-opacity:1"
        id="rect2"
        width="31.05649"
        height="218.10938"
@@ -48,17 +56,17 @@
        rx="3" />
     <text
        xml:space="preserve"
-       style="font-weight:bold;font-size:10px;line-height:1.3;font-family:Comfortaa;-inkscape-font-specification:'Comfortaa Bold';writing-mode:lr-tb;direction:ltr;fill:#74c7ec;stroke-width:0.499999;stroke-linecap:round;stroke-linejoin:round"
+       style="font-weight:bold;font-size:10px;line-height:1.3;font-family:Comfortaa;-inkscape-font-specification:'Comfortaa Bold';writing-mode:lr-tb;direction:ltr;fill:#a8a5ff;stroke-width:0.499999;stroke-linecap:round;stroke-linejoin:round;fill-opacity:1"
        x="19.276442"
        y="24.63101"
        id="text1"><tspan
          sodipodi:role="line"
          id="tspan1"
-         style="stroke-width:0.5"
+         style="stroke-width:0.5;fill:#a8a5ff;fill-opacity:1"
          x="19.276442"
          y="24.63101">todo the template</tspan></text>
     <rect
-       style="fill:#74c7ec;stroke-width:0.499999;stroke-linecap:round;stroke-linejoin:round"
+       style="fill:#000000;stroke-width:0.499999;stroke-linecap:round;stroke-linejoin:round;fill-opacity:1"
        id="rect1"
        width="136.00601"
        height="86.387016"
@@ -66,7 +74,7 @@
        y="46.763222"
        rx="3" />
     <path
-       style="fill:#89b4fa;stroke-width:0.683726;stroke-linecap:round;stroke-linejoin:round"
+       style="fill:#a8a5ff;stroke-width:0.683726;stroke-linecap:round;stroke-linejoin:round;fill-opacity:1"
        d="m 30.164065,212.39784 v -57.60072 h 92.990985 l -15.43407,57.60072 z"
        id="path2" />
   </g>

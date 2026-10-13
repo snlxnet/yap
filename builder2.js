@@ -50,7 +50,7 @@ async function loadA4() {
     }
     hoverTarget = e.target
     hoverTarget.style.transition = "0.2s ease-in-out"
-    hoverTarget.style.filter = "brightness(0.7)"
+    hoverTarget.style.filter = "invert(0.2)"
   })
   addEventListener("drop", async (e) => {
     if (hoverTarget?.style) {
