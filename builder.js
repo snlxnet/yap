@@ -3,33 +3,45 @@ let reloadDirentry = async () => {};
 let updateSlidesToUseDirentry = async () => {};
 load();
 
-async function loadCard(card, file) {
-  const response = await fetch(file)
-  const svg = await response.text()
-
-  card.innerHTML = svg
-}
-
-async function selectTemplate(card) {
-  await loadCard(card, "/format.svg")
-
-  document.getElementById("bg-book").addEventListener("click", () => {
-    alert("create book")
-  })
-  document.getElementById("bg-presentation").addEventListener("click", () => {
-    alert("create presentation")
-  })
-}
-
 async function load() {
-  const card = document.createElement("div")
-  card.id = "card-wrapper"
-  document.body.appendChild(card)
-  await loadCard(card, "/card.svg")
-  document.getElementById("button-new").addEventListener("click", () => selectTemplate(card))
-  document.getElementById("button-open").addEventListener("click", () => {
-    alert("open")
-  })
+  slides.forEach((slide) => slide.remove());
+  let idx = 1;
+
+  const svgs = await Promise.all(
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(async (idx) => {
+      const response = await fetch(`/slide${idx}.svg`, {
+        cache: "no-cache",
+      });
+      return {
+        idx,
+        body: await response.text(),
+      };
+    }),
+  );
+  document.body.innerHTML += svgs
+    .sort((a, b) => a.idx < b.idx)
+    .map(({ body }) => body)
+    .join("");
+
+  const input = document.createElement("input");
+  input.type = "file";
+  input.setAttribute("multiple", "true");
+  input.style.display = "none";
+
+  const label = document.createElement("label");
+  label.appendChild(input);
+  label.style.display = "block";
+  label.style.cursor = "pointer";
+  getTypstLabel("zip").appendChild(label);
+
+  const dirButton = document.createElement("button");
+  dirButton.style.opacity = "0";
+  getTypstLabel("dir").appendChild(dirButton);
+
+  input.addEventListener("input", onFileSelect);
+  dirButton.addEventListener("click", observeDirectory);
+
+  reload();
 
   const extendScript = document.createElement("script");
   extendScript.id = "extend";

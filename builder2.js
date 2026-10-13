@@ -105,14 +105,14 @@ async function insertAssociated() {
 }
 
 function getPages() {
-  const { width, height } = document.querySelector("svg").viewBox.baseVal
+  const { width, height } = document.querySelector("#root>svg").viewBox.baseVal
 
   const pageElements = [...document.querySelectorAll(`rect[width="${width}"][height="${height}"]`)]
   return pageElements.map(element => ({x: element.x.baseVal.value, y: element.y.baseVal.value}))
 }
 
 function showPage({x, y}) {
-  const view = document.querySelector("svg").viewBox.baseVal
+  const view = document.querySelector("#root>svg").viewBox.baseVal
   view.x = x
   view.y = y
 }

@@ -10,6 +10,14 @@ window.addEventListener("load", () => {
   channel.addEventListener("message", ({ data: idx }) => showSlide(idx, true));
 });
 
+const videoObserver = new IntersectionObserver(([{isIntersecting, target}]) => {
+  if (isIntersecting && target.play) {
+    target.play()
+  } else if (target.pause) {
+    target.pause()
+  }
+})
+
 function reload() {
   slides = document.querySelectorAll("#root>svg");
 
@@ -32,14 +40,8 @@ function updateDisplayMode() {
   if (noteBlocks.filter(Boolean).length > 0) {
     noteBlocks.map(wrapNotes).forEach((el) => notes.appendChild(el));
     document.body.classList.remove("book-mode");
-    document.querySelectorAll("video").forEach((video) => {
-      video.removeAttribute("controls");
-    });
   } else {
     document.body.classList.add("book-mode");
-    document.querySelectorAll("video").forEach((video) => {
-      video.setAttribute("controls", "true");
-    });
   }
 
   document.querySelectorAll("a").forEach((el) =>
@@ -132,11 +134,6 @@ function showSlide(idx, quiet = false) {
       });
     } else {
       slide.classList.add("visible");
-      slide.querySelectorAll("foreignObject").forEach((foreign) => {
-        const size = foreign.parentElement.getBBox();
-        foreign.setAttribute("width", size.width);
-        foreign.setAttribute("height", size.height);
-      });
       try {
         videos.forEach((video) => video.play());
       } catch (e) {
@@ -220,18 +217,19 @@ function findLabel(root, label = "") {
 function createVideos(root) {
   Array.from(findLabel(root))
     .filter(({ label }) => label.startsWith("vid://"))
-    .map(({ label, element }) => {
+    .map(({ label, element }, idx) => {
       console.log({label, element})
       const video = document.createElement("video");
+      video.id = element.id || `video-${idx}`
       const fill = element.querySelector(".typst-shape");
       fill?.remove();
       let image = element.querySelector("image");
+      const id = video.id
       if (!image) {
         const { x, y, width, height } = element.getBBox();
         const transform = [element.getAttribute("transform"), `translate(${x} ${y})`].filter(Boolean).join(" ")
         const invTransform = `translate(${-x} ${-y})`
         element.setAttribute("transform", invTransform)
-        video.id = element.id
         element.id = "path-" + element.id
         delete element.dataset.typstLabel
         element.outerHTML = `
@@ -257,6 +255,7 @@ function createVideos(root) {
         `<foreignObject transform="${image.attributes.transform?.value || ""}" width="${image.attributes.width.value}" height="${image.attributes.height.value}" clip-path="url(#clip-${element.id})">` +
         image.innerHTML +
         `</foreignObject>`;
+      videoObserver.observe(document.getElementById(video.id))
     });
 }
 
