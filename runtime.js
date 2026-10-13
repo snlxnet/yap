@@ -227,14 +227,20 @@ function createVideos(root) {
       fill?.remove();
       let image = element.querySelector("image");
       if (!image) {
-        const width = element.width.baseVal.value;
-        const height = element.height.baseVal.value;
-        const x = element.x.baseVal.value;
-        const y = element.y.baseVal.value;
+        const { x, y, width, height } = element.getBBox();
         const transform = [element.getAttribute("transform"), `translate(${x} ${y})`].filter(Boolean).join(" ")
+        const invTransform = `translate(${-x} ${-y})`
+        element.setAttribute("transform", invTransform)
         video.id = element.id
-        video.style.borderRadius = (element.rx.baseVal.value || element.ry.baseVal.value || 0) + "px"
+        element.id = "path-" + element.id
+        delete element.dataset.typstLabel
+        video.style.borderRadius = (element.rx?.baseVal.value || element.ry?.baseVal.value || 0) + "px"
         element.outerHTML = `
+          <defs>
+            <clipPath id="clip-${element.id}">
+              ${element.outerHTML}
+            </clipPath>
+          </defs>
           <g>
             <rect transform="${transform}" fill="red" width="${width}" height="${height}" data-label="${label}">
             </rect>
@@ -245,10 +251,11 @@ function createVideos(root) {
       const src = label.replace("vid://", "");
       video.src = src.startsWith("http") ? src : "./" + src;
       video.loop = true;
+      video.style.background = "transparent"
       video.preload = "auto";
       image.appendChild(video);
       image.outerHTML =
-        `<foreignObject transform="${image.attributes.transform?.value || ""}" width="${image.attributes.width.value}" height="${image.attributes.height.value}">` +
+        `<foreignObject transform="${image.attributes.transform?.value || ""}" width="${image.attributes.width.value}" height="${image.attributes.height.value}" clip-path="url(#clip-${element.id})">` +
         image.innerHTML +
         `</foreignObject>`;
     });
