@@ -105,14 +105,31 @@ async function insertAssociated() {
 }
 
 function getPages() {
-  const { width, height } = document.querySelector("svg").viewBox.baseVal
+  const svg = document.querySelector("svg")
+  const { width, height } = svg.viewBox.baseVal
 
   const pageElements = [...document.querySelectorAll(`rect[width="${width}"][height="${height}"]`)]
   return pageElements.map(element => ({x: element.x.baseVal.value, y: element.y.baseVal.value}))
 }
 
 function showPage({x, y}) {
-  const view = document.querySelector("svg").viewBox.baseVal
-  view.x = x
-  view.y = y
+  const svg = document.querySelector("svg")
+
+  let animate = document.getElementById("view-transition")
+  if (!animate) {
+    animate = document.createElementNS("http://www.w3.org/2000/svg", "animate")
+    animate.id = "view-transition"
+    animate.setAttribute("attributeName", "viewBox")
+    animate.setAttribute("fill", "freeze")
+    animate.setAttribute("dur", "1s")
+    svg.appendChild(animate)
+  }
+
+  const [oldX, oldY, width, height] = svg.getAttribute("viewBox").split(" ")
+  const dest = [x, y, width, height].join(" ")
+  animate.setAttribute("from", [oldX, oldY, width, height].join(" "))
+  animate.setAttribute("to", dest)
+  animate.beginElement()
+
+  animate.addEventListener("endEvent", () => svg.setAttribute("viewBox", dest))
 }
