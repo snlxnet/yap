@@ -104,11 +104,29 @@ async function insertAssociated() {
   })
 }
 
-function getPages() {
-  const { width, height } = document.querySelector("#root>svg").viewBox.baseVal
+function createPages() {
+  const first = document.querySelector("#root>svg")
+  const { width, height } = first.viewBox.baseVal
 
-  const pageElements = [...document.querySelectorAll(`rect[width="${width}"][height="${height}"]`)]
-  return pageElements.map(element => ({x: element.x.baseVal.value, y: element.y.baseVal.value}))
+  const pages = [...document.querySelectorAll(`rect[width="${width}"][height="${height}"]`)]
+    .map(element => ({x: element.x.baseVal.value, y: element.y.baseVal.value}))
+    .filter(page => page.x !== 0 || page.y !== 0)
+
+  console.log(pages)
+
+  pages.map(page => {
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+    const attrs = [...first.attributes]
+    attrs.forEach(attr => {
+      if (!"id viewBox".split(" ").includes(attr.name)) {
+        svg.setAttribute(attr.name, attr.value)
+      }
+    })
+
+    svg.setAttribute("viewBox", [page.x, page.y, width, height].join(" "))
+    svg.innerHTML = first.innerHTML
+    root.appendChild(svg)
+  })
 }
 
 function showPage({x, y}) {
