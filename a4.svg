@@ -23,9 +23,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
-     inkscape:zoom="0.52410025"
-     inkscape:cx="663.9951"
-     inkscape:cy="634.42061"
+     inkscape:zoom="2.096401"
+     inkscape:cx="-392.10056"
+     inkscape:cy="174.34642"
      inkscape:window-width="2540"
      inkscape:window-height="1392"
      inkscape:window-x="10"
@@ -97,5 +97,107 @@
          style="fill:#a8a5ff;fill-opacity:1;stroke-width:1.24847"
          x="302.55154"
          y="155.41653">Page 2</tspan></text>
+    <rect
+       style="fill:#2e2d39;fill-opacity:1;stroke-width:1.09379;stroke-linecap:round;stroke-linejoin:round"
+       id="rect8"
+       width="114.89755"
+       height="13.756711"
+       x="54.906994"
+       y="26.440651"
+       ry="3.4076257"
+       transform="scale(-1,1)"
+       inkscape:label="player-progress-not-filled" />
+    <rect
+       style="fill:#a8a5ff;fill-opacity:1;stroke-width:0.935173;stroke-linecap:round;stroke-linejoin:round"
+       id="rect9"
+       width="83.990784"
+       height="13.756711"
+       x="85.813759"
+       y="26.440651"
+       ry="3.4076257"
+       transform="scale(-1,1)"
+       inkscape:label="player-progress-filled" />
+    <g
+       id="g11"
+       inkscape:label="player-button-play"
+       style="display:inline">
+      <rect
+         style="fill:#a8a5ff;fill-opacity:1;stroke-width:0.378471;stroke-linecap:round;stroke-linejoin:round"
+         id="rect6"
+         width="13.756711"
+         height="13.756711"
+         x="-186.34665"
+         y="26.440653"
+         ry="3.4076257" />
+      <path
+         sodipodi:type="star"
+         style="fill:#121212;fill-opacity:1;stroke-width:0.499999;stroke-linecap:round;stroke-linejoin:round"
+         id="path9"
+         inkscape:flatsided="true"
+         sodipodi:sides="3"
+         sodipodi:cx="-186.97769"
+         sodipodi:cy="3.1552091"
+         sodipodi:r1="3.7867768"
+         sodipodi:r2="1.4389751"
+         sodipodi:arg1="0"
+         sodipodi:arg2="1.0471976"
+         inkscape:rounded="0"
+         inkscape:randomized="0"
+         d="m -183.19091,3.1552091 -5.68017,3.2794449 v -6.55888983 z"
+         inkscape:transform-center-x="-0.94669416"
+         transform="translate(7.004564,30.290007)" />
+    </g>
+    <g
+       id="g10"
+       inkscape:label="player-button-pause"
+       style="display:inline"
+       transform="translate(1.0709135,23.38161)">
+      <rect
+         style="fill:#ff8383;fill-opacity:1;stroke-width:0.378471;stroke-linecap:round;stroke-linejoin:round"
+         id="rect10"
+         width="13.756711"
+         height="13.756711"
+         x="-186.34665"
+         y="26.440653"
+         ry="3.4076257" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:15.0483px;line-height:1.3;font-family:Comfortaa;-inkscape-font-specification:'Comfortaa Bold';writing-mode:lr-tb;direction:ltr;fill:#121212;fill-opacity:1;stroke-width:0.752415;stroke-linecap:round;stroke-linejoin:round"
+         x="29.659208"
+         y="184.72984"
+         id="text9"
+         transform="rotate(90)"><tspan
+           sodipodi:role="line"
+           id="tspan9"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Comfortaa;-inkscape-font-specification:'Comfortaa Bold';stroke-width:0.752416"
+           x="29.659208"
+           y="184.72984">=</tspan></text>
+    </g>
+    <g
+       id="g12"
+       inkscape:label="player-head">
+      <rect
+         style="fill:#eeeeee;fill-opacity:1;stroke-width:0.287615;stroke-linecap:round;stroke-linejoin:round"
+         id="rect11"
+         width="6.4145203"
+         height="17.038128"
+         x="83.416336"
+         y="24.799942"
+         ry="1.8300213"
+         transform="scale(-1,1)"
+         inkscape:label="player-progress-filled" />
+      <path
+         style="fill:#eeeeee;fill-opacity:1;stroke:#2e2d39;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+         d="M -86.610124,28.022234 V 38.731368"
+         id="path11" />
+    </g>
+    <rect
+       style="fill:#121212;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       id="rect12"
+       width="3"
+       height="3"
+       x="-190.82704"
+       y="20.067131"
+       inkscape:label="player-gap" />
   </g>
 </svg>
