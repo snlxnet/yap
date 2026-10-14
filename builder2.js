@@ -1,3 +1,9 @@
+let embedVideos = false
+let fs
+let assoc = new Map()
+let lastRawSVG = ""
+let currentDocName = ""
+
 // loadMain()
 fetch("/a4.svg").then(r => r.text()).then(t => load("a4.svg", t))
 document.addEventListener("keydown", (event) => {
@@ -56,16 +62,17 @@ async function loadHandle(handle) {
   loadFile()
 }
 
-let fs
-
 async function load(name, svg) {
-  const assoc = new Map(JSON.parse(localStorage.getItem(name) || null))
+  assoc = new Map(JSON.parse(localStorage.getItem(name) || null))
   fs = await navigator.storage.getDirectory()
 
   const root = document.getElementById("root")
   root.innerHTML = svg
+  lastRawSVG = svg
+  currentDocName = name
   createPages()
-  insertAssociated(assoc)
+  await insertVideoUrls(assoc)
+  createVideos(document)
 
   let hoverTarget = null
   removeEventListener("dragover", dropToOpen)
@@ -108,36 +115,36 @@ async function load(name, svg) {
     localStorage.setItem(name, JSON.stringify(Array.from(assoc.entries())))
     e.target.dataset.typstLabel = "vid://"
 
-    insertAssociated(assoc)
+    await insertVideoUrls(assoc)
+    createVideos(document)
   })
 }
 
-async function insertAssociated(assoc) {
+async function insertVideoUrls() {
   createPages()
 
-  assoc.forEach((_, id) => {
-    document.querySelectorAll("#" + id).forEach((container) => {
-      if (container.tagName.toLowerCase() !== "video") {
-        container.dataset.typstLabel = "vid://"
-      }
-    })
-  })
-  createVideos(document)
-
-  const promises = [...assoc.entries()].flatMap(async ([id, filename]) => {
+  const promises = [...assoc.entries()].map(async ([id, filename]) => {
     const elements = [...document.querySelectorAll("#" + id)]
 
-    return elements.map(async (element) => {
+    const promises = elements.map(async (element) => {
       const handle = await fs.getFileHandle(filename)
       const file = await handle.getFile()
       const url = await fileToUrl(file);
-      element.src = url
+      element.dataset.typstLabel = "vid://" + url
     })
+
+    return Promise.all(promises)
   })
   await Promise.all(promises)
+
+  console.log(promises)
 }
 
 async function fileToUrl(file) {
+  if (!embedVideos) {
+    return URL.createObjectURL(file)
+  }
+
   return new Promise((resolve) => {
     const reader = new FileReader()
     reader.onload = () => resolve(reader.result)
@@ -179,6 +186,11 @@ function createPages() {
 async function download() {
   firstSlide()
 
+  embedVideos = true
+  root.innerHTML = lastRawSVG
+  await insertVideoUrls()
+  embedVideos = false
+
   const runtime = await fetch("runtime.js").then((res) => res.text());
   const html = Array.from(document.children)
     .map((child) => child.innerHTML)
@@ -196,7 +208,6 @@ async function download() {
   element.setAttribute("download", "yap.html");
   element.click();
 
-  updateSlidesToUseDirentry();
-  reload();
+  load(currentDocName, lastRawSVG)
 }
 

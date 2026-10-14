@@ -228,7 +228,7 @@ function createVideos(root) {
     .map(({ label, element }, idx) => {
       console.log({label, element})
       const video = document.createElement("video");
-      video.id = element.id || `video-${idx}`
+      video.id = `video-${idx}`
       video.dataset.typstLabel = crypto.randomUUID()
       const fill = element.querySelector(".typst-shape");
       fill?.remove();
