@@ -306,17 +306,39 @@ function addControls(video, box, template) {
   const pf = template.progressFilled.cloneNode(true)
   pf.setAttribute("transform", `translate(${-pfSize.x + gap.width*2 + pauseSize.width}, ${-pfSize.y + size.height - pfSize.height - gap.height})`)
   pf.setAttribute("width", 0)
+  pf.style.pointerEvents = "none"
   box.appendChild(pf)
 
   const headSize = template.head.getBBox()
   const head = template.head.cloneNode(true)
   head.setAttribute("transform", `translate(${-headSize.x + gap.width*2 + pauseSize.width - headSize.width/2}, ${-headSize.y + size.height - headSize.height - gap.height + (headSize.height - pbSize.height)/2})`)
+  head.style.pointerEvents = "none"
   box.appendChild(head)
 
   video.addEventListener("timeupdate", () => {
     const progress = video.currentTime / video.duration * pbSize.width
     pf.setAttribute("width", progress)
     head.setAttribute("transform", `translate(${-headSize.x + gap.width*2 + pauseSize.width + progress - headSize.width/2}, ${-headSize.y + size.height - headSize.height - gap.height + (headSize.height - pbSize.height)/2})`)
+  })
+
+  function handleMouse({buttons, x}) {
+    if (!buttons) {
+      return
+    }
+
+    const { left, width } = pb.getBoundingClientRect()
+    const progress = (x - left) / width
+
+    video.currentTime = video.duration * progress
+  }
+  pb.addEventListener("mousemove", handleMouse)
+  pb.addEventListener("mousedown", handleMouse)
+  play.addEventListener("click", () => {
+    if (video.paused) {
+      video.play()
+    } else {
+      video.pause()
+    }
   })
 }
 
