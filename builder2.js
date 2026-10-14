@@ -1,5 +1,4 @@
-// loadMain()
-fetch("/a4.svg").then(r => r.text()).then(t => load("a4.svg", t))
+loadMain()
 
 async function loadSvg(card, file) {
   const response = await fetch(file)
@@ -8,22 +7,11 @@ async function loadSvg(card, file) {
   card.innerHTML = svg
 }
 
-async function selectTemplate(card) {
-  await loadSvg(card, "/format.svg")
-
-  document.getElementById("bg-book").addEventListener("click", () => {
-    alert("create book")
-  })
-  document.getElementById("bg-presentation").addEventListener("click", () => {
-    alert("create presentation")
-  })
-}
-
 // main greeting
 async function loadMain() {
   const card = document.createElement("div")
   card.id = "card-wrapper"
-  document.body.appendChild(card)
+  root.appendChild(card)
   await loadSvg(card, "/card.svg")
   document.getElementById("button-new").addEventListener("click", () => selectTemplate(card))
   document.getElementById("button-open").addEventListener("click", async () => {
@@ -35,16 +23,31 @@ async function loadMain() {
       ]
     })
 
-    async function loadFile() {
-      const svg = await handle.getFile().then(f => f.text())
-      card.remove()
-      await load(handle.name, svg)
-    }
-
-    const observer = new FileSystemObserver(loadFile)
-    observer.observe(handle)
-    loadFile()
+    loadHandle(handle)
   })
+
+  addEventListener("dragover", (e) => e.preventDefault())
+  addEventListener("drop", dropToOpen)
+}
+
+async function dropToOpen(event) {
+  event.preventDefault()
+  const handle = await event.dataTransfer.items[0]?.getAsFileSystemHandle()
+  if (!handle || !handle.name.endsWith(".svg")) {
+    return
+  }
+  loadHandle(handle)
+}
+
+async function loadHandle(handle) {
+  async function loadFile() {
+    const svg = await handle.getFile().then(f => f.text())
+    await load(handle.name, svg)
+  }
+
+  const observer = new FileSystemObserver(loadFile)
+  observer.observe(handle)
+  loadFile()
 }
 
 let fs
@@ -59,6 +62,9 @@ async function load(name, svg) {
   insertAssociated(assoc)
 
   let hoverTarget = null
+  removeEventListener("dragover", dropToOpen)
+  removeEventListener("drop", dropToOpen)
+
   addEventListener("dragover", (e) => {
     e.preventDefault()
 
