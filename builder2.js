@@ -34,9 +34,15 @@ async function loadMain() {
       ]
     })
 
-    const svg = await handle.getFile().then(f => f.text())
-    card.remove()
-    await load(handle.name, svg)
+    async function loadFile() {
+      const svg = await handle.getFile().then(f => f.text())
+      card.remove()
+      await load(handle.name, svg)
+    }
+
+    const observer = new FileSystemObserver(loadFile)
+    observer.observe(handle)
+    loadFile()
   })
 }
 
