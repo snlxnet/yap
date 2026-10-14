@@ -1,3 +1,8 @@
+const isSafari = /Safari\//.test(navigator.userAgent)
+if (isSafari) {
+  alert("Safari is unsupported due to bug #23113. Please open in Chrome / Helium / Edge etc.")
+}
+
 const firefox = !window.showOpenFilePicker // or safari
 
 let embedVideos = false

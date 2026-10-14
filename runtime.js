@@ -1,8 +1,3 @@
-const isSafari = /Safari\//.test(navigator.userAgent)
-if (isSafari) {
-  alert("Safari is unsupported due to bug #23113. Please open in Chrome / Helium / Edge etc.")
-}
-
 const SLIDE_WORD = navigator.language.includes("ru") ? "Слайд" : "Slide";
 
 let slides = [];
