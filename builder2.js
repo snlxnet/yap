@@ -75,14 +75,14 @@ async function loadMain() {
     loadHandle(handle)
   })
 
-  addEventListener("dragover", (e) => e.preventDefault())
-  addEventListener("drop", dropToOpen)
+  window.ondragover = (e) => e.preventDefault()
+  window.ondrop = (e) => dropToOpen(e)
 }
 
 async function dropToOpen(event) {
   event.preventDefault()
-  const item = await event.dataTransfer.items[0]
-  const handle = item?.getAsFileSystemHandle()
+  const item = event.dataTransfer.items[0]
+  const handle = await item?.getAsFileSystemHandle()
   if (!handle || !handle.name.endsWith(".svg")) {
     return
   }
@@ -113,12 +113,11 @@ async function load(name, svg) {
   createPages()
   await insertVideoUrls(assoc)
   createVideos(document)
+  reload()
 
   let hoverTarget = null
-  removeEventListener("dragover", dropToOpen)
-  removeEventListener("drop", dropToOpen)
 
-  addEventListener("dragover", (e) => {
+  window.ondragover = (e) => {
     e.preventDefault()
 
     if (hoverTarget?.style) {
@@ -131,8 +130,9 @@ async function load(name, svg) {
     hoverTarget = e.target
     hoverTarget.style.transition = "0.2s ease-in-out"
     hoverTarget.style.filter = "invert(0.2)"
-  })
-  addEventListener("drop", async (e) => {
+  }
+  window.ondrop = async (e) => {
+    console.log("drop")
     if (hoverTarget?.style) {
       hoverTarget.style.filter = ""
     }
@@ -157,7 +157,7 @@ async function load(name, svg) {
 
     await insertVideoUrls(assoc)
     createVideos(document)
-  })
+  }
 }
 
 async function insertVideoUrls() {
@@ -176,8 +176,6 @@ async function insertVideoUrls() {
     return Promise.all(promises)
   })
   await Promise.all(promises)
-
-  console.log(promises)
 }
 
 async function fileToUrl(file) {
@@ -202,8 +200,6 @@ function createPages() {
   const pages = [...first.querySelectorAll(`rect[width="${width}"][height="${height}"]`)]
     .map(element => ({x: element.x.baseVal.value, y: element.y.baseVal.value}))
     .filter(page => page.x !== 0 || page.y !== 0)
-
-  console.log(pages)
 
   pages.map(page => {
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")

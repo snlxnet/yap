@@ -240,6 +240,7 @@ function createVideos(root) {
       let image = element.querySelector("image");
       if (!image) {
         const [pageX, pageY, pageW, pageH] = element.closest("svg").getAttribute("viewBox").split(" ").map(it => +it)
+        console.log(element)
         const { x, y, width, height } = element.getBBox();
         if (x > pageX+pageW ||
             y > pageY+pageH ||
@@ -251,8 +252,6 @@ function createVideos(root) {
         const transform = [element.getAttribute("transform"), `translate(${x} ${y})`].filter(Boolean).join(" ")
         const invTransform = `translate(${-x} ${-y})`
         element.setAttribute("transform", invTransform)
-        element.id = "path-" + element.id
-        delete element.dataset.typstLabel
         element.outerHTML = `
           <defs>
             <clipPath id="clip-${element.id}">
@@ -266,6 +265,8 @@ function createVideos(root) {
         `;
         image = root.querySelector(`[data-label="${label}"]`);
       }
+      element.id = "path-" + element.id
+      delete element.dataset.typstLabel
       video.src = label.replace("vid://", "");
       video.loop = true;
       video.style.background = "transparent"
