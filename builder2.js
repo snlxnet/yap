@@ -1,4 +1,6 @@
-async function loadCard(card, file) {
+loadMain()
+
+async function loadSvg(card, file) {
   const response = await fetch(file)
   const svg = await response.text()
 
@@ -6,7 +8,7 @@ async function loadCard(card, file) {
 }
 
 async function selectTemplate(card) {
-  await loadCard(card, "/format.svg")
+  await loadSvg(card, "/format.svg")
 
   document.getElementById("bg-book").addEventListener("click", () => {
     alert("create book")
@@ -21,22 +23,31 @@ async function loadMain() {
   const card = document.createElement("div")
   card.id = "card-wrapper"
   document.body.appendChild(card)
-  await loadCard(card, "/card.svg")
+  await loadSvg(card, "/card.svg")
   document.getElementById("button-new").addEventListener("click", () => selectTemplate(card))
-  document.getElementById("button-open").addEventListener("click", () => {
-    alert("open")
+  document.getElementById("button-open").addEventListener("click", async () => {
+    const [handle] = await window.showOpenFilePicker({
+      types: [
+        {
+          accept: { "image/svg+xml": [".svg"] }
+        }
+      ]
+    })
+
+    const svg = await handle.getFile().then(f => f.text())
+    card.remove()
+    await load(handle.name, svg)
   })
 }
 
 let fs
 
-async function loadA4() {
-  const doc = "a4.svg"
-  const assoc = new Map(JSON.parse(localStorage.getItem(doc) || null))
+async function load(name, svg) {
+  const assoc = new Map(JSON.parse(localStorage.getItem(name) || null))
   fs = await navigator.storage.getDirectory()
 
   const root = document.getElementById("root")
-  await loadCard(root, "/a4.svg")
+  root.innerHTML = svg
   createPages()
   insertAssociated(assoc)
 
@@ -75,14 +86,12 @@ async function loadA4() {
     await wr.close()
     console.log("written")
     assoc.set(e.target.id, file.name)
-    localStorage.setItem(doc, JSON.stringify(Array.from(assoc.entries())))
+    localStorage.setItem(name, JSON.stringify(Array.from(assoc.entries())))
     e.target.dataset.typstLabel = "vid://"
 
     insertAssociated(assoc)
   })
 }
-
-loadA4()
 
 async function insertAssociated(assoc) {
   assoc.forEach((_, id) => {
