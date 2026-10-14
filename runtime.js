@@ -316,7 +316,8 @@ function addControls(video, box, template) {
   box.appendChild(head)
 
   video.addEventListener("timeupdate", () => {
-    const progress = video.currentTime / video.duration * pbSize.width
+    const full = size.width - gap.width*3 - pauseSize.width
+    const progress = video.currentTime / video.duration * full
     pf.setAttribute("width", progress)
     head.setAttribute("transform", `translate(${-headSize.x + gap.width*2 + pauseSize.width + progress - headSize.width/2}, ${-headSize.y + size.height - headSize.height - gap.height + (headSize.height - pbSize.height)/2})`)
   })

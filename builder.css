@@ -48,3 +48,7 @@ body:has(#card) {
 #card:has(#bg-presentation:hover) #text-presentation * {
   fill: #2e2d38 !important;
 }
+
+svg * {
+  user-select: none;
+}
