@@ -267,18 +267,13 @@ function createVideos(root) {
         </g>`;
       const addedVideo = document.getElementById(video.id)
       videoObserver.observe(addedVideo)
-      addControls(addedVideo.parentElement.getBBox(), document.getElementById("controls-"+video.id), controls)
+      addControls(addedVideo, document.getElementById("controls-"+video.id), controls)
     });
 }
 
-function addControls(size, box, template) {
+function addControls(video, box, template) {
+  const size = video.parentElement.getBBox()
   const gap = template.gap
-
-  const playSize = template.buttonPlay.getBBox()
-  const play = template.buttonPlay.cloneNode(true)
-  console.log({playSize})
-  play.setAttribute("transform", `translate(${-playSize.x + gap.width}, ${-playSize.y + size.height - playSize.height - gap.height})`)
-  box.appendChild(play)
 
   const pauseSize = template.buttonPause.getBBox()
   const pause = template.buttonPause.cloneNode(true)
@@ -286,12 +281,33 @@ function addControls(size, box, template) {
   pause.setAttribute("transform", `translate(${-pauseSize.x + gap.width}, ${-pauseSize.y + size.height - pauseSize.height - gap.height})`)
   box.appendChild(pause)
 
-  const pgSize = template.progressNotFilled.getBBox()
-  const pg = template.progressNotFilled.cloneNode(true)
-  console.log({pgSize})
-  pg.setAttribute("transform", `translate(${-pgSize.x + gap.width*2 + pauseSize.width}, ${-pgSize.y + size.height - pgSize.height - gap.height})`)
-  pg.setAttribute("width", size.width - gap.width*3 - pauseSize.width)
-  box.appendChild(pg)
+  const playSize = template.buttonPlay.getBBox()
+  const play = template.buttonPlay.cloneNode(true)
+  console.log({playSize})
+  play.setAttribute("transform", `translate(${-playSize.x + gap.width}, ${-playSize.y + size.height - playSize.height - gap.height})`)
+  box.appendChild(play)
+
+  video.addEventListener("play", () => {
+    pause.style.opacity = 1
+    play.style.opacity = 0
+  })
+  video.addEventListener("pause", () => {
+    pause.style.opacity = 0
+    play.style.opacity = 1
+  })
+
+  const pbSize = template.progressNotFilled.getBBox()
+  const pb = template.progressNotFilled.cloneNode(true)
+  pb.setAttribute("transform", `translate(${-pbSize.x + gap.width*2 + pauseSize.width}, ${-pbSize.y + size.height - pbSize.height - gap.height})`)
+  pb.setAttribute("width", size.width - gap.width*3 - pauseSize.width)
+  box.appendChild(pb)
+
+  const pfSize = template.progressFilled.getBBox()
+  const pf = template.progressFilled.cloneNode(true)
+  pf.setAttribute("transform", `translate(${-pfSize.x + gap.width*2 + pauseSize.width}, ${-pfSize.y + size.height - pfSize.height - gap.height})`)
+  pf.setAttribute("width", 0)
+  box.appendChild(pf)
+  video.addEventListener("timeupdate", () => pf.setAttribute("width", video.currentTime / video.duration * pbSize.width))
 }
 
 function createImages(root) {
