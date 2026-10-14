@@ -3,29 +3,31 @@ let fs
 let assoc = new Map()
 let lastRawSVG = ""
 let currentDocName = ""
+let card = ""
 
-// loadMain()
-fetch("/a4.svg").then(r => r.text()).then(t => load("a4.svg", t))
+loadMain()
 document.addEventListener("keydown", (event) => {
   if (event.key === "d" || event.key === "Enter") {
     download();
   }
 });
 
-async function loadSvg(card, file) {
-  const response = await fetch(file)
-  const svg = await response.text()
-
-  card.innerHTML = svg
+function makeCard(className) {
+  document.getElementById("card-wrapper")?.remove()
+  const cardWrapper = document.createElement("div")
+  cardWrapper.id = "card-wrapper"
+  cardWrapper.classList.add(className)
+  document.body.prepend(cardWrapper)
+  cardWrapper.innerHTML = card
 }
 
 // main greeting
 async function loadMain() {
-  const card = document.createElement("div")
-  card.id = "card-wrapper"
-  root.appendChild(card)
-  await loadSvg(card, "/card.svg")
-  document.getElementById("button-new").addEventListener("click", () => selectTemplate(card))
+  const response = await fetch("/card.svg")
+  card = await response.text()
+  makeCard("greeting")
+
+  document.getElementById("button-new").addEventListener("click", () => alert("TODO new"))
   document.getElementById("button-open").addEventListener("click", async () => {
     const [handle] = await window.showOpenFilePicker({
       types: [
@@ -63,6 +65,8 @@ async function loadHandle(handle) {
 }
 
 async function load(name, svg) {
+  document.getElementById("card-wrapper")?.remove()
+
   assoc = new Map(JSON.parse(localStorage.getItem(name) || null))
   fs = await navigator.storage.getDirectory()
 
@@ -191,6 +195,13 @@ async function download() {
   await insertVideoUrls()
   embedVideos = false
 
+  const loadScript = document.createElement("script")
+  loadScript.id = "load-script"
+  loadScript.innerHTML = `loader.style.display = "inline"`
+  document.body.prepend(loadScript)
+  makeCard("loading")
+  loader.style.display = "inline"
+
   const runtime = await fetch("runtime.js").then((res) => res.text());
   const html = Array.from(document.children)
     .map((child) => child.innerHTML)
@@ -208,6 +219,7 @@ async function download() {
   element.setAttribute("download", "yap.html");
   element.click();
 
+  document.getElementById("load-script").remove()
   load(currentDocName, lastRawSVG)
 }
 

@@ -8,6 +8,7 @@ const channel = new BroadcastChannel("control");
 window.addEventListener("load", () => {
   reload();
   firstSlide()
+  document.querySelector(".loading")?.remove()
   channel.addEventListener("message", ({ data: idx }) => showSlide(idx, true));
 });
 

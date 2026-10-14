@@ -1,18 +1,12 @@
-#card-wrapper {
-  width: 100%;
-  height: 100svh;
-  display: flex;
-  justify-content: center;
-  transform: scale(0.6);
-}
-
 body {
   background: #121212;
 }
 
+.greeting #button-text {
+  display: inline !important;
+}
 #button-text,
 #tail {
-  display: inline !important;
   pointer-events: none;
   user-select: none;
 }
@@ -20,8 +14,8 @@ body {
 #button-open {
   transition: 0.1s ease-in-out;
 }
-#button-new:hover,
-#button-open:hover {
+.greeting #button-new:hover,
+.greeting #button-open:hover {
   fill: #a8a5ff !important;
 }
 body:has(#card) {
