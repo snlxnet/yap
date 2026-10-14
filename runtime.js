@@ -13,6 +13,10 @@ window.addEventListener("load", () => {
 });
 
 const videoObserver = new IntersectionObserver(([{isIntersecting, target}]) => {
+  if (target.closest(".book-mode")) {
+    return
+  }
+
   if (isIntersecting && target.play) {
     target.play()
   } else if (target.pause) {
