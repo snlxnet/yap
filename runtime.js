@@ -234,7 +234,15 @@ function createVideos(root) {
       fill?.remove();
       let image = element.querySelector("image");
       if (!image) {
+        const [pageX, pageY, pageW, pageH] = element.closest("svg").getAttribute("viewBox").split(" ").map(it => +it)
         const { x, y, width, height } = element.getBBox();
+        if (x > pageX+pageW ||
+            y > pageY+pageH ||
+            x+width < pageX ||
+            y+height < pageY
+        ) {
+          return
+        }
         const transform = [element.getAttribute("transform"), `translate(${x} ${y})`].filter(Boolean).join(" ")
         const invTransform = `translate(${-x} ${-y})`
         element.setAttribute("transform", invTransform)
@@ -253,8 +261,7 @@ function createVideos(root) {
         `;
         image = root.querySelector(`[data-label="${label}"]`);
       }
-      const src = label.replace("vid://", "");
-      video.src = src.startsWith("http") ? src : "./" + src;
+      video.src = label.replace("vid://", "");
       video.loop = true;
       video.style.background = "transparent"
       video.preload = "auto";
