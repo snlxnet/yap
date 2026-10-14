@@ -215,14 +215,13 @@ function findLabel(root, label = "") {
 
 function createVideos(root) {
   const controls = {
-    gap: findLabel(root, "player-gap")[0].element.getBBox(),
-    progressNotFilled: findLabel(root, "player-progress-not-filled")[0].element,
-    progressFilled: findLabel(root, "player-progress-filled")[0].element,
-    head: findLabel(root, "player-head")[0].element,
-    buttonPlay: findLabel(root, "player-button-play")[0].element,
-    buttonPause: findLabel(root, "player-button-pause")[0].element,
+    gap: findLabel(root, "player-gap")[0]?.element?.getBBox(),
+    progressNotFilled: findLabel(root, "player-progress-not-filled")[0]?.element,
+    progressFilled: findLabel(root, "player-progress-filled")[0]?.element,
+    head: findLabel(root, "player-head")[0]?.element,
+    buttonPlay: findLabel(root, "player-button-play")[0]?.element,
+    buttonPause: findLabel(root, "player-button-pause")[0]?.element,
   }
-  console.log(controls)
 
   Array.from(findLabel(root))
     .filter(({ label }) => label.startsWith("vid://"))
@@ -269,8 +268,9 @@ function createVideos(root) {
       const addedVideo = findLabel(root, video.dataset.typstLabel)[0].element
       videoObserver.observe(addedVideo)
       const controlBox = findLabel(root, "controls-"+video.dataset.typstLabel)[0].element
-      console.log(addedVideo, controlBox)
-      addControls(addedVideo, controlBox, controls)
+      if (Object.values(controls).every(v => v !== undefined)) {
+        addControls(addedVideo, controlBox, controls)
+      }
     });
 }
 
