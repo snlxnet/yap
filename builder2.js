@@ -28,15 +28,17 @@ async function loadMain() {
   })
 }
 
-const assoc = new Map()
 let fs
 
 async function loadA4() {
+  const doc = "a4.svg"
+  const assoc = new Map(JSON.parse(localStorage.getItem(doc) || null))
   fs = await navigator.storage.getDirectory()
 
   const root = document.getElementById("root")
   await loadCard(root, "/a4.svg")
   createPages()
+  insertAssociated(assoc)
 
   let hoverTarget = null
   addEventListener("dragover", (e) => {
@@ -73,15 +75,16 @@ async function loadA4() {
     await wr.close()
     console.log("written")
     assoc.set(e.target.id, file.name)
+    localStorage.setItem(doc, JSON.stringify(Array.from(assoc.entries())))
     e.target.dataset.typstLabel = "vid://"
 
-    insertAssociated()
+    insertAssociated(assoc)
   })
 }
 
 loadA4()
 
-async function insertAssociated() {
+async function insertAssociated(assoc) {
   assoc.forEach((_, id) => {
     const container = document.getElementById(id)
     if (container.tagName.toLowerCase() !== "video") {
