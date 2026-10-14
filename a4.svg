@@ -23,12 +23,12 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
-     inkscape:zoom="0.74118968"
-     inkscape:cx="1071.2507"
-     inkscape:cy="582.17216"
-     inkscape:window-width="930"
+     inkscape:zoom="0.52410025"
+     inkscape:cx="780.38505"
+     inkscape:cy="687.8455"
+     inkscape:window-width="2540"
      inkscape:window-height="1392"
-     inkscape:window-x="1710"
+     inkscape:window-x="10"
      inkscape:window-y="10"
      inkscape:window-maximized="0"
      inkscape:current-layer="layer1" />
@@ -39,7 +39,7 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:#121212;fill-opacity:1;stroke-width:0.499999;stroke-linecap:round;stroke-linejoin:round"
+       style="fill:#2e2d39;fill-opacity:1;stroke-width:0.499999;stroke-linecap:round;stroke-linejoin:round"
        id="rect3"
        width="210"
        height="297"
@@ -47,54 +47,20 @@
        y="0"
        rx="3" />
     <rect
-       style="fill:#ffffff;stroke-width:0.499999;stroke-linecap:round;stroke-linejoin:round;fill-opacity:1"
-       id="rect2"
-       width="31.05649"
-       height="218.10938"
-       x="63.897835"
-       y="36.09745"
-       rx="3" />
-    <text
-       xml:space="preserve"
-       style="font-weight:bold;font-size:10px;line-height:1.3;font-family:Comfortaa;-inkscape-font-specification:'Comfortaa Bold';writing-mode:lr-tb;direction:ltr;fill:#a8a5ff;stroke-width:0.499999;stroke-linecap:round;stroke-linejoin:round;fill-opacity:1"
-       x="19.276442"
-       y="24.63101"
-       id="text1"><tspan
-         sodipodi:role="line"
-         id="tspan1"
-         style="stroke-width:0.5;fill:#a8a5ff;fill-opacity:1"
-         x="19.276442"
-         y="24.63101">todo the template</tspan></text>
-    <path
-       style="fill:#a8a5ff;fill-opacity:1;stroke-width:0.683726;stroke-linecap:round;stroke-linejoin:round"
-       d="m 30.164065,222.74693 v -57.60072 h 92.990985 l -15.43407,57.60072 z"
-       id="path2" />
-    <rect
-       style="fill:#121212;fill-opacity:1;stroke-width:0.499999;stroke-linecap:round;stroke-linejoin:round"
+       style="fill:#2e2d39;fill-opacity:1;stroke-width:0.499999;stroke-linecap:round;stroke-linejoin:round"
        id="rect4"
        width="210"
        height="297"
        x="241.31038"
        y="0"
        rx="3" />
-    <text
-       xml:space="preserve"
-       style="font-weight:bold;font-size:24.9694px;line-height:1.3;font-family:Comfortaa;-inkscape-font-specification:'Comfortaa Bold';writing-mode:lr-tb;direction:ltr;fill:#a8a5ff;fill-opacity:1;stroke-width:1.24847;stroke-linecap:round;stroke-linejoin:round"
-       x="302.55154"
-       y="155.41653"
-       id="text4"><tspan
-         sodipodi:role="line"
-         id="tspan4"
-         style="fill:#a8a5ff;fill-opacity:1;stroke-width:1.24847"
-         x="302.55154"
-         y="155.41653">Page 2</tspan></text>
     <rect
        style="fill:#2e2d39;fill-opacity:1;stroke-width:1.09379;stroke-linecap:round;stroke-linejoin:round"
        id="rect8"
        width="114.89755"
        height="13.756711"
-       x="54.906994"
-       y="26.440651"
+       x="23.859737"
+       y="221.05394"
        ry="3.4076257"
        transform="scale(-1,1)"
        inkscape:label="player-progress-not-filled" />
@@ -103,15 +69,16 @@
        id="rect9"
        width="83.990784"
        height="13.756711"
-       x="85.813759"
-       y="26.440651"
+       x="54.766502"
+       y="221.05394"
        ry="3.4076257"
        transform="scale(-1,1)"
        inkscape:label="player-progress-filled" />
     <g
        id="g11"
        inkscape:label="player-button-play"
-       style="display:inline">
+       style="display:inline"
+       transform="translate(31.047257,194.61329)">
       <rect
          style="fill:#a8a5ff;fill-opacity:1;stroke-width:0.378471;stroke-linecap:round;stroke-linejoin:round"
          id="rect6"
@@ -142,7 +109,7 @@
        id="g10"
        inkscape:label="player-button-pause"
        style="display:inline"
-       transform="translate(1.0709135,23.38161)">
+       transform="translate(32.11817,217.9949)">
       <rect
          style="fill:#ff8383;fill-opacity:1;stroke-width:0.378471;stroke-linecap:round;stroke-linejoin:round"
          id="rect10"
@@ -160,7 +127,8 @@
     </g>
     <g
        id="g12"
-       inkscape:label="player-head">
+       inkscape:label="player-head"
+       transform="translate(31.047257,194.61329)">
       <rect
          style="fill:#eeeeee;fill-opacity:1;stroke-width:0.287615;stroke-linecap:round;stroke-linejoin:round"
          id="rect11"
@@ -181,17 +149,236 @@
        id="rect12"
        width="3"
        height="3"
-       x="-190.82704"
-       y="20.067131"
+       x="-159.77979"
+       y="214.68042"
        inkscape:label="player-gap" />
     <rect
-       style="fill:#000000;fill-opacity:1;stroke-width:0.499999;stroke-linecap:round;stroke-linejoin:round"
+       style="fill:#a8a5ff;fill-opacity:1;stroke-width:0.39233;stroke-linecap:round;stroke-linejoin:round"
        id="rect1"
-       width="136.00601"
-       height="86.387016"
-       x="290.08075"
-       y="-41.468697"
-       rx="3"
-       transform="rotate(15)" />
+       width="106.71883"
+       height="67.78466"
+       x="32.576729"
+       y="170.56783"
+       rx="2.3539877"
+       transform="rotate(-12.086611)" />
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:7px;line-height:1.3;font-family:Comfortaa;-inkscape-font-specification:'Comfortaa Bold';writing-mode:lr-tb;direction:ltr;fill:#eeeeee;fill-opacity:1;stroke-width:0.750001;stroke-linecap:round;stroke-linejoin:round"
+       x="8.880971"
+       y="33.628319"
+       id="text1"><tspan
+         sodipodi:role="line"
+         id="tspan1"
+         style="font-size:7px;fill:#eeeeee;fill-opacity:1;stroke-width:0.75"
+         x="8.880971"
+         y="33.628319">Open the saved file in Illustrator / Corel / Inkscape</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:7px;fill:#eeeeee;fill-opacity:1;stroke-width:0.75"
+         x="8.880971"
+         y="42.728317"
+         id="tspan3" /><tspan
+         sodipodi:role="line"
+         style="font-size:7px;fill:#eeeeee;fill-opacity:1;stroke-width:0.75"
+         x="8.880971"
+         y="51.82832"
+         id="tspan5">Try drawing a shape or deleting this text and saving.</tspan></text>
+    <path
+       style="fill:#eeeeee;fill-opacity:1;stroke:#a8a5ff;stroke-width:0.750001;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       d="M 90.359634,35.145445 H 126.50296"
+       id="path1" />
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:10px;line-height:1.3;font-family:Comfortaa;-inkscape-font-specification:'Comfortaa Bold';writing-mode:lr-tb;direction:ltr;fill:#a8a5ff;fill-opacity:1;stroke:none;stroke-width:0.750001;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       x="8.0773344"
+       y="17.416754"
+       id="text6"><tspan
+         sodipodi:role="line"
+         id="tspan6"
+         style="font-size:10px;fill:#a8a5ff;fill-opacity:1;stroke:none;stroke-width:0.75"
+         x="8.0773344"
+         y="17.416754">Getting Started</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:7px;line-height:1.3;font-family:Comfortaa;-inkscape-font-specification:'Comfortaa Bold';writing-mode:lr-tb;direction:ltr;fill:#eeeeee;fill-opacity:1;stroke-width:0.750001;stroke-linecap:round;stroke-linejoin:round"
+       x="8.880971"
+       y="93.198662"
+       id="text10"><tspan
+         sodipodi:role="line"
+         style="font-size:7px;fill:#eeeeee;fill-opacity:1;stroke-width:0.75"
+         x="8.880971"
+         y="93.198662"
+         id="tspan9">Create an object (rectangle, ellipse, closed path,</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:7px;fill:#eeeeee;fill-opacity:1;stroke-width:0.75"
+         x="8.880971"
+         y="102.29866"
+         id="tspan12">closed path with holes in it) and save.</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:7px;fill:#eeeeee;fill-opacity:1;stroke-width:0.75"
+         x="8.880971"
+         y="111.39866"
+         id="tspan13" /><tspan
+         sodipodi:role="line"
+         style="font-size:7px;fill:#eeeeee;fill-opacity:1;stroke-width:0.75"
+         x="8.880971"
+         y="120.49866"
+         id="tspan14">Open your file explorer, find a video you want to insert</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:7px;fill:#eeeeee;fill-opacity:1;stroke-width:0.75"
+         x="8.880971"
+         y="129.59866"
+         id="tspan15">and drag it onto the new element in your browser.</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:7px;fill:#eeeeee;fill-opacity:1;stroke-width:0.75"
+         x="8.880971"
+         y="138.69865"
+         id="tspan16" /><tspan
+         sodipodi:role="line"
+         style="font-size:7px;fill:#eeeeee;fill-opacity:1;stroke-width:0.75"
+         x="8.880971"
+         y="147.79866"
+         id="tspan17">Example element:</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:10px;line-height:1.3;font-family:Comfortaa;-inkscape-font-specification:'Comfortaa Bold';writing-mode:lr-tb;direction:ltr;fill:#a8a5ff;fill-opacity:1;stroke:none;stroke-width:0.750001;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       x="8.0773344"
+       y="76.987099"
+       id="text11"><tspan
+         sodipodi:role="line"
+         id="tspan10"
+         style="font-size:10px;fill:#a8a5ff;fill-opacity:1;stroke:none;stroke-width:0.75"
+         x="8.0773344"
+         y="76.987099">Adding videos</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:7px;line-height:1.3;font-family:Comfortaa;-inkscape-font-specification:'Comfortaa Bold';writing-mode:lr-tb;direction:ltr;fill:#eeeeee;fill-opacity:1;stroke-width:0.750001;stroke-linecap:round;stroke-linejoin:round"
+       x="249.43411"
+       y="32.113815"
+       id="text24"><tspan
+         sodipodi:role="line"
+         style="font-size:7px;fill:#eeeeee;fill-opacity:1;stroke-width:0.75"
+         x="249.43411"
+         y="32.113815"
+         id="tspan24">A page and a slide are the same thing.</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:7px;fill:#eeeeee;fill-opacity:1;stroke-width:0.75"
+         x="249.43411"
+         y="41.213814"
+         id="tspan31">Since SVG doesn't support multiple pages natively,</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:7px;fill:#eeeeee;fill-opacity:1;stroke-width:0.75"
+         x="249.43411"
+         y="50.313816"
+         id="tspan32">a page is a rectangle sized the same as the artboard.</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:7px;fill:#eeeeee;fill-opacity:1;stroke-width:0.75"
+         x="249.43411"
+         y="59.413815"
+         id="tspan33" /><tspan
+         sodipodi:role="line"
+         style="font-size:7px;fill:#eeeeee;fill-opacity:1;stroke-width:0.75"
+         x="249.43411"
+         y="68.513817"
+         id="tspan34">Pages are ordered hierarchically. If you create a layer</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:7px;fill:#eeeeee;fill-opacity:1;stroke-width:0.75"
+         x="249.43411"
+         y="77.613815"
+         id="tspan35">above this and draw a page on it, that page will be</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:7px;fill:#eeeeee;fill-opacity:1;stroke-width:0.75"
+         x="249.43411"
+         y="86.713814"
+         id="tspan36">third. Note that the pages must not overlap.</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:10px;line-height:1.3;font-family:Comfortaa;-inkscape-font-specification:'Comfortaa Bold';writing-mode:lr-tb;direction:ltr;fill:#a8a5ff;fill-opacity:1;stroke:none;stroke-width:0.750001;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       x="248.63048"
+       y="15.902252"
+       id="text25"><tspan
+         sodipodi:role="line"
+         id="tspan25"
+         style="font-size:10px;fill:#a8a5ff;fill-opacity:1;stroke:none;stroke-width:0.75"
+         x="248.63048"
+         y="15.902252">Adding pages / slides</tspan></text>
+    <path
+       style="fill:#eeeeee;fill-opacity:1;stroke:#a8a5ff;stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       d="m 256.738,51.804949 70.59632,0"
+       id="path32"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:#a8a5ff;fill-opacity:1;stroke:#a8a5ff;stroke-width:0.750001;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       d="m 322.33429,87.941087 h 87.33618"
+       id="path36" />
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:7px;line-height:1.3;font-family:Comfortaa;-inkscape-font-specification:'Comfortaa Bold';writing-mode:lr-tb;direction:ltr;fill:#eeeeee;fill-opacity:1;stroke-width:0.750001;stroke-linecap:round;stroke-linejoin:round"
+       x="8.880971"
+       y="240.10519"
+       id="text43"><tspan
+         sodipodi:role="line"
+         style="font-size:7px;fill:#eeeeee;fill-opacity:1;stroke-width:0.75"
+         x="8.880971"
+         y="240.10519"
+         id="tspan43">The video controls can be customized,</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:7px;fill:#eeeeee;fill-opacity:1;stroke-width:0.75"
+         x="8.880971"
+         y="249.2052"
+         id="tspan49">they are there</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:7px;fill:#eeeeee;fill-opacity:1;stroke-width:0.75"
+         x="8.880971"
+         y="258.30521"
+         id="tspan50" /><tspan
+         sodipodi:role="line"
+         style="font-size:7px;fill:#eeeeee;fill-opacity:1;stroke-width:0.75"
+         x="8.880971"
+         y="267.40518"
+         id="tspan51">Just keep their names and make sure the progress</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:7px;fill:#eeeeee;fill-opacity:1;stroke-width:0.75"
+         x="8.880971"
+         y="276.50519"
+         id="tspan52">bar is a rectangle.</tspan></text>
+    <path
+       style="fill:none;fill-opacity:1;stroke:#a8a5ff;stroke-width:0.750001;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       d="m 67.824518,249.12124 -3.034254,-3.03426 4.729866,-0.53545"
+       id="path49" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#a8a5ff;stroke-width:0.750001;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       d="m 65.147234,246.22085 10.559096,3.914"
+       id="path50"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#a8a5ff;stroke-width:0.750001;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       d="m 160.99399,268.26382 h 33.73377"
+       id="path52" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#a8a5ff;stroke-width:0.750001;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       d="M 38.552884,277.54506 H 75.499398"
+       id="path53" />
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:7px;line-height:1.3;font-family:Comfortaa;-inkscape-font-specification:'Comfortaa Bold';writing-mode:lr-tb;direction:ltr;fill:#eeeeee;fill-opacity:1;stroke-width:0.750001;stroke-linecap:round;stroke-linejoin:round"
+       x="249.43411"
+       y="125.64026"
+       id="text59"><tspan
+         sodipodi:role="line"
+         style="font-size:7px;fill:#eeeeee;fill-opacity:1;stroke-width:0.75"
+         x="249.43411"
+         y="125.64026"
+         id="tspan59">TBD</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:10px;line-height:1.3;font-family:Comfortaa;-inkscape-font-specification:'Comfortaa Bold';writing-mode:lr-tb;direction:ltr;fill:#a8a5ff;fill-opacity:1;stroke:none;stroke-width:0.750001;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       x="248.63048"
+       y="109.4287"
+       id="text60"><tspan
+         sodipodi:role="line"
+         id="tspan60"
+         style="font-size:10px;fill:#a8a5ff;fill-opacity:1;stroke:none;stroke-width:0.75"
+         x="248.63048"
+         y="109.4287">Creating speaker notes</tspan></text>
   </g>
 </svg>
