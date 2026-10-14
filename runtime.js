@@ -279,6 +279,19 @@ function addControls(size, box, template) {
   console.log({playSize})
   play.setAttribute("transform", `translate(${-playSize.x + gap.width}, ${-playSize.y + size.height - playSize.height - gap.height})`)
   box.appendChild(play)
+
+  const pauseSize = template.buttonPause.getBBox()
+  const pause = template.buttonPause.cloneNode(true)
+  console.log({pauseSize})
+  pause.setAttribute("transform", `translate(${-pauseSize.x + gap.width}, ${-pauseSize.y + size.height - pauseSize.height - gap.height})`)
+  box.appendChild(pause)
+
+  const pgSize = template.progressNotFilled.getBBox()
+  const pg = template.progressNotFilled.cloneNode(true)
+  console.log({pgSize})
+  pg.setAttribute("transform", `translate(${-pgSize.x + gap.width*2 + pauseSize.width}, ${-pgSize.y + size.height - pgSize.height - gap.height})`)
+  pg.setAttribute("width", size.width - gap.width*3 - pauseSize.width)
+  box.appendChild(pg)
 }
 
 function createImages(root) {
