@@ -1,9 +1,5 @@
-const isSafari = /Safari\//.test(navigator.userAgent)
-if (isSafari) {
-  alert("Safari is unsupported due to bug #23113. Please open in Chrome / Helium / Edge etc.")
-}
-
-const firefox = !window.showOpenFilePicker // or safari
+const firefox = !window.showOpenFilePicker
+const lang = new URLSearchParams(location.search).get("lang") || "en"
 
 let embedVideos = false
 let fs
@@ -30,7 +26,7 @@ function makeCard(className) {
 
 // main greeting
 async function loadMain() {
-  const response = await fetch("/card.svg")
+  const response = await fetch(`/card-${lang}.svg`)
   card = await response.text()
   makeCard("greeting")
 
@@ -38,7 +34,22 @@ async function loadMain() {
     document.getElementById("unsupported-browser").style.display = "inline"
   }
 
-  document.getElementById("button-new").addEventListener("click", () => alert("TODO new"))
+  document.getElementById("button-new").addEventListener("click", async () => {
+    const template = await fetch(`/template-${lang}.svg`).then(r => r.text())
+
+    const handle = await window.showSaveFilePicker({
+      types: [
+        {
+          accept: { "image/svg+xml": [".svg"] }
+        }
+      ]
+    })
+    const wr = await handle.createWritable()
+    await wr.write(template)
+    await wr.close()
+
+    loadHandle(handle)
+  })
   document.getElementById("button-open").addEventListener("click", async () => {
     if (firefox) {
       const f = document.createElement("input")
