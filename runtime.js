@@ -214,6 +214,16 @@ function findLabel(root, label = "") {
 }
 
 function createVideos(root) {
+  const controls = {
+    gap: findLabel(root, "player-gap")[0].element.getBBox(),
+    progressNotFilled: findLabel(root, "player-progress-not-filled")[0].element,
+    progressFilled: findLabel(root, "player-progress-filled")[0].element,
+    head: findLabel(root, "player-head")[0].element,
+    buttonPlay: findLabel(root, "player-button-play")[0].element,
+    buttonPause: findLabel(root, "player-button-pause")[0].element,
+  }
+  console.log(controls)
+
   Array.from(findLabel(root))
     .filter(({ label }) => label.startsWith("vid://"))
     .map(({ label, element }, idx) => {
@@ -223,7 +233,6 @@ function createVideos(root) {
       const fill = element.querySelector(".typst-shape");
       fill?.remove();
       let image = element.querySelector("image");
-      const id = video.id
       if (!image) {
         const { x, y, width, height } = element.getBBox();
         const transform = [element.getAttribute("transform"), `translate(${x} ${y})`].filter(Boolean).join(" ")
@@ -253,9 +262,23 @@ function createVideos(root) {
       image.outerHTML =
         `<foreignObject transform="${image.attributes.transform?.value || ""}" width="${image.attributes.width.value}" height="${image.attributes.height.value}" clip-path="url(#clip-${element.id})">` +
         image.innerHTML +
-        `</foreignObject>`;
-      videoObserver.observe(document.getElementById(video.id))
+        `</foreignObject>
+        <g id=${"controls-" + video.id} transform="${image.attributes.transform?.value || ""}" width="${image.attributes.width.value}" height="${image.attributes.height.value}" clip-path="url(#clip-${element.id})">
+        </g>`;
+      const addedVideo = document.getElementById(video.id)
+      videoObserver.observe(addedVideo)
+      addControls(addedVideo.parentElement.getBBox(), document.getElementById("controls-"+video.id), controls)
     });
+}
+
+function addControls(size, box, template) {
+  const gap = template.gap
+
+  const playSize = template.buttonPlay.getBBox()
+  const play = template.buttonPlay.cloneNode(true)
+  console.log({playSize})
+  play.setAttribute("transform", `translate(${-playSize.x + gap.width}, ${-playSize.y + size.height - playSize.height - gap.height})`)
+  box.appendChild(play)
 }
 
 function createImages(root) {
