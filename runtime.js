@@ -313,20 +313,20 @@ function addControls(video, box, template) {
 
   const pbSize = template.progressNotFilled.getBBox()
   const pb = template.progressNotFilled.cloneNode(true)
-  pb.setAttribute("transform", `translate(${-pbSize.x + gap.width*2 + pauseSize.width}, ${-pbSize.y + size.height - pbSize.height - gap.height})`)
+  pb.setAttribute("transform", `translate(${-pbSize.x + gap.width*2 + pauseSize.width}, ${-pbSize.y + size.height - playSize.height/2 - gap.height - pbSize.height/2})`)
   pb.setAttribute("width", size.width - gap.width*3 - pauseSize.width)
   box.appendChild(pb)
 
   const pfSize = template.progressFilled.getBBox()
   const pf = template.progressFilled.cloneNode(true)
-  pf.setAttribute("transform", `translate(${-pfSize.x + gap.width*2 + pauseSize.width}, ${-pfSize.y + size.height - pfSize.height - gap.height})`)
+  pf.setAttribute("transform", `translate(${-pfSize.x + gap.width*2 + pauseSize.width}, ${-pbSize.y + size.height - playSize.height/2 - gap.height - pbSize.height/2})`)
   pf.setAttribute("width", 0)
   pf.style.pointerEvents = "none"
   box.appendChild(pf)
 
   const headSize = template.head.getBBox()
   const head = template.head.cloneNode(true)
-  head.setAttribute("transform", `translate(${-headSize.x + gap.width*2 + pauseSize.width - headSize.width/2}, ${-headSize.y + size.height - headSize.height - gap.height + (headSize.height - pbSize.height)/2})`)
+  head.setAttribute("transform", `translate(${-headSize.x + gap.width*2 + pauseSize.width - headSize.width/2}, ${-headSize.y + size.height - playSize.height/2 - gap.height - headSize.height/2})`)
   head.style.pointerEvents = "none"
   box.appendChild(head)
 
@@ -334,7 +334,7 @@ function addControls(video, box, template) {
     const full = size.width - gap.width*3 - pauseSize.width
     const progress = video.currentTime / video.duration * full
     pf.setAttribute("width", progress)
-    head.setAttribute("transform", `translate(${-headSize.x + gap.width*2 + pauseSize.width + progress - headSize.width/2}, ${-headSize.y + size.height - headSize.height - gap.height + (headSize.height - pbSize.height)/2})`)
+    head.setAttribute("transform", `translate(${-headSize.x + gap.width*2 + pauseSize.width + progress - headSize.width/2}, ${-headSize.y + size.height - playSize.height/2 - gap.height - headSize.height/2})`)
   })
 
   function handleMouse({buttons, x}) {
@@ -347,6 +347,7 @@ function addControls(video, box, template) {
 
     video.currentTime = video.duration * progress
   }
+  video.addEventListener("mousemove", handleMouse)
   pb.addEventListener("mousemove", handleMouse)
   pb.addEventListener("mousedown", handleMouse)
   pb.addEventListener("touchmove", ({touches}) => handleMouse({buttons: 1, x: touches[0].clientX}))
