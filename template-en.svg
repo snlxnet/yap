@@ -8,7 +8,7 @@
    version="1.1"
    id="svg1"
    inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
-   sodipodi:docname="a4.svg"
+   sodipodi:docname="template-en.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -237,7 +237,8 @@
          style="font-size:7px;fill:#eeeeee;fill-opacity:1;stroke-width:0.75"
          x="8.880971"
          y="147.79866"
-         id="tspan17">Example element:</tspan></text>
+         id="tspan17"
+         dx="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1.7524471e-07">Like onto this one:</tspan></text>
     <text
        xml:space="preserve"
        style="font-weight:bold;font-size:10px;line-height:1.3;font-family:Comfortaa;-inkscape-font-specification:'Comfortaa Bold';writing-mode:lr-tb;direction:ltr;fill:#a8a5ff;fill-opacity:1;stroke:none;stroke-width:0.750001;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
