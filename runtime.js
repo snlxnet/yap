@@ -351,13 +351,15 @@ function addControls(video, box, template) {
   pb.addEventListener("mousemove", handleMouse)
   pb.addEventListener("mousedown", handleMouse)
   pb.addEventListener("touchmove", ({touches}) => handleMouse({buttons: 1, x: touches[0].clientX}))
-  play.addEventListener("click", () => {
+  function playPause()  {
     if (video.paused) {
       video.play()
     } else {
       video.pause()
     }
-  })
+  }
+  video.addEventListener("click", playPause)
+  play.addEventListener("click", playPause)
 }
 
 function createImages(root) {
