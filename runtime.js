@@ -230,6 +230,7 @@ function createVideos(root) {
       console.log({label, element})
       const video = document.createElement("video");
       video.id = element.id || `video-${idx}`
+      video.dataset.typstLabel = crypto.randomUUID()
       const fill = element.querySelector(".typst-shape");
       fill?.remove();
       let image = element.querySelector("image");
@@ -263,11 +264,13 @@ function createVideos(root) {
         `<foreignObject transform="${image.attributes.transform?.value || ""}" width="${image.attributes.width.value}" height="${image.attributes.height.value}" clip-path="url(#clip-${element.id})">` +
         image.innerHTML +
         `</foreignObject>
-        <g id=${"controls-" + video.id} transform="${image.attributes.transform?.value || ""}" width="${image.attributes.width.value}" height="${image.attributes.height.value}" clip-path="url(#clip-${element.id})">
+        <g id=${"controls-" + video.dataset.typstLabel} transform="${image.attributes.transform?.value || ""}" width="${image.attributes.width.value}" height="${image.attributes.height.value}" clip-path="url(#clip-${element.id})">
         </g>`;
-      const addedVideo = document.getElementById(video.id)
+      const addedVideo = findLabel(root, video.dataset.typstLabel)[0].element
       videoObserver.observe(addedVideo)
-      addControls(addedVideo, document.getElementById("controls-"+video.id), controls)
+      const controlBox = findLabel(root, "controls-"+video.dataset.typstLabel)[0].element
+      console.log(addedVideo, controlBox)
+      addControls(addedVideo, controlBox, controls)
     });
 }
 

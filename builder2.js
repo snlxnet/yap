@@ -1,4 +1,5 @@
-loadMain()
+// loadMain()
+fetch("/a4.svg").then(r => r.text()).then(t => load("a4.svg", t))
 
 async function loadSvg(card, file) {
   const response = await fetch(file)
@@ -100,29 +101,30 @@ async function load(name, svg) {
 }
 
 async function insertAssociated(assoc) {
+  createPages()
+
   assoc.forEach((_, id) => {
-    const container = document.getElementById(id)
-    if (container.tagName.toLowerCase() !== "video") {
-      container.dataset.typstLabel = "vid://"
-    }
+    document.querySelectorAll("#" + id).forEach((container) => {
+      if (container.tagName.toLowerCase() !== "video") {
+        container.dataset.typstLabel = "vid://"
+      }
+    })
   })
   createVideos(document)
 
-  await Promise.all(assoc.entries().map(async ([id, filename]) => {
-    const element = document.getElementById(id)
-    if (!element) {
-      return
-    }
+  const promises = [...assoc.entries()].flatMap(async ([id, filename]) => {
+    const elements = [...document.querySelectorAll("#" + id)]
 
-    const handle = await fs.getFileHandle(filename)
-    const file = await handle.getFile()
-    const url = URL.createObjectURL(file);
-    const bytes = await file.bytes()
-    console.log({file, url, bytes})
-    element.src = url
-  }))
-
-  createPages()
+    return elements.map(async (element) => {
+      const handle = await fs.getFileHandle(filename)
+      const file = await handle.getFile()
+      const url = URL.createObjectURL(file);
+      const bytes = await file.bytes()
+      console.log({file, url, bytes})
+      element.src = url
+    })
+  })
+  await Promise.all(promises)
 }
 
 function createPages() {

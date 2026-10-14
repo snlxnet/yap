@@ -23,15 +23,15 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
-     inkscape:zoom="2.096401"
-     inkscape:cx="-392.10056"
-     inkscape:cy="174.34642"
-     inkscape:window-width="2540"
+     inkscape:zoom="0.74118968"
+     inkscape:cx="1071.2507"
+     inkscape:cy="582.17216"
+     inkscape:window-width="930"
      inkscape:window-height="1392"
-     inkscape:window-x="10"
+     inkscape:window-x="1710"
      inkscape:window-y="10"
      inkscape:window-maximized="0"
-     inkscape:current-layer="g10" />
+     inkscape:current-layer="layer1" />
   <defs
      id="defs1" />
   <g
@@ -65,15 +65,6 @@
          style="stroke-width:0.5;fill:#a8a5ff;fill-opacity:1"
          x="19.276442"
          y="24.63101">todo the template</tspan></text>
-    <rect
-       style="fill:#000000;fill-opacity:1;stroke-width:0.499999;stroke-linecap:round;stroke-linejoin:round"
-       id="rect1"
-       width="136.00601"
-       height="86.387016"
-       x="36.134636"
-       y="21.771633"
-       rx="3"
-       transform="rotate(15)" />
     <path
        style="fill:#a8a5ff;fill-opacity:1;stroke-width:0.683726;stroke-linecap:round;stroke-linejoin:round"
        d="m 30.164065,222.74693 v -57.60072 h 92.990985 l -15.43407,57.60072 z"
@@ -193,5 +184,14 @@
        x="-190.82704"
        y="20.067131"
        inkscape:label="player-gap" />
+    <rect
+       style="fill:#000000;fill-opacity:1;stroke-width:0.499999;stroke-linecap:round;stroke-linejoin:round"
+       id="rect1"
+       width="136.00601"
+       height="86.387016"
+       x="290.08075"
+       y="-41.468697"
+       rx="3"
+       transform="rotate(15)" />
   </g>
 </svg>
