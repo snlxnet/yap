@@ -1,3 +1,5 @@
+const firefox = !window.showOpenFilePicker // or safari
+
 let embedVideos = false
 let fs
 let assoc = new Map()
@@ -27,8 +29,25 @@ async function loadMain() {
   card = await response.text()
   makeCard("greeting")
 
+  if (firefox) {
+    document.getElementById("unsupported-browser").style.display = "inline"
+  }
+
   document.getElementById("button-new").addEventListener("click", () => alert("TODO new"))
   document.getElementById("button-open").addEventListener("click", async () => {
+    if (firefox) {
+      const f = document.createElement("input")
+      f.type = "file"
+      f.setAttribute("accept", "image/svg+xml")
+      f.click()
+      f.oninput = async () => {
+        const file = f.files[0]
+        load(file.name, await file.text())
+        f.remove()
+      }
+      return
+    }
+
     const [handle] = await window.showOpenFilePicker({
       types: [
         {
@@ -46,7 +65,8 @@ async function loadMain() {
 
 async function dropToOpen(event) {
   event.preventDefault()
-  const handle = await event.dataTransfer.items[0]?.getAsFileSystemHandle()
+  const item = await event.dataTransfer.items[0]
+  const handle = item?.getAsFileSystemHandle()
   if (!handle || !handle.name.endsWith(".svg")) {
     return
   }
