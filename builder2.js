@@ -1,4 +1,10 @@
-loadMain()
+// loadMain()
+fetch("/a4.svg").then(r => r.text()).then(t => load("a4.svg", t))
+document.addEventListener("keydown", (event) => {
+  if (event.key === "d" || event.key === "Enter") {
+    download();
+  }
+});
 
 async function loadSvg(card, file) {
   const response = await fetch(file)
@@ -124,13 +130,20 @@ async function insertAssociated(assoc) {
     return elements.map(async (element) => {
       const handle = await fs.getFileHandle(filename)
       const file = await handle.getFile()
-      const url = URL.createObjectURL(file);
-      const bytes = await file.bytes()
-      console.log({file, url, bytes})
+      const url = await fileToUrl(file);
       element.src = url
     })
   })
   await Promise.all(promises)
+}
+
+async function fileToUrl(file) {
+  return new Promise((resolve) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = () => resolve("")
+    reader.readAsDataURL(file)
+  })
 }
 
 function createPages() {
@@ -161,5 +174,29 @@ function createPages() {
   })
 
   old.forEach(el => el.remove())
+}
+
+async function download() {
+  firstSlide()
+
+  const runtime = await fetch("runtime.js").then((res) => res.text());
+  const html = Array.from(document.children)
+    .map((child) => child.innerHTML)
+    .join("\n")
+    .replace(
+      `<script src="runtime.js"></script>`,
+      `<script>${runtime}</script>`,
+    );
+
+  const element = document.createElement("a");
+  element.setAttribute(
+    "href",
+    "data:text/html;charset=utf-8," + encodeURIComponent(html),
+  );
+  element.setAttribute("download", "yap.html");
+  element.click();
+
+  updateSlidesToUseDirentry();
+  reload();
 }
 
