@@ -112,7 +112,7 @@ async function load(name, svg) {
   currentDocName = name
   createPages()
   await insertVideoUrls(assoc)
-  createVideos(document)
+  reload()
 
   let hoverTarget = null
   removeEventListener("dragover", dropToOpen)
@@ -156,7 +156,7 @@ async function load(name, svg) {
     e.target.dataset.typstLabel = "vid://"
 
     await insertVideoUrls(assoc)
-    createVideos(document)
+    reload()
   })
 }
 

@@ -27,7 +27,6 @@ const videoObserver = new IntersectionObserver(([{isIntersecting, target}]) => {
 function reload() {
   slides = document.querySelectorAll("#root>svg");
 
-  updateDisplayMode();
   try {
     createVideos(document.body);
     createImages(document.body);
@@ -35,6 +34,7 @@ function reload() {
     console.log("Images and videos appear to alerady be in place");
     console.warn(e);
   }
+  updateDisplayMode();
   showSlide(currentSlide);
 }
 
@@ -251,7 +251,7 @@ function createVideos(root) {
         const transform = [element.getAttribute("transform"), `translate(${x} ${y})`].filter(Boolean).join(" ")
         const invTransform = `translate(${-x} ${-y})`
         element.setAttribute("transform", invTransform)
-        element.id = "path-" + element.id
+        element.id = "path-" + video.dataset.typstLabel
         element.removeAttribute("inkscape:label")
         delete element.dataset.typstLabel
         element.outerHTML = `
