@@ -1,4 +1,4 @@
-const firefox = !window.showOpenFilePicker
+const fsNotSupported = !window.FileSystemObserver
 const lang = new URLSearchParams(location.search).get("lang") || "en"
 
 let embedVideos = false
@@ -30,7 +30,7 @@ async function loadMain() {
   card = await response.text()
   makeCard("greeting")
 
-  if (firefox) {
+  if (fsNotSupported) {
     document.getElementById("unsupported-browser").style.display = "inline"
   }
 
@@ -51,7 +51,7 @@ async function loadMain() {
     loadHandle(handle)
   })
   document.getElementById("button-open").addEventListener("click", async () => {
-    if (firefox) {
+    if (fsNotSupported) {
       const f = document.createElement("input")
       f.type = "file"
       f.setAttribute("accept", "image/svg+xml")
