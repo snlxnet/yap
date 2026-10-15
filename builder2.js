@@ -58,7 +58,11 @@ async function loadMain() {
       f.click()
       f.oninput = async () => {
         const file = f.files[0]
-        load(file.name, await file.text())
+        if (file.name.endsWith(".zip")) {
+          loadZip(file)
+        } else {
+          load(file.name, await file.text())
+        }
         f.remove()
       }
       return
@@ -67,7 +71,7 @@ async function loadMain() {
     const [handle] = await window.showOpenFilePicker({
       types: [
         {
-          accept: { "image/svg+xml": [".svg"] }
+          accept: { "image/svg+xml": [".svg"], "application/zip": [".zip"], "application/x-zip-compressed": [".zip"] }
         }
       ]
     })
@@ -90,6 +94,11 @@ async function dropToOpen(event) {
 }
 
 async function loadHandle(handle) {
+  if (handle.name.endsWith(".zip")) {
+    loadZip(await handle.getFile())
+    return
+  }
+
   async function loadFile() {
     const svg = await handle.getFile().then(f => f.text())
     await load(handle.name, svg)
@@ -98,6 +107,17 @@ async function loadHandle(handle) {
   const observer = new FileSystemObserver(loadFile)
   observer.observe(handle)
   loadFile()
+}
+
+async function loadZip(file) {
+  const zip = new JSZip();
+  const { files } = await zip.loadAsync(file);
+  let body = "";
+  for (const file of Object.values(files)) {
+    body += await file.async("string");
+  }
+
+  load(file.name, body)
 }
 
 async function load(name, svg) {
