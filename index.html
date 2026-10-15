@@ -66,7 +66,7 @@
         height: 100svh;
         max-width: 50ch;
         font: 16px monospace;
-        color: #cdd6f4;
+        color: #ccc;
         display: none;
         padding: 1em;
         gap: 1em;
@@ -78,28 +78,32 @@
       }
       #notes {
         overflow-y: auto;
-        scrollbar-color: #cdd6f4 transparent;
+        scrollbar-color: #ccc transparent;
+        background: #121212;
         padding: 1rem;
         &:empty {
           padding: 0rem;
         }
       }
       .highlight {
-        color: #94e2d5;
+        color: #a8a5ff;
+      }
+      .highlight::before {
+        content: "> ";
       }
       h2 {
         font-weight: normal;
         font-size: 1.2em;
       }
       a {
-        color: #94e2d5;
+        color: #a8a5ff;
       }
       em {
-        color: #94e2d5;
+        color: #a8a5ff;
       }
       strong {
         font-weight: normal;
-        color: #94e2d5;
+        color: #a8a5ff;
       }
       p {
         margin: 1em 0;
@@ -126,7 +130,8 @@
         font-size: 2em;
         padding: 1rem;
         border-radius: 14pt;
-        border: 3px solid #94e2d5;
+        border: 3px solid #000;
+        background: #2e2d39;
         display: flex;
         justify-content: space-between;
         gap: 1em;
