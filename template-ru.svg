@@ -318,12 +318,7 @@
        style="font-weight:bold;font-size:4.99999px;line-height:1.3;font-family:Comfortaa;-inkscape-font-specification:'Comfortaa Bold';writing-mode:lr-tb;direction:ltr;fill:#a8a5ff;fill-opacity:1;stroke-width:16;stroke-linecap:round;stroke-linejoin:round"
        x="-50.019394"
        y="203.24495"
-       id="player-radius"><tspan
-         sodipodi:role="line"
-         id="tspan21"
-         style="stroke-width:16"
-         x="-50.019394"
-         y="203.24495">4</tspan></text>
+       id="player-radius">4</text>
     <text
        xml:space="preserve"
        style="font-weight:bold;font-size:4.99999px;line-height:1.3;font-family:Comfortaa;-inkscape-font-specification:'Comfortaa Bold';writing-mode:lr-tb;direction:ltr;fill:#a8a5ff;fill-opacity:1;stroke-width:16;stroke-linecap:round;stroke-linejoin:round"
