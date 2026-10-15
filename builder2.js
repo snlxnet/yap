@@ -225,7 +225,7 @@ function createPages() {
 
   const pages = [...first.querySelectorAll(`rect[width="${width}"][height="${height}"]`)]
     .map(element => ({x: element.getAttribute("x"), y: element.getAttribute("y")}))
-    .filter(page => page.x !== 0 || page.y !== 0)
+    .filter(page => !!page.x || !!page.y)
 
   console.log(pages)
 
