@@ -107,7 +107,7 @@ async function loadHandle(handle) {
       await load(handle.name, svg)
     } catch(e) {
       console.warn(e)
-      setTimeout(loadFile("retry"), 500)
+      setTimeout(() => loadFile("retry"), 500)
     }
   }
 
