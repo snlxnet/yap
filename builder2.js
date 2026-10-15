@@ -221,7 +221,7 @@ function createPages() {
   const old = document.querySelectorAll(".generated-page")
 
   const first = document.querySelector("#root>svg")
-  const { width, height } = first.viewBox.baseVal
+  const [_x, _y, width, height] = first.getAttribute("viewBox")
 
   const pages = [...first.querySelectorAll(`rect[width="${width}"][height="${height}"]`)]
     .map(element => ({x: element.x.baseVal.value, y: element.y.baseVal.value}))
