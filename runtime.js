@@ -333,7 +333,7 @@ function addControls(video, box, template) {
   const pf = template.progressFilled.cloneNode(true)
   pf.setAttribute("transform", `translate(${-pfSize.x + gap.width*2 + pauseSize.width}, ${-pbSize.y + size.height - playSize.height/2 - gap.height - pbSize.height/2})`)
   pf.setAttribute("width", 0)
-  pb.setAttribute("ry", template.radius)
+  pf.setAttribute("ry", template.radius)
   pf.style.pointerEvents = "none"
   box.appendChild(pf)
 
