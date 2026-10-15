@@ -99,6 +99,8 @@ async function loadHandle(handle) {
     return
   }
 
+  let timer = null
+
   async function loadFile(evt) {
     console.log({evt})
     try {
@@ -109,7 +111,8 @@ async function loadHandle(handle) {
       observer.observe(handle)
     } catch(e) {
       console.warn(e)
-      setTimeout(() => loadFile("retry"), 500)
+      if (timer) clearTimeout(timer)
+      timer = setTimeout(() => loadFile("retry"), 500)
     }
   }
 
