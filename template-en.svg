@@ -56,24 +56,20 @@
        rx="3" />
     <rect
        style="fill:#2e2d39;fill-opacity:1;stroke-width:1.09379;stroke-linecap:round;stroke-linejoin:round"
-       id="rect8"
        width="114.89755"
        height="13.756711"
        x="23.859737"
        y="221.05394"
-       ry="3.4076257"
        transform="scale(-1,1)"
-       inkscape:label="player-progress-not-filled" />
+       id="player-progress-not-filled" />
     <rect
        style="fill:#a8a5ff;fill-opacity:1;stroke-width:0.935173;stroke-linecap:round;stroke-linejoin:round"
-       id="rect9"
        width="83.990784"
        height="13.756711"
        x="54.766502"
        y="221.05394"
-       ry="3.4076257"
        transform="scale(-1,1)"
-       inkscape:label="player-progress-filled" />
+       id="player-progress-filled" />
     <g
        id="g11"
        inkscape:label="player-button-play"
@@ -131,14 +127,12 @@
        transform="translate(31.047257,194.61329)">
       <rect
          style="fill:#eeeeee;fill-opacity:1;stroke-width:0.287615;stroke-linecap:round;stroke-linejoin:round"
-         id="rect11"
          width="6.4145203"
          height="17.038128"
          x="83.416336"
          y="24.799942"
          ry="1.8300213"
-         transform="scale(-1,1)"
-         inkscape:label="player-progress-filled" />
+         transform="scale(-1,1)" />
       <path
          style="fill:#eeeeee;fill-opacity:1;stroke:#2e2d39;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
          d="M -86.610124,28.022234 V 38.731368"

@@ -182,6 +182,9 @@ async function insertVideoUrls() {
   createPages()
 
   const promises = [...assoc.entries()].map(async ([id, filename]) => {
+    if (!id) {
+      return
+    }
     const elements = [...document.querySelectorAll("#" + id)]
 
     const promises = elements.map(async (element) => {
