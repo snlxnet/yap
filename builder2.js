@@ -1,5 +1,6 @@
 const fsNotSupported = !window.FileSystemObserver
 const lang = new URLSearchParams(location.search).get("lang") || "en"
+const ERROR_NO_ID = lang === "ru" ? "Пожалуйста, дайте этому элементу имя" : "Please give this element a name"
 
 let embedVideos = false
 let fs
@@ -164,6 +165,9 @@ async function load(name, svg) {
   window.ondrop = async (e) => {
     if (hoverTarget?.style) {
       hoverTarget.style.filter = ""
+    }
+    if (!hoverTarget.id) {
+      alert(ERROR_NO_ID)
     }
     if ([...e.dataTransfer.items].some((item) => item.kind === "file")) {
       e.preventDefault();
