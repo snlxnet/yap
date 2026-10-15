@@ -168,7 +168,7 @@ async function load(name, svg) {
 
     const handle = await fs.getFileHandle(file.name, { create: true })
     const wr = await handle.createWritable()
-    await wr.write(await file.bytes())
+    await wr.write(await file.arrayBuffer())
     await wr.close()
     console.log("written")
     assoc.set(e.target.id, file.name)
