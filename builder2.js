@@ -103,8 +103,8 @@ async function loadHandle(handle) {
     const file = await handle.getFile()
     const svg = await file.text()
     console.log("Loaded new file", {svg, handle, file, evt})
-    if (!file.text) {
-      setTimeout(loadFile("manually"), 500)
+    if (!svg) {
+      setTimeout(loadFile("retry"), 500)
       return
     }
     await load(handle.name, svg)
