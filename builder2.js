@@ -103,11 +103,12 @@ async function loadHandle(handle) {
     const file = await handle.getFile()
     const svg = await file.text()
     console.log("Loaded new file", {svg, handle, file, evt})
-    if (!svg) {
+    try {
+      await load(handle.name, svg)
+    } catch(e) {
+      console.warn(e)
       setTimeout(loadFile("retry"), 500)
-      return
     }
-    await load(handle.name, svg)
   }
 
   const observer = new FileSystemObserver(loadFile)
