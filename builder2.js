@@ -169,7 +169,7 @@ async function load(name, svg) {
     if ([...e.dataTransfer.items].some((item) => item.kind === "file")) {
       e.preventDefault();
     }
-    if (!hoverTarget.id) {
+    if (!hoverTarget || !hoverTarget.id) {
       alert(ERROR_NO_ID)
       return
     }
