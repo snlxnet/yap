@@ -166,11 +166,12 @@ async function load(name, svg) {
     if (hoverTarget?.style) {
       hoverTarget.style.filter = ""
     }
-    if (!hoverTarget.id) {
-      alert(ERROR_NO_ID)
-    }
     if ([...e.dataTransfer.items].some((item) => item.kind === "file")) {
       e.preventDefault();
+    }
+    if (!hoverTarget.id) {
+      alert(ERROR_NO_ID)
+      return
     }
     const file = e.dataTransfer.items[0]?.getAsFile()
     if (!file) {
