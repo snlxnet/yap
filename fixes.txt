@@ -1,0 +1,2 @@
+Illustrator
+- doesn't see pages as they are saved as paths not rectangles because they are rounded

@@ -24,11 +24,11 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      inkscape:zoom="0.52410025"
-     inkscape:cx="290.97487"
-     inkscape:cy="722.19008"
-     inkscape:window-width="1265"
-     inkscape:window-height="1392"
-     inkscape:window-x="1285"
+     inkscape:cx="808.05151"
+     inkscape:cy="275.71061"
+     inkscape:window-width="930"
+     inkscape:window-height="752"
+     inkscape:window-x="645"
      inkscape:window-y="10"
      inkscape:window-maximized="0"
      inkscape:current-layer="layer1" />
@@ -44,16 +44,14 @@
        width="210"
        height="297"
        x="0"
-       y="0"
-       rx="3" />
+       y="0" />
     <rect
        style="fill:#2e2d39;fill-opacity:1;stroke-width:0.499999;stroke-linecap:round;stroke-linejoin:round"
        id="rect4"
        width="210"
        height="297"
        x="241.31038"
-       y="0"
-       rx="3" />
+       y="0" />
     <rect
        style="fill:#2e2d39;fill-opacity:1;stroke-width:1.09379;stroke-linecap:round;stroke-linejoin:round"
        width="114.89755"
@@ -132,7 +130,8 @@
          x="83.416336"
          y="24.799942"
          ry="1.8300213"
-         transform="scale(-1,1)" />
+         transform="scale(-1,1)"
+         id="rect1" />
       <path
          style="fill:#eeeeee;fill-opacity:1;stroke:#2e2d39;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
          d="M -86.610124,28.022234 V 38.731368"
@@ -148,7 +147,7 @@
        inkscape:label="player-gap" />
     <rect
        style="fill:#a8a5ff;fill-opacity:1;stroke-width:0.39233;stroke-linecap:round;stroke-linejoin:round"
-       id="rect1"
+       id="rect2"
        width="106.71883"
        height="67.78466"
        x="32.576729"

@@ -24,11 +24,11 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      inkscape:zoom="0.7411897"
-     inkscape:cx="259.71759"
-     inkscape:cy="534.95077"
-     inkscape:window-width="2540"
-     inkscape:window-height="1392"
-     inkscape:window-x="10"
+     inkscape:cx="1492.1956"
+     inkscape:cy="151.78301"
+     inkscape:window-width="930"
+     inkscape:window-height="752"
+     inkscape:window-x="420"
      inkscape:window-y="10"
      inkscape:window-maximized="0"
      inkscape:current-layer="layer1" />
@@ -45,7 +45,7 @@
        height="297"
        x="0"
        y="0"
-       rx="3" />
+       rx="0" />
     <rect
        style="fill:#2e2d39;fill-opacity:1;stroke-width:0.499999;stroke-linecap:round;stroke-linejoin:round"
        id="rect4"
@@ -53,7 +53,7 @@
        height="297"
        x="241.31038"
        y="0"
-       rx="3" />
+       rx="0" />
     <rect
        style="fill:#2e2d39;fill-opacity:1;stroke-width:1.09379;stroke-linecap:round;stroke-linejoin:round"
        width="114.89755"
