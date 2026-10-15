@@ -240,6 +240,7 @@ function createVideos(root) {
     head: findLabel(root, "player-head")[0]?.element,
     buttonPlay: findLabel(root, "player-button-play")[0]?.element,
     buttonPause: findLabel(root, "player-button-pause")[0]?.element,
+    radius: +findLabel(root, "player-radius")[0]?.element?.textContent || 0,
   }
 
   Array.from(findLabel(root))
@@ -325,12 +326,14 @@ function addControls(video, box, template) {
   const pb = template.progressNotFilled.cloneNode(true)
   pb.setAttribute("transform", `translate(${-pbSize.x + gap.width*2 + pauseSize.width}, ${-pbSize.y + size.height - playSize.height/2 - gap.height - pbSize.height/2})`)
   pb.setAttribute("width", size.width - gap.width*3 - pauseSize.width)
+  pb.setAttribute("ry", template.radius)
   box.appendChild(pb)
 
   const pfSize = template.progressFilled.getBBox()
   const pf = template.progressFilled.cloneNode(true)
   pf.setAttribute("transform", `translate(${-pfSize.x + gap.width*2 + pauseSize.width}, ${-pbSize.y + size.height - playSize.height/2 - gap.height - pbSize.height/2})`)
   pf.setAttribute("width", 0)
+  pb.setAttribute("ry", template.radius)
   pf.style.pointerEvents = "none"
   box.appendChild(pf)
 
