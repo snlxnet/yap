@@ -79,8 +79,8 @@ async function loadMain() {
     loadHandle(handle)
   })
 
-  addEventListener("dragover", (e) => e.preventDefault())
-  addEventListener("drop", dropToOpen)
+  window.ondragover = (e) => e.preventDefault()
+  window.ondrop = dropToOpen
 }
 
 async function dropToOpen(event) {
@@ -135,10 +135,8 @@ async function load(name, svg) {
   reload()
 
   let hoverTarget = null
-  removeEventListener("dragover", dropToOpen)
-  removeEventListener("drop", dropToOpen)
 
-  addEventListener("dragover", (e) => {
+  window.ondragover = (e) => {
     e.preventDefault()
 
     if (hoverTarget?.style) {
@@ -151,8 +149,8 @@ async function load(name, svg) {
     hoverTarget = e.target
     hoverTarget.style.transition = "0.2s ease-in-out"
     hoverTarget.style.filter = "invert(0.2)"
-  })
-  addEventListener("drop", async (e) => {
+  }
+  window.ondrop = async (e) => {
     if (hoverTarget?.style) {
       hoverTarget.style.filter = ""
     }
@@ -177,7 +175,7 @@ async function load(name, svg) {
 
     await insertVideoUrls(assoc)
     reload()
-  })
+  }
 }
 
 async function insertVideoUrls() {
