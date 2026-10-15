@@ -100,10 +100,10 @@ async function loadHandle(handle) {
   }
 
   async function loadFile(evt) {
-    const file = await handle.getFile()
-    const svg = await file.text()
-    console.log("Loaded new file", {svg, handle, file, evt})
     try {
+      const file = await handle.getFile()
+      const svg = await file.text()
+      console.log("Loaded new file", {svg, handle, file, evt})
       await load(handle.name, svg)
     } catch(e) {
       console.warn(e)
