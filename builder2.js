@@ -106,6 +106,7 @@ async function loadHandle(handle) {
       const svg = await file.text()
       console.log("Loaded new file", {svg, handle, file})
       await load(handle.name, svg)
+      observer.observe(handle)
     } catch(e) {
       console.warn(e)
       setTimeout(() => loadFile("retry"), 500)
@@ -113,7 +114,6 @@ async function loadHandle(handle) {
   }
 
   const observer = new FileSystemObserver(loadFile)
-  observer.observe(handle)
   loadFile()
 }
 
