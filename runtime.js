@@ -218,6 +218,20 @@ function findLabel(root, label = "") {
   return [...typst, ...inkscape, ...illustratorCorel];
 }
 
+function isInViewBox(element) {
+  const [pageX, pageY, pageW, pageH] = element.closest("svg").getAttribute("viewBox").split(" ").map(it => +it)
+  const { x, y, width, height } = element.getBBox();
+  if (x > pageX+pageW ||
+      y > pageY+pageH ||
+      x+width < pageX ||
+      y+height < pageY
+  ) {
+    return false
+  }
+
+  return true
+}
+
 function createVideos(root) {
   const controls = {
     gap: findLabel(root, "player-gap")[0]?.element?.getBBox(),
@@ -239,13 +253,8 @@ function createVideos(root) {
       fill?.remove();
       let image = element.querySelector("image");
       if (!image) {
-        const [pageX, pageY, pageW, pageH] = element.closest("svg").getAttribute("viewBox").split(" ").map(it => +it)
         const { x, y, width, height } = element.getBBox();
-        if (x > pageX+pageW ||
-            y > pageY+pageH ||
-            x+width < pageX ||
-            y+height < pageY
-        ) {
+        if (!isInViewBox(element)) {
           return
         }
         const transform = [element.getAttribute("transform"), `translate(${x} ${y})`].filter(Boolean).join(" ")
