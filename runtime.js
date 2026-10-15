@@ -252,6 +252,7 @@ function createVideos(root) {
         const invTransform = `translate(${-x} ${-y})`
         element.setAttribute("transform", invTransform)
         element.id = "path-" + element.id
+        element.removeAttribute("inkscape:label")
         delete element.dataset.typstLabel
         element.outerHTML = `
           <defs>
