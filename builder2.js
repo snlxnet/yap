@@ -100,7 +100,10 @@ async function loadHandle(handle) {
   }
 
   async function loadFile() {
-    const svg = await handle.getFile().then(f => f.text())
+    const file = await handle.getFile()
+    console.log("Loaded file", {handle})
+    const svg = await file.text()
+    console.log("Loaded new file", {svg, handle, file})
     await load(handle.name, svg)
   }
 
