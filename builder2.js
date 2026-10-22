@@ -102,7 +102,7 @@ async function loadHandle(handle) {
 
   let timer = null
 
-  function loadFile() {
+  async function loadFile() {
     try {
       const file = await handle.getFile()
       const svg = await file.text()
@@ -114,7 +114,7 @@ async function loadHandle(handle) {
     }
   }
 
-  async function scheduleLoad(evt) {
+  function scheduleLoad(evt) {
     if (timer) clearTimeout(timer)
     timer = setTimeout(() => loadFile(), 200)
   }
