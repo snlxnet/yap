@@ -133,6 +133,7 @@ async function loadZip(file) {
 }
 
 async function load(name, svg) {
+  console.log("load called")
   document.getElementById("card-wrapper")?.remove()
 
   assoc = new Map(JSON.parse(localStorage.getItem(name) || null))
@@ -178,13 +179,10 @@ async function load(name, svg) {
       return
     }
 
-    console.log(e.target, hoverTarget)
-
     const handle = await fs.getFileHandle(file.name, { create: true })
     const wr = await handle.createWritable()
     await wr.write(await file.arrayBuffer())
     await wr.close()
-    console.log("written")
     assoc.set(e.target.id, file.name)
     localStorage.setItem(name, JSON.stringify(Array.from(assoc.entries())))
     e.target.dataset.typstLabel = "vid://"
@@ -216,8 +214,6 @@ async function insertVideoUrls() {
     return Promise.all(promises)
   })
   await Promise.all(promises)
-
-  console.log(promises)
 }
 
 async function fileToUrl(file) {
@@ -242,8 +238,6 @@ function createPages() {
   const pages = [...first.querySelectorAll(`rect[width="${width}"][height="${height}"]`)]
     .map(element => ({x: element.getAttribute("x"), y: element.getAttribute("y")}))
     .filter(page => +page.x || +page.y)
-
-  console.log(pages)
 
   pages.map(page => {
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
