@@ -103,6 +103,7 @@ async function loadHandle(handle) {
   let timer = null
 
   async function loadFile(evt) {
+    if (timer) clearTimeout(timer)
     console.log({evt})
     try {
       const file = await handle.getFile()
@@ -112,7 +113,6 @@ async function loadHandle(handle) {
       observer.observe(handle)
     } catch(e) {
       console.warn(e)
-      if (timer) clearTimeout(timer)
       timer = setTimeout(() => loadFile("retry"), 2000)
     }
   }
