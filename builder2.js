@@ -102,23 +102,21 @@ async function loadHandle(handle) {
 
   let timer = null
 
-  async function loadFile(evt) {
-    if (timer) clearTimeout(timer)
-    console.log({evt})
-    try {
-      const file = await handle.getFile()
-      const svg = await file.text()
-      console.log("Loaded new file", {svg, handle, file, timer})
-      await load(handle.name, svg)
-      observer.observe(handle)
-    } catch(e) {
-      console.warn(e)
-      timer = setTimeout(() => loadFile("retry"), 2000)
-    }
+  function loadFile() {
+    const file = await handle.getFile()
+    const svg = await file.text()
+    console.log("Loaded new file", {svg, handle, file, timer})
+    await load(handle.name, svg)
+    observer.observe(handle)
   }
 
-  const observer = new FileSystemObserver(loadFile)
-  loadFile()
+  async function scheduleLoad(evt) {
+    if (timer) clearTimeout(timer)
+    timer = setTimeout(() => loadFile("retry"), 200)
+  }
+
+  const observer = new FileSystemObserver(scheduleLoad)
+  scheduleLoad()
 }
 
 async function loadZip(file) {
