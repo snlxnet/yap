@@ -156,11 +156,7 @@ function findNotes() {
   return slideList.map((slide) => {
     const textObjects = Array.from(slide.querySelectorAll("g>text"))
       .map(it => it.parentElement)
-      .filter(it => it.parentElement !== slide)
-      .map(it => {
-        console.log({it, slide})
-        return it
-      })
+      .filter(it => it.id?.startsWith("note") || it.getAttribute("inkscape:label")?.startsWith("note"))
       .filter(isInViewBox)
       .flatMap(it => it.firstElementChild?.children.length ? Array.from(it.firstElementChild.children) : it)
       .map(it => `${it.textContent}\n`)
