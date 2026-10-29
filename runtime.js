@@ -156,14 +156,15 @@ function findNotes() {
     const textObjects = Array.from(slide.querySelectorAll("text"))
       .filter(it => it.style.display === "none")
       .filter(coordsInSlide)
-      .map(it => `<p>${it.textContent.replace("\n\n", "</p><p>")}</p>`)
+      .flatMap(it => Array.from(it.children))
+      .map(it => `${it.textContent}\n`)
     const typstObjects = Array.from(findLabel(slide))
       .filter(({ label }) => label.startsWith("note://"))
       .map(
         ({ label, element }) =>
           label.replace("note://", "") || `<p>${element.textContent}</p>`,
       )
-    return [...textObjects, ...typstObjects]
+    return [...textObjects, ...typstObjects].join("").replaceAll("\n\n", "</p><p>")
   })
 }
 
