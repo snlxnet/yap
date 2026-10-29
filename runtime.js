@@ -155,7 +155,7 @@ function findNotes() {
   return slideList.map((slide) => {
     const textObjects = Array.from(slide.querySelectorAll("text"))
       .filter(it => it.style.display === "none")
-      .filter(isInViewBox)
+      .filter(isDisplayedWithinPage)
       .flatMap(it => Array.from(it.children))
       .map(it => `${it.textContent}\n`)
     const typstObjects = Array.from(findLabel(slide))
@@ -226,16 +226,19 @@ function findLabel(root, label = "") {
   return [...typst, ...inkscape, ...illustratorCorel];
 }
 
-function coordsInSlide(element) {
-  const [pageX, pageY, pageW, pageH] = element.closest("svg").getAttribute("viewBox").split(" ").map(it => +it)
-  const x = element.getAttribute("x");
-  const y = element.getAttribute("y");
+function isDisplayedWithinPage(element) {
+  const page = element.closest("svg").getBoundingClientRect()
+  const { x, y, width, height } = element.getBoundingClientRect();
+  console.log({element, x, y, width, height, page})
+  if (x > page.x+page.width ||
+      y > page.y+page.height ||
+      x+width < page.x ||
+      y+height < page.y
+  ) {
+    return false
+  }
 
-  return !(x > pageX+pageW ||
-      y > pageY+pageH ||
-      x < pageX ||
-      y < pageY
-  )
+  return true
 }
 
 function isInViewBox(element) {
