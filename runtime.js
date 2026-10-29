@@ -155,7 +155,7 @@ function findNotes() {
   return slideList.map((slide) => {
     const textObjects = Array.from(slide.querySelectorAll("text"))
       .filter(it => it.style.display === "none")
-      .filter(coordsInSlide)
+      .filter(isInViewBox)
       .flatMap(it => Array.from(it.children))
       .map(it => `${it.textContent}\n`)
     const typstObjects = Array.from(findLabel(slide))
