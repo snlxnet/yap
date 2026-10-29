@@ -115,6 +115,7 @@ async function loadHandle(handle) {
   }
 
   function scheduleLoad(evt) {
+    console.log("sched load", evt)
     if (timer) clearTimeout(timer)
     timer = setTimeout(() => loadFile(), 200)
   }
