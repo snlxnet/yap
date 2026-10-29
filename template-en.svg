@@ -23,9 +23,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
-     inkscape:zoom="3.64"
-     inkscape:cx="-185.98901"
-     inkscape:cy="836.67582"
+     inkscape:zoom="0.455"
+     inkscape:cx="1395.6044"
+     inkscape:cy="581.31868"
      inkscape:window-width="1260"
      inkscape:window-height="752"
      inkscape:window-x="10"
@@ -324,5 +324,47 @@
          x="-138.83356"
          y="212.89122"
          id="tspan24">corner radius for the progress bar: </tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:4.99999px;line-height:1.3;font-family:Comfortaa;-inkscape-font-specification:'Comfortaa Bold';writing-mode:lr-tb;direction:ltr;display:none;fill:#eeeeee;stroke-width:0.25;stroke-linecap:round;stroke-linejoin:round"
+       x="21.515575"
+       y="180.84706"
+       id="text2"><tspan
+         sodipodi:role="line"
+         id="tspan1"
+         style="stroke-width:0.25"
+         x="0"
+         y="0">Speaker notes are</tspan><tspan
+         sodipodi:role="line"
+         style="stroke-width:0.25"
+         x="0"
+         y="0"
+         id="tspan2">hidden text objects placed within the slide.</tspan><tspan
+         sodipodi:role="line"
+         style="stroke-width:0.25"
+         x="0"
+         y="0"
+         id="tspan3" /><tspan
+         sodipodi:role="line"
+         style="stroke-width:0.25"
+         x="0"
+         y="0"
+         id="tspan4">Formatting will not be preserved, aside from</tspan><tspan
+         sodipodi:role="line"
+         style="stroke-width:0.25"
+         x="0"
+         y="0"
+         id="tspan5">double line breaks, which count as paragraph breaks</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:4.99999px;line-height:1.3;font-family:Comfortaa;-inkscape-font-specification:'Comfortaa Bold';writing-mode:lr-tb;direction:ltr;display:none;fill:#eeeeee;stroke-width:0.25;stroke-linecap:round;stroke-linejoin:round"
+       x="300.63641"
+       y="151.19048"
+       id="text7"><tspan
+         sodipodi:role="line"
+         id="tspan6"
+         style="stroke-width:0.25"
+         x="0"
+         y="0">this is the note for slide 2</tspan></text>
   </g>
 </svg>
