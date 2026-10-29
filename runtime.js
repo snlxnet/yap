@@ -155,7 +155,7 @@ function findNotes() {
   return slideList.map((slide) => {
     const textObjects = Array.from(slide.querySelectorAll("text"))
       .filter(isDisplayedWithinPage)
-      .flatMap(it => it.children.length ? Array.from(it.children) : it).map(it => `${it.textContent}\n`)
+      .flatMap(it => it.children.length ? Array.from(it.children) : it)
       .map(it => `${it.textContent}\n`)
     console.log(textObjects, slide)
     const typstObjects = Array.from(findLabel(slide))
