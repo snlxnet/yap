@@ -110,12 +110,12 @@ async function loadHandle(handle) {
       await load(handle.name, svg)
       observer.observe(handle)
     } catch (e) {
+      console.error(e)
       scheduleLoad("retry")
     }
   }
 
   function scheduleLoad(evt) {
-    console.log("sched load", evt)
     if (timer) clearTimeout(timer)
     timer = setTimeout(() => loadFile(), 200)
   }
