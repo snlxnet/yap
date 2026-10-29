@@ -27,6 +27,7 @@ const videoObserver = new IntersectionObserver(([{isIntersecting, target}]) => {
 function reload() {
   slides = document.querySelectorAll("#root>svg");
 
+  showAll()
   try {
     createVideos(document.body);
     createImages(document.body);
@@ -153,11 +154,16 @@ function showSlide(idx, quiet = false) {
 function findNotes() {
   const slideList = [...slides]
   return slideList.map((slide) => {
-    const textObjects = Array.from(slide.querySelectorAll("text"))
-      .filter(isDisplayedWithinPage)
-      .flatMap(it => it.children.length ? Array.from(it.children) : it)
+    const textObjects = Array.from(slide.querySelectorAll("g>text"))
+      .map(it => it.parentElement)
+      .filter(it => it.parentElement !== slide)
+      .map(it => {
+        console.log({it, slide})
+        return it
+      })
+      .filter(isInViewBox)
+      .flatMap(it => it.firstElementChild?.children.length ? Array.from(it.firstElementChild.children) : it)
       .map(it => `${it.textContent}\n`)
-    console.log(textObjects, slide)
     const typstObjects = Array.from(findLabel(slide))
       .filter(({ label }) => label.startsWith("note://"))
       .map(
