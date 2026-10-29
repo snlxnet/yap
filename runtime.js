@@ -41,7 +41,7 @@ function reload() {
 function updateDisplayMode() {
   const notes = document.getElementById("notes");
   notes.innerHTML = "";
-  const noteBlocks = Array.from(slides).map(findNotes);
+  const noteBlocks = findNotes();
 
   if (noteBlocks.filter(Boolean).length > 0) {
     noteBlocks.map(wrapNotes).forEach((el) => notes.appendChild(el));
@@ -150,14 +150,22 @@ function showSlide(idx, quiet = false) {
   }
 }
 
-function findNotes(parent) {
-  return Array.from(findLabel(parent))
-    .filter(({ label }) => label.startsWith("note://"))
-    .map(
-      ({ label, element }) =>
-        label.replace("note://", "") || `<p>${element.textContent}</p>`,
-    )
-    .join("\n");
+function findNotes() {
+  const slideList = [...slides]
+  return slideList.map((slide) => {
+    const textObjects = Array.from(slide.querySelectorAll("text"))
+      .filter(it => it.style.display === "none")
+      .filter(coordsInSlide)
+      .flatMap(it => Array.from(it.children))
+      .map(it => `${it.textContent}\n`)
+    const typstObjects = Array.from(findLabel(slide))
+      .filter(({ label }) => label.startsWith("note://"))
+      .map(
+        ({ label, element }) =>
+          label.replace("note://", "") || `<p>${element.textContent}</p>`,
+      )
+    return [...textObjects, ...typstObjects].join("").replaceAll("\n\n", "</p><p>")
+  })
 }
 
 function wrapNotes(note, slideIdx) {
@@ -216,6 +224,18 @@ function findLabel(root, label = "") {
   ).map((element) => ({ element, label: decodeXUriComponent(element.id) }));
 
   return [...typst, ...inkscape, ...illustratorCorel];
+}
+
+function coordsInSlide(element) {
+  const [pageX, pageY, pageW, pageH] = element.closest("svg").getAttribute("viewBox").split(" ").map(it => +it)
+  const x = element.getAttribute("x");
+  const y = element.getAttribute("y");
+
+  return !(x > pageX+pageW ||
+      y > pageY+pageH ||
+      x < pageX ||
+      y < pageY
+  )
 }
 
 function isInViewBox(element) {
