@@ -79,19 +79,6 @@ async function loadMain() {
 
     loadHandle(handle)
   })
-
-  window.ondragover = (e) => e.preventDefault()
-  window.ondrop = dropToOpen
-}
-
-async function dropToOpen(event) {
-  event.preventDefault()
-  const item = await event.dataTransfer.items[0]
-  const handle = item?.getAsFileSystemHandle()
-  if (!handle || !handle.name.endsWith(".svg")) {
-    return
-  }
-  loadHandle(handle)
 }
 
 async function loadHandle(handle) {
