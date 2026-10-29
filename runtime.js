@@ -154,10 +154,10 @@ function findNotes() {
   const slideList = [...slides]
   return slideList.map((slide) => {
     const textObjects = Array.from(slide.querySelectorAll("text"))
-      .filter(it => it.style.display === "none")
       .filter(isDisplayedWithinPage)
-      .flatMap(it => Array.from(it.children))
+      .flatMap(it => it.children.length ? Array.from(it.children) : it).map(it => `${it.textContent}\n`)
       .map(it => `${it.textContent}\n`)
+    console.log(textObjects, slide)
     const typstObjects = Array.from(findLabel(slide))
       .filter(({ label }) => label.startsWith("note://"))
       .map(
@@ -229,7 +229,6 @@ function findLabel(root, label = "") {
 function isDisplayedWithinPage(element) {
   const page = element.closest("svg").getBoundingClientRect()
   const { x, y, width, height } = element.getBoundingClientRect();
-  console.log({element, x, y, width, height, page})
   if (x > page.x+page.width ||
       y > page.y+page.height ||
       x+width < page.x ||
