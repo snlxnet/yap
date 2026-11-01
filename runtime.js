@@ -29,8 +29,8 @@ function reload() {
 
   showAll()
   try {
-    createVideos(document.body);
-    createImages(document.body);
+    createVideos(root);
+    createImages(root);
   } catch (e) {
     console.log("Images and videos appear to alerady be in place");
     console.warn(e);

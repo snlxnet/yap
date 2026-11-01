@@ -12,7 +12,15 @@ let card = ""
 
 loadMain()
 document.addEventListener("keydown", (event) => {
-  if (event.key === "d" || event.key === "Enter") {
+  const mod = event.ctrlKey || event.metaKey
+
+  if (mod && event.key === "z") {
+    event.preventDefault();
+    undo();
+  }
+
+  if (mod && (event.key === "s" || event.key === "e")) {
+    event.preventDefault();
     download();
   }
 });
