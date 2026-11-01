@@ -11,7 +11,12 @@ window.addEventListener("load", () => {
   firstSlide()
   document.querySelector(".loading")?.remove()
   channel.addEventListener("message", ({ data: idx }) => showSlide(idx, true));
+  domshare.postMessage("Hi!")
   domshare.addEventListener("message", ({ data }) => {
+    if (data === "Hi!") {
+      domshare.postMessage(root.innerHTML)
+      return
+    }
     if (!data.trim()) {
       return
     }
