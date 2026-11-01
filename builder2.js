@@ -5,13 +5,22 @@ const ERROR_NO_ID = lang === "ru" ? "Пожалуйста, дайте этому
 let embedVideos = false
 let fs
 let assoc = new Map()
+let history = []
 let lastRawSVG = ""
 let currentDocName = ""
 let card = ""
 
 loadMain()
 document.addEventListener("keydown", (event) => {
-  if (event.key === "d" || event.key === "Enter") {
+  const mod = event.ctrlKey || event.metaKey
+
+  if (mod && event.key === "z") {
+    event.preventDefault();
+    undo();
+  }
+
+  if (mod && (event.key === "s" || event.key === "e")) {
+    event.preventDefault();
     download();
   }
 });
@@ -129,11 +138,8 @@ async function load(name, svg) {
   assoc = new Map(JSON.parse(localStorage.getItem(name) || null))
   fs = await navigator.storage.getDirectory()
 
-  const root = document.getElementById("root")
-  root.innerHTML = svg
   lastRawSVG = svg
   currentDocName = name
-  createPages()
   await insertVideoUrls(assoc)
   reload()
 
@@ -160,7 +166,15 @@ async function load(name, svg) {
     if ([...e.dataTransfer.items].some((item) => item.kind === "file")) {
       e.preventDefault();
     }
-    if (!hoverTarget || !hoverTarget.id) {
+
+    let id = hoverTarget instanceof SVGElement ? hoverTarget.id : hoverTarget?.parentElement?.dataset?.originalId
+    if (hoverTarget?.classList?.contains("controls")) {
+      id = hoverTarget.previousElementSibling.dataset.originalId
+    }
+    if (hoverTarget?.closest("g")?.classList?.contains("controls")) {
+      id = hoverTarget.closest("g").previousElementSibling.dataset.originalId
+    }
+    if (!id) {
       alert(ERROR_NO_ID)
       return
     }
@@ -173,16 +187,31 @@ async function load(name, svg) {
     const wr = await handle.createWritable()
     await wr.write(await file.arrayBuffer())
     await wr.close()
-    assoc.set(e.target.id, file.name)
+    assoc.set(id, file.name)
     localStorage.setItem(name, JSON.stringify(Array.from(assoc.entries())))
+    history.push({id, file: file.name})
     e.target.dataset.typstLabel = "vid://"
 
-    await insertVideoUrls(assoc)
+    await insertVideoUrls()
     reload()
   }
 }
 
+async function undo() {
+  const {id, file} = history.pop()
+  assoc.delete(id)
+  const prevName = history.toReversed().find(it => it.id === id)?.file
+  console.log({prevName})
+  if (prevName) {
+    assoc.set(id, prevName)
+  }
+  localStorage.setItem(currentDocName, JSON.stringify(Array.from(assoc.entries())))
+  load(currentDocName, lastRawSVG)
+}
+
 async function insertVideoUrls() {
+  const root = document.getElementById("root")
+  root.innerHTML = lastRawSVG
   createPages()
 
   const promises = [...assoc.entries()].map(async ([id, filename]) => {
@@ -259,6 +288,7 @@ async function download() {
   loadScript.id = "load-script"
   loadScript.innerHTML = `loader.style.display = "inline"`
   document.body.prepend(loadScript)
+  document.body.classList.add("book-mode")
   makeCard("loading")
   loader.style.display = "inline"
 
