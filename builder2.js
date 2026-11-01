@@ -5,6 +5,7 @@ const ERROR_NO_ID = lang === "ru" ? "Пожалуйста, дайте этому
 let embedVideos = false
 let fs
 let assoc = new Map()
+let history = []
 let lastRawSVG = ""
 let currentDocName = ""
 let card = ""
@@ -175,11 +176,20 @@ async function load(name, svg) {
     await wr.close()
     assoc.set(e.target.id, file.name)
     localStorage.setItem(name, JSON.stringify(Array.from(assoc.entries())))
+    history.push(e.target.id)
     e.target.dataset.typstLabel = "vid://"
 
     await insertVideoUrls(assoc)
     reload()
   }
+}
+
+async function undo() {
+  let element = history.pop()
+  await fs.removeEntry(await assoc.get(element))
+  assoc.delete(element)
+  localStorage.setItem(currentDocName, JSON.stringify(Array.from(assoc.entries())))
+  load(currentDocName, lastRawSVG)
 }
 
 async function insertVideoUrls() {
