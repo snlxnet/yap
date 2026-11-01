@@ -271,6 +271,7 @@ function createVideos(root) {
     .filter(({ label }) => label.startsWith("vid://"))
     .map(({ label, element }, idx) => {
       console.log({label, element})
+      const originalId = element.id
       const video = document.createElement("video");
       video.id = `video-${idx}`
       video.dataset.typstLabel = crypto.randomUUID()
@@ -307,7 +308,7 @@ function createVideos(root) {
       video.preload = "auto";
       image.appendChild(video);
       image.outerHTML =
-        `<foreignObject transform="${image.attributes.transform?.value || ""}" width="${image.attributes.width.value}" height="${image.attributes.height.value}" clip-path="url(#clip-${element.id})">` +
+        `<foreignObject data-original-id="${originalId}" transform="${image.attributes.transform?.value || ""}" width="${image.attributes.width.value}" height="${image.attributes.height.value}" clip-path="url(#clip-${element.id})">` +
         image.innerHTML +
         `</foreignObject>
         <g id=${"controls-" + video.dataset.typstLabel} transform="${image.attributes.transform?.value || ""}" width="${image.attributes.width.value}" height="${image.attributes.height.value}" clip-path="url(#clip-${element.id})">

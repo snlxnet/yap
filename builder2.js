@@ -138,11 +138,8 @@ async function load(name, svg) {
   assoc = new Map(JSON.parse(localStorage.getItem(name) || null))
   fs = await navigator.storage.getDirectory()
 
-  const root = document.getElementById("root")
-  root.innerHTML = svg
   lastRawSVG = svg
   currentDocName = name
-  createPages()
   await insertVideoUrls(assoc)
   reload()
 
@@ -169,7 +166,9 @@ async function load(name, svg) {
     if ([...e.dataTransfer.items].some((item) => item.kind === "file")) {
       e.preventDefault();
     }
-    if (!hoverTarget || !hoverTarget.id) {
+
+    const id = hoverTarget instanceof SVGElement ? hoverTarget.id : hoverTarget?.parentElement?.dataset?.originalId
+    if (!id) {
       alert(ERROR_NO_ID)
       return
     }
@@ -182,25 +181,26 @@ async function load(name, svg) {
     const wr = await handle.createWritable()
     await wr.write(await file.arrayBuffer())
     await wr.close()
-    assoc.set(e.target.id, file.name)
+    assoc.set(id, file.name)
     localStorage.setItem(name, JSON.stringify(Array.from(assoc.entries())))
-    history.push(e.target.id)
+    history.push(id)
     e.target.dataset.typstLabel = "vid://"
 
-    await insertVideoUrls(assoc)
+    await insertVideoUrls()
     reload()
   }
 }
 
 async function undo() {
   let element = history.pop()
-  await fs.removeEntry(await assoc.get(element))
   assoc.delete(element)
   localStorage.setItem(currentDocName, JSON.stringify(Array.from(assoc.entries())))
   load(currentDocName, lastRawSVG)
 }
 
 async function insertVideoUrls() {
+  const root = document.getElementById("root")
+  root.innerHTML = lastRawSVG
   createPages()
 
   const promises = [...assoc.entries()].map(async ([id, filename]) => {
