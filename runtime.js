@@ -5,11 +5,21 @@ let currentSlide = 0;
 let lastIntervalId = 0;
 
 const channel = new BroadcastChannel("control");
+const domshare = new BroadcastChannel("domshare");
 window.addEventListener("load", () => {
   reload();
   firstSlide()
   document.querySelector(".loading")?.remove()
   channel.addEventListener("message", ({ data: idx }) => showSlide(idx, true));
+  domshare.addEventListener("message", ({ data }) => {
+    if (!data.trim()) {
+      return
+    }
+    document.getElementById("card-wrapper")?.remove()
+    root.innerHTML = data
+    reload(true)
+    fixVideos(root)
+  })
 });
 
 const videoObserver = new IntersectionObserver(([{isIntersecting, target}]) => {
@@ -24,7 +34,7 @@ const videoObserver = new IntersectionObserver(([{isIntersecting, target}]) => {
   }
 })
 
-function reload() {
+function reload(quiet = false) {
   slides = document.querySelectorAll("#root>svg");
 
   showAll()
@@ -36,7 +46,12 @@ function reload() {
     console.warn(e);
   }
   updateDisplayMode();
-  showSlide(currentSlide);
+
+  if (!quiet) {
+    domshare.postMessage(root.innerHTML)
+  }
+
+  showSlide(currentSlide, true);
 }
 
 function updateDisplayMode() {
@@ -320,6 +335,35 @@ function createVideos(root) {
         addControls(addedVideo, controlBox, controls)
       }
     });
+}
+
+function fixVideos(root) {
+  const controls = {
+    gap: findLabel(root, "player-gap")[0]?.element?.getBBox(),
+    progressNotFilled: findLabel(root, "player-progress-not-filled")[0]?.element,
+    progressFilled: findLabel(root, "player-progress-filled")[0]?.element,
+    head: findLabel(root, "player-head")[0]?.element,
+    buttonPlay: findLabel(root, "player-button-play")[0]?.element,
+    buttonPause: findLabel(root, "player-button-pause")[0]?.element,
+    radius: +findLabel(root, "player-radius")[0]?.element?.textContent || 0,
+  }
+
+  findLabel(root)
+    .filter(it => it.element instanceof HTMLVideoElement)
+    .map(it => it.label)
+    .forEach(forVideo)
+
+  function forVideo(label) {
+    const addedVideo = findLabel(root, label)[0].element
+    videoObserver.observe(addedVideo)
+    const controlBox = findLabel(root, "controls-"+label)[0]?.element
+    if (controlBox) {
+      controlBox.innerHTML = ""
+    }
+    if (Object.values(controls).every(v => v !== undefined)) {
+      addControls(addedVideo, controlBox, controls)
+    }
+  }
 }
 
 function addControls(video, box, template) {
