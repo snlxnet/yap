@@ -311,7 +311,7 @@ function createVideos(root) {
         `<foreignObject data-original-id="${originalId}" transform="${image.attributes.transform?.value || ""}" width="${image.attributes.width.value}" height="${image.attributes.height.value}" clip-path="url(#clip-${element.id})">` +
         image.innerHTML +
         `</foreignObject>
-        <g id=${"controls-" + video.dataset.typstLabel} transform="${image.attributes.transform?.value || ""}" width="${image.attributes.width.value}" height="${image.attributes.height.value}" clip-path="url(#clip-${element.id})">
+        <g id=${"controls-" + video.dataset.typstLabel} class="controls" transform="${image.attributes.transform?.value || ""}" width="${image.attributes.width.value}" height="${image.attributes.height.value}" clip-path="url(#clip-${element.id})">
         </g>`;
       const addedVideo = findLabel(root, video.dataset.typstLabel)[0].element
       videoObserver.observe(addedVideo)

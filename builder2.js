@@ -167,7 +167,13 @@ async function load(name, svg) {
       e.preventDefault();
     }
 
-    const id = hoverTarget instanceof SVGElement ? hoverTarget.id : hoverTarget?.parentElement?.dataset?.originalId
+    let id = hoverTarget instanceof SVGElement ? hoverTarget.id : hoverTarget?.parentElement?.dataset?.originalId
+    if (hoverTarget?.classList?.contains("controls")) {
+      id = hoverTarget.previousElementSibling.dataset.originalId
+    }
+    if (hoverTarget?.closest("g")?.classList?.contains("controls")) {
+      id = hoverTarget.closest("g").previousElementSibling.dataset.originalId
+    }
     if (!id) {
       alert(ERROR_NO_ID)
       return
@@ -183,7 +189,7 @@ async function load(name, svg) {
     await wr.close()
     assoc.set(id, file.name)
     localStorage.setItem(name, JSON.stringify(Array.from(assoc.entries())))
-    history.push(id)
+    history.push({id, file: file.name})
     e.target.dataset.typstLabel = "vid://"
 
     await insertVideoUrls()
@@ -192,8 +198,13 @@ async function load(name, svg) {
 }
 
 async function undo() {
-  let element = history.pop()
-  assoc.delete(element)
+  const {id, file} = history.pop()
+  assoc.delete(id)
+  const prevName = history.toReversed().find(it => it.id === id)?.file
+  console.log({prevName})
+  if (prevName) {
+    assoc.set(id, prevName)
+  }
   localStorage.setItem(currentDocName, JSON.stringify(Array.from(assoc.entries())))
   load(currentDocName, lastRawSVG)
 }
@@ -277,6 +288,7 @@ async function download() {
   loadScript.id = "load-script"
   loadScript.innerHTML = `loader.style.display = "inline"`
   document.body.prepend(loadScript)
+  document.body.classList.add("book-mode")
   makeCard("loading")
   loader.style.display = "inline"
 
