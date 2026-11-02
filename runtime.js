@@ -11,19 +11,11 @@ window.addEventListener("load", () => {
   firstSlide()
   document.querySelector(".loading")?.remove()
   channel.addEventListener("message", ({ data: idx }) => showSlide(idx, true));
-  domshare.postMessage("Hi!")
   domshare.addEventListener("message", ({ data }) => {
     if (data === "Hi!") {
       domshare.postMessage(root.innerHTML)
       return
     }
-    if (!data.trim()) {
-      return
-    }
-    document.getElementById("card-wrapper")?.remove()
-    root.innerHTML = data
-    reload(true)
-    fixVideos(root)
   })
 });
 
@@ -39,7 +31,7 @@ const videoObserver = new IntersectionObserver(([{isIntersecting, target}]) => {
   }
 })
 
-function reload(quiet = false) {
+function reload() {
   slides = document.querySelectorAll("#root>svg");
 
   showAll()
@@ -52,11 +44,8 @@ function reload(quiet = false) {
   }
   updateDisplayMode();
 
-  if (!quiet) {
-    domshare.postMessage(root.innerHTML)
-  }
-
-  showSlide(currentSlide, true);
+  domshare.postMessage(root.innerHTML)
+  showSlide(currentSlide);
 }
 
 function updateDisplayMode() {
