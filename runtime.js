@@ -65,7 +65,6 @@ function updateDisplayMode() {
       event.stopPropagation();
     }),
   );
-  document.getElementById("full").onclick = fullscreen;
   document.getElementById("next").onclick = nextSlide;
   document.getElementById("prev").onclick = prevSlide;
 }
@@ -78,23 +77,9 @@ document.addEventListener("keydown", (event) => {
     ArrowUp: prevSlide,
     Home: firstSlide,
     End: lastSlide,
-    f: fullscreen,
   };
 
   actions[event.key]?.();
-});
-
-function fullscreen() {
-  document.body.requestFullscreen();
-  document.getElementById("notes").innerHTML = "";
-  firstSlide();
-}
-
-document.body.addEventListener("fullscreenchange", () => {
-  if (document.fullscreenElement) {
-    return;
-  }
-  reload();
 });
 
 function firstSlide() {
