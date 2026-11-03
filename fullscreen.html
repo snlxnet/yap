@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="darkreader-lock" />
+    <link rel="icon" href="logo.svg" />
+    <title>yap fullscreen viewer | snlx.net</title>
+    <meta
+      name="description"
+      content="Browser-optimized paged export for Typst with videos, speaker notes, and custom elements."
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      body,
+      #root {
+        display: flex;
+        justify-content: center;
+        min-height: 100svh;
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        background: #121212;
+      }
+      body {
+        align-items: center;
+      }
+      body::backdrop {
+        display: none;
+      }
+      svg {
+        width: 100%;
+        height: unset;
+        max-height: 100svh;
+        display: none;
+      }
+      @media (min-aspect-ratio: 16/9) {
+        svg {
+          width: unset;
+          height: 100svh;
+        }
+      }
+      svg.visible {
+        display: block;
+      }
+      foreignObject > * {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
+      #card-wrapper {
+        width: 100%;
+        height: 100svh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: monospace;
+        background: #121212;
+        position: fixed;
+        top: 0;
+        left: 0;
+      }
+      #card-wrapper svg {
+        transform: scale(0.6);
+      }
+    </style>
+    <link rel="stylesheet" href="builder.css" />
+    <link rel="stylesheet" href="theme.css" />
+  </head>
+  <body>
+    <div id="root" style="display: none">
+    </div>
+    <div id="card-wrapper" class="greeting">
+      Press to start
+    </div>
+    <script>
+      const channel = new BroadcastChannel("control");
+      const domshare = new BroadcastChannel("domshare");
+      const videoObserver = new IntersectionObserver(([{isIntersecting, target}]) => {
+        if (target.closest(".book-mode")) {
+          return
+        }
+
+        if (isIntersecting && target.play) {
+          target.play()
+        } else if (target.pause) {
+          target.pause()
+        }
+      })
+      
+      window.addEventListener("load", () => {
+        domshare.postMessage("Hi!")
+        domshare.addEventListener("message", ({ data }) => {
+          if (!data.trim()) {
+            return
+          }
+          root.innerHTML = data
+          document.querySelectorAll(".controls").forEach(it => it.remove())
+          document.querySelectorAll("video").forEach(it => videoObserver.observe(it))
+        })
+      })
+
+      document.getElementById("card-wrapper").addEventListener("click", () => {
+        document.body.requestFullscreen();
+        root.style.display = ""
+        document.getElementById("card-wrapper")?.remove()
+        channel.addEventListener("message", ({ data: idx }) => showSlide(idx));
+      })
+
+      function showSlide(idx) {
+        const slides = document.querySelectorAll("#root>svg");
+        const currentSlide = idx;
+
+        slides.forEach((slide, currentIdx) => {
+          let videos = Array.from(slide.querySelectorAll("video"));
+          if (currentIdx !== idx) {
+            slide.classList.remove("visible");
+            videos.forEach((video) => {
+              video.pause();
+              requestAnimationFrame(() => (video.currentTime = 0));
+            });
+          } else {
+            slide.classList.add("visible");
+            try {
+              videos.forEach((video) => video.play());
+            } catch (e) {
+              console.error(e);
+            }
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
