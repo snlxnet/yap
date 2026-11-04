@@ -158,7 +158,7 @@
     #box(
       height: h,
       width: h,
-      fill: accent,
+      fill: playing,
       radius: rad,
     )[
       #set text(fill: rgb("#2e2d39"), 24pt, baseline: -0.1em)
@@ -190,7 +190,7 @@
     #box(
       height: h,
       width: 80mm,
-      fill: accent,
+      fill: playing,
       radius: rad,
     )<player-progress-filled>
   ]
