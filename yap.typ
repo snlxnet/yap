@@ -32,7 +32,7 @@
       let wrapper = if it.func() == strong {
         ("<strong>", "</strong>")
       } else if it.func() == emph {
-        ("<em>", "<em>")
+        ("<em>", "</em>")
       } else if it.func() == heading {
         let level = str(it.depth)
         ("#"*level+" ", "\n")
