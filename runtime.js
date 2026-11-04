@@ -222,20 +222,6 @@ function findLabel(root, label = "") {
   return [...typst, ...inkscape, ...illustratorCorel];
 }
 
-function isDisplayedWithinPage(element) {
-  const page = element.closest("svg").getBoundingClientRect()
-  const { x, y, width, height } = element.getBoundingClientRect();
-  if (x > page.x+page.width ||
-      y > page.y+page.height ||
-      x+width < page.x ||
-      y+height < page.y
-  ) {
-    return false
-  }
-
-  return true
-}
-
 function isInViewBox(element) {
   const [pageX, pageY, pageW, pageH] = element.closest("svg").getAttribute("viewBox").split(" ").map(it => +it)
   const { x, y, width, height } = element.getBBox();
@@ -304,32 +290,34 @@ function createVideos(root) {
 
 function fixVideos(root) {
   const controls = {
-    gap: findLabel(root, "player-gap")[0]?.element?.getBBox(),
+    gap: getBox(findLabel(root, "player-gap")[0]?.element),
     progressNotFilled: findLabel(root, "player-progress-not-filled")[0]?.element,
     progressFilled: findLabel(root, "player-progress-filled")[0]?.element,
     head: findLabel(root, "player-head")[0]?.element,
     buttonPlay: findLabel(root, "player-button-play")[0]?.element,
     buttonPause: findLabel(root, "player-button-pause")[0]?.element,
-    radius: findLabel(root, "player-radius")[0]?.element?.getBBox().width || 0,
+    radius: getBox(findLabel(root, "player-radius")[0]?.element).width,
   }
 
   if (controls.progressNotFilled?.tagName?.toLowerCase() === "g") {
     const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect")
-    const { width, height } = controls.progressNotFilled.getBBox()
+    const el = controls.progressNotFilled.querySelector("path")
+    const { width, height } = getBox(el)
     rect.setAttribute("width", width)
     rect.setAttribute("height", height)
-    rect.setAttribute("y", -height*100)
-    rect.setAttribute("fill", controls.progressNotFilled.firstElementChild.getAttribute("fill"))
+    rect.setAttribute("transform", `translate(0, ${-height*100})`)
+    rect.setAttribute("fill", el.style.fill || el.getAttribute("fill"))
     root.firstElementChild.appendChild(rect)
     controls.progressNotFilled = rect
   }
   if (controls.progressFilled?.tagName?.toLowerCase() === "g") {
     const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect")
-    const { width, height } = controls.progressFilled.getBBox()
+    const el = controls.progressFilled.querySelector("path")
+    const { width, height } = getBox(el)
     rect.setAttribute("width", width)
     rect.setAttribute("height", height)
-    rect.setAttribute("y", -height*100)
-    rect.setAttribute("fill", controls.progressFilled.firstElementChild.getAttribute("fill"))
+    rect.setAttribute("transform", `translate(0, ${-height*100})`)
+    rect.setAttribute("fill", el.style.fill || el.getAttribute("fill"))
     root.firstElementChild.appendChild(rect)
     controls.progressFilled = rect
   }
@@ -343,10 +331,12 @@ function fixVideos(root) {
     const addedVideo = findLabel(root, label)[0].element
     videoObserver.observe(addedVideo)
     const controlBox = findLabel(root, "controls-"+label)[0]?.element
-    if (controlBox) {
-      controlBox.innerHTML = ""
+    if (!controlBox) {
+      return
     }
+    controlBox.innerHTML = ""
     if (Object.values(controls).every(v => v !== undefined)) {
+      console.log({addedVideo, controlBox, label})
       addControls(addedVideo, controlBox, controls)
     }
   }
@@ -356,16 +346,16 @@ function addControls(video, box, template) {
   const size = video.parentElement.getBBox()
   const gap = template.gap
 
-  const pauseSize = template.buttonPause.getBBox()
+  const pauseSize = getBox(template.buttonPause)
   const pause = template.buttonPause.cloneNode(true)
   console.log({pauseSize})
-  pause.setAttribute("transform", `translate(${-pauseSize.x + gap.width}, ${-pauseSize.y + size.height - pauseSize.height - gap.height})`)
+  pause.setAttribute("transform", `translate(${gap.width}, ${size.height - pauseSize.height - gap.height})`)
   box.appendChild(pause)
 
-  const playSize = template.buttonPlay.getBBox()
+  const playSize = getBox(template.buttonPlay)
   const play = template.buttonPlay.cloneNode(true)
   console.log({playSize})
-  play.setAttribute("transform", `translate(${-playSize.x + gap.width}, ${-playSize.y + size.height - playSize.height - gap.height})`)
+  play.setAttribute("transform", `translate(${gap.width}, ${size.height - playSize.height - gap.height})`)
   box.appendChild(play)
 
   video.addEventListener("play", () => {
@@ -377,24 +367,24 @@ function addControls(video, box, template) {
     play.style.opacity = 1
   })
 
-  const pbSize = template.progressNotFilled.getBBox()
+  const pbSize = getBox(template.progressNotFilled)
   const pb = template.progressNotFilled.cloneNode(true)
-  pb.setAttribute("transform", `translate(${-pbSize.x + gap.width*2 + pauseSize.width}, ${-pbSize.y + size.height - playSize.height/2 - gap.height - pbSize.height/2})`)
+  pb.setAttribute("transform", `translate(${gap.width*2 + pauseSize.width}, ${size.height - playSize.height/2 - gap.height - pbSize.height/2})`)
   pb.setAttribute("width", size.width - gap.width*3 - pauseSize.width)
   pb.setAttribute("ry", template.radius)
   box.appendChild(pb)
 
-  const pfSize = template.progressFilled.getBBox()
+  const pfSize = getBox(template.progressFilled)
   const pf = template.progressFilled.cloneNode(true)
-  pf.setAttribute("transform", `translate(${-pfSize.x + gap.width*2 + pauseSize.width}, ${-pbSize.y + size.height - playSize.height/2 - gap.height - pbSize.height/2})`)
+  pf.setAttribute("transform", `translate(${gap.width*2 + pauseSize.width}, ${size.height - playSize.height/2 - gap.height - pfSize.height/2})`)
   pf.setAttribute("width", 0)
   pf.setAttribute("ry", template.radius)
   pf.style.pointerEvents = "none"
   box.appendChild(pf)
 
-  const headSize = template.head.getBBox()
+  const headSize = getBox(template.head)
   const head = template.head.cloneNode(true)
-  head.setAttribute("transform", `translate(${-headSize.x + gap.width*2 + pauseSize.width - headSize.width/2}, ${-headSize.y + size.height - playSize.height/2 - gap.height - headSize.height/2})`)
+  head.setAttribute("transform", `translate(${gap.width*2 + pauseSize.width - headSize.width/2}, ${size.height - playSize.height/2 - gap.height - headSize.height/2})`)
   head.style.pointerEvents = "none"
   box.appendChild(head)
 
@@ -402,7 +392,7 @@ function addControls(video, box, template) {
     const full = size.width - gap.width*3 - pauseSize.width
     const progress = video.currentTime / video.duration * full
     pf.setAttribute("width", progress)
-    head.setAttribute("transform", `translate(${-headSize.x + gap.width*2 + pauseSize.width + progress - headSize.width/2}, ${-headSize.y + size.height - playSize.height/2 - gap.height - headSize.height/2})`)
+    head.setAttribute("transform", `translate(${gap.width*2 + pauseSize.width + progress - headSize.width/2}, ${size.height - playSize.height/2 - gap.height - headSize.height/2})`)
   })
 
   function handleMouse({buttons, x}) {
@@ -465,3 +455,42 @@ function getTypstLabel(label) {
 
   return foreign;
 }
+
+// Utility function mostly by GPT-6 Luna
+function getBox(element) {
+  if (!element) {
+    return {
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0,
+    }
+  }
+
+  const svg = root.firstElementChild
+  const box = element.getBBox();
+  const toSvg = svg.getScreenCTM().inverse()
+    .multiply(element.getScreenCTM());
+
+  const corners = [
+    new DOMPoint(box.x, box.y),
+    new DOMPoint(box.x + box.width, box.y),
+    new DOMPoint(box.x, box.y + box.height),
+    new DOMPoint(box.x + box.width, box.y + box.height),
+  ].map(point => point.matrixTransform(toSvg));
+
+  const xs = corners.map(p => p.x);
+  const ys = corners.map(p => p.y);
+  const left = Math.min(...xs);
+  const top = Math.min(...ys);
+  const right = Math.max(...xs);
+  const bottom = Math.max(...ys);
+
+  return {
+    x: left,
+    y: top,
+    width: right - left,
+    height: bottom - top,
+  };
+}
+
