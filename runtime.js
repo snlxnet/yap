@@ -251,16 +251,6 @@ function isInViewBox(element) {
 }
 
 function createVideos(root) {
-  const controls = {
-    gap: findLabel(root, "player-gap")[0]?.element?.getBBox(),
-    progressNotFilled: findLabel(root, "player-progress-not-filled")[0]?.element,
-    progressFilled: findLabel(root, "player-progress-filled")[0]?.element,
-    head: findLabel(root, "player-head")[0]?.element,
-    buttonPlay: findLabel(root, "player-button-play")[0]?.element,
-    buttonPause: findLabel(root, "player-button-pause")[0]?.element,
-    radius: +findLabel(root, "player-radius")[0]?.element?.textContent || 0,
-  }
-
   Array.from(findLabel(root))
     .filter(({ label }) => label.startsWith("vid://"))
     .map(({ label, element }, idx) => {
@@ -307,13 +297,9 @@ function createVideos(root) {
         `</foreignObject>
         <g id=${"controls-" + video.dataset.typstLabel} class="controls" transform="${image.attributes.transform?.value || ""}" width="${image.attributes.width.value}" height="${image.attributes.height.value}" clip-path="url(#clip-${element.id})">
         </g>`;
-      const addedVideo = findLabel(root, video.dataset.typstLabel)[0].element
-      videoObserver.observe(addedVideo)
-      const controlBox = findLabel(root, "controls-"+video.dataset.typstLabel)[0].element
-      if (Object.values(controls).every(v => v !== undefined)) {
-        addControls(addedVideo, controlBox, controls)
-      }
     });
+
+  fixVideos(root)
 }
 
 function fixVideos(root) {
@@ -324,7 +310,28 @@ function fixVideos(root) {
     head: findLabel(root, "player-head")[0]?.element,
     buttonPlay: findLabel(root, "player-button-play")[0]?.element,
     buttonPause: findLabel(root, "player-button-pause")[0]?.element,
-    radius: +findLabel(root, "player-radius")[0]?.element?.textContent || 0,
+    radius: findLabel(root, "player-radius")[0]?.element?.getBBox().width || 0,
+  }
+
+  if (controls.progressNotFilled?.tagName?.toLowerCase() === "g") {
+    const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect")
+    const { width, height } = controls.progressNotFilled.getBBox()
+    rect.setAttribute("width", width)
+    rect.setAttribute("height", height)
+    rect.setAttribute("y", -height*100)
+    rect.setAttribute("fill", controls.progressNotFilled.firstElementChild.getAttribute("fill"))
+    root.firstElementChild.appendChild(rect)
+    controls.progressNotFilled = rect
+  }
+  if (controls.progressFilled?.tagName?.toLowerCase() === "g") {
+    const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect")
+    const { width, height } = controls.progressFilled.getBBox()
+    rect.setAttribute("width", width)
+    rect.setAttribute("height", height)
+    rect.setAttribute("y", -height*100)
+    rect.setAttribute("fill", controls.progressFilled.firstElementChild.getAttribute("fill"))
+    root.firstElementChild.appendChild(rect)
+    controls.progressFilled = rect
   }
 
   findLabel(root)
