@@ -140,7 +140,7 @@ async function load(name, svg) {
 
   lastRawSVG = svg
   currentDocName = name
-  await insertVideoUrls(assoc)
+  await insertVideoUrls()
   reload()
 
   let hoverTarget = null
@@ -221,6 +221,7 @@ async function insertVideoUrls() {
     const elements = [...document.querySelectorAll("#" + id)]
 
     const promises = elements.map(async (element) => {
+      console.log(element, isInViewBox(element))
       if (!isInViewBox(element)) {
         return
       }
@@ -230,9 +231,9 @@ async function insertVideoUrls() {
       element.dataset.typstLabel = "vid://" + url
     })
 
-    return Promise.all(promises)
+    return Promise.allSettled(promises)
   })
-  await Promise.all(promises)
+  await Promise.allSettled(promises)
 }
 
 async function fileToUrl(file) {
@@ -274,6 +275,7 @@ function createPages() {
   })
 
   old.forEach(el => el.remove())
+  reload()
 }
 
 async function download() {
