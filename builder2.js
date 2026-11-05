@@ -222,9 +222,6 @@ async function insertVideoUrls() {
 
     const promises = elements.map(async (element) => {
       console.log(element, isInViewBox(element))
-      if (!isInViewBox(element)) {
-        return
-      }
       const handle = await fs.getFileHandle(filename)
       const file = await handle.getFile()
       const url = await fileToUrl(file);
@@ -275,7 +272,6 @@ function createPages() {
   })
 
   old.forEach(el => el.remove())
-  reload()
 }
 
 async function download() {
