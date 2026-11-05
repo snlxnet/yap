@@ -306,7 +306,8 @@ function fixVideos(root) {
     rect.setAttribute("width", width)
     rect.setAttribute("height", height)
     rect.setAttribute("transform", `translate(0, ${-height*100})`)
-    rect.setAttribute("fill", el.style.fill || el.getAttribute("fill"))
+    rect.setAttribute("fill", el.getAttribute("fill"))
+    rect.setAttribute("style", el.getAttribute("style"))
     root.firstElementChild.appendChild(rect)
     controls.progressNotFilled = rect
   }
@@ -317,7 +318,8 @@ function fixVideos(root) {
     rect.setAttribute("width", width)
     rect.setAttribute("height", height)
     rect.setAttribute("transform", `translate(0, ${-height*100})`)
-    rect.setAttribute("fill", el.style.fill || el.getAttribute("fill"))
+    rect.setAttribute("fill", el.getAttribute("fill"))
+    rect.setAttribute("style", el.getAttribute("style"))
     root.firstElementChild.appendChild(rect)
     controls.progressFilled = rect
   }
