@@ -32,7 +32,7 @@
       let wrapper = if it.func() == strong {
         ("<strong>", "</strong>")
       } else if it.func() == emph {
-        ("<em>", "<em>")
+        ("<em>", "</em>")
       } else if it.func() == heading {
         let level = str(it.depth)
         ("#"*level+" ", "\n")
@@ -139,4 +139,80 @@
   /// -> str
   fit: "cover",
 ) = [#box(fill: rgb("12345678"), hide(image(source, width: width, height: height, fit: fit)))#label("img-" + fit + "://" + source)]
+
+/// The video controls element.
+/// Calling this will place it within the page, use `set-controls` instead.
+#let controls(
+  h: 12mm,
+  gap: 3mm,
+  rad: 3mm,
+  base: rgb("#121212"),
+  playing: rgb("#a8a5ff"),
+  stop: rgb("#ff8383"),
+  handle-width: 5mm,
+  handle-color: rgb("#eee")
+) = {
+  let transparent = rgb("#00000000")
+  place[
+    #box(
+      height: h,
+      width: h,
+      fill: playing,
+      radius: rad,
+    )[
+      #set text(fill: rgb("#2e2d39"), 24pt, baseline: -0.1em)
+      #align(center+horizon, sym.triangle.filled.r)
+    ]<player-button-play>
+  ]
+  place[
+    #box(
+      height: h,
+      width: h,
+      fill: stop,
+      radius: rad,
+    )[
+      #set text(fill: rgb("#2e2d39"), 24pt)
+      #align(center+horizon, rotate(90deg, sym.eq))
+    ]<player-button-pause>
+  ]
+  place(dy: h+gap)[
+    #box(width: gap, height: gap, fill: black)<player-gap>
+    player-gap
+  ]
+  place(dy: 2*h+gap)[
+    #box(width: rad, height: rad, fill: black)<player-radius>
+    player-radius
+  ]
+  place(dx: h+gap)[
+    #box(
+      height: h,
+      width: 120mm,
+      fill: rgb("#121212"),
+    )<player-progress-not-filled>
+  ]
+  place(dx: h+gap)[
+    #box(
+      height: h,
+      width: 80mm,
+      fill: playing,
+    )<player-progress-filled>
+  ]
+  place(dx: h+gap+80mm-handle-width/2, dy: -h*0.1)[
+    #box(
+      height: h*1.2,
+      width: handle-width,
+      fill: handle-color,
+      radius: rad/2,
+    )[
+      #align(
+        horizon+center,
+        box(width: 0.5mm, height: h*0.7, fill: base, radius: 1mm)
+      )
+    ]<player-head>
+  ]
+}
+
+/// Create a video controls element off-page.
+/// Arguments are the same as `controls`.
+#let set-controls(..args) = place(dx: -1000mm, controls(..args))
 

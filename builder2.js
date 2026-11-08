@@ -140,7 +140,7 @@ async function load(name, svg) {
 
   lastRawSVG = svg
   currentDocName = name
-  await insertVideoUrls(assoc)
+  await insertVideoUrls()
   reload()
 
   let hoverTarget = null
@@ -221,18 +221,16 @@ async function insertVideoUrls() {
     const elements = [...document.querySelectorAll("#" + id)]
 
     const promises = elements.map(async (element) => {
-      if (!isInViewBox(element)) {
-        return
-      }
+      console.log(element, isInViewBox(element))
       const handle = await fs.getFileHandle(filename)
       const file = await handle.getFile()
       const url = await fileToUrl(file);
       element.dataset.typstLabel = "vid://" + url
     })
 
-    return Promise.all(promises)
+    return Promise.allSettled(promises)
   })
-  await Promise.all(promises)
+  await Promise.allSettled(promises)
 }
 
 async function fileToUrl(file) {
@@ -254,7 +252,7 @@ function createPages() {
   const first = document.querySelector("#root>svg")
   const [_x, _y, width, height] = first.getAttribute("viewBox").split(" ")
 
-  const pages = [...first.querySelectorAll(`rect[width="${width}"][height="${height}"]`)]
+  const pages = [...first.querySelectorAll(`:not(defs)>rect[width="${width}"][height="${height}"]`)]
     .map(element => ({x: element.getAttribute("x"), y: element.getAttribute("y")}))
     .filter(page => +page.x || +page.y)
 
