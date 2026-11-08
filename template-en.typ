@@ -6,15 +6,14 @@
 #set text(fill: rgb("#eeeeee"), font: "comfortaa", size: 16pt, weight: "bold")
 #show heading: set text(fill: accent, size: 24pt)
 #show raw: set text(fill: accent)
-#show link: it => text(fill: accent, underline(it))
 
-= Getting started
+= First Steps
 + Open this in #underline[Inkscape] or Adobe Illustrator
 + Draw any shape here: #v(9cm)
 //+ #import "@preview/yap:0.1.0": video
 //  #video("https://weldlab.github.io/video/omni.mp4")
 + Find its object in the layer and give it a name
-+ Download any video, I've used #link("https://weldlab.github.io/video/omni.mp4")[this one]
++ Download an `.mp4`
 + Drag & drop the video onto the shape in the browser
 
 Copy the background rectangle and move it to the right to make a second page.
@@ -31,4 +30,11 @@ Press `Ctrl + E` to save as a standalone HTML file.
 #let set-controls(..args) = place(dx: -1000mm, controls(..args))
 
 #set-controls()
+
+/* Manual post-processing
++ Ungroup the layer itself, making controls separate
++ Recreate the background as a rect
++ Give the controls their names
++ Join controls' labels into a single path object
+*/
 
