@@ -149,7 +149,6 @@
   base: rgb("#121212"),
   playing: rgb("#a8a5ff"),
   stop: rgb("#ff8383"),
-  handle: true,
   handle-width: 5mm,
   handle-color: rgb("#eee")
 ) = {
@@ -169,21 +168,26 @@
     #box(
       height: h,
       width: h,
-      fill: rgb("#ff8383"),
+      fill: stop,
       radius: rad,
     )[
       #set text(fill: rgb("#2e2d39"), 24pt)
       #align(center+horizon, rotate(90deg, sym.eq))
     ]<player-button-pause>
   ]
-  place[#box(width: gap, height: gap, fill: transparent)<player-gap>]
-  place[#box(width: rad, height: rad, fill: transparent)<player-radius>]
+  place(dy: h+gap)[
+    #box(width: gap, height: gap, fill: black)<player-gap>
+    player-gap
+  ]
+  place(dy: 2*h+gap)[
+    #box(width: rad, height: rad, fill: black)<player-radius>
+    player-radius
+  ]
   place(dx: h+gap)[
     #box(
       height: h,
       width: 120mm,
       fill: rgb("#121212"),
-      radius: rad,
     )<player-progress-not-filled>
   ]
   place(dx: h+gap)[
@@ -191,24 +195,21 @@
       height: h,
       width: 80mm,
       fill: playing,
-      radius: rad,
     )<player-progress-filled>
   ]
-  if handle {
-    place(dx: h+gap+80mm-handle-width/2, dy: -h*0.1)[
-      #box(
-        height: h*1.2,
-        width: handle-width,
-        fill: handle-color,
-        radius: rad/2,
-      )[
-        #align(
-          horizon+center,
-          box(width: 0.5mm, height: h*0.7, fill: base, radius: 1mm)
-        )
-      ]<player-head>
-    ]
-  }
+  place(dx: h+gap+80mm-handle-width/2, dy: -h*0.1)[
+    #box(
+      height: h*1.2,
+      width: handle-width,
+      fill: handle-color,
+      radius: rad/2,
+    )[
+      #align(
+        horizon+center,
+        box(width: 0.5mm, height: h*0.7, fill: base, radius: 1mm)
+      )
+    ]<player-head>
+  ]
 }
 
 /// Create a video controls element off-page.
