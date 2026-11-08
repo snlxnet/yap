@@ -252,7 +252,7 @@ function createPages() {
   const first = document.querySelector("#root>svg")
   const [_x, _y, width, height] = first.getAttribute("viewBox").split(" ")
 
-  const pages = [...first.querySelectorAll(`rect[width="${width}"][height="${height}"]`)]
+  const pages = [...first.querySelectorAll(`:not(defs) rect[width="${width}"][height="${height}"]`)]
     .map(element => ({x: element.getAttribute("x"), y: element.getAttribute("y")}))
     .filter(page => +page.x || +page.y)
 
