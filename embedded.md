@@ -1,0 +1,36 @@
+# The embedded workflow
+
+What does runtime currently expose?
+
+- SLIDE_WORD
+- ua (user agent)
+- slides (array)
+- currentSlide
+- lastIntervalId
+- channel
+- domshare
+- videoObserver
+- reload
+- updateDisplayMode
+- firstSlide
+- lastSlide
+- nextSlide
+- prevSlide
+- showAll
+- showSlide
+- findNotes
+- wrapNotes
+- createTimer
+- prettifyNumber
+- decodeXUriComponent
+- findLabel
+- isInViewBox
+- createVideos
+- fixVideos
+- addControls
+- createImages
+- getTypstLabel
+- getBox
+
+That's a lot of functions! And 530 LOC.
+
