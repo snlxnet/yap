@@ -249,6 +249,7 @@ function createVideos(root) {
       console.log({label, element})
       const originalId = element.id
       const video = document.createElement("video");
+      video.setAttribute("playsinline", "")
       video.id = `video-${idx}`
       video.dataset.typstLabel = "vi-" + label.slice(-15)
       const fill = element.querySelector(".typst-shape");
