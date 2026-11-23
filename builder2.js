@@ -250,11 +250,11 @@ function createPages() {
   const old = document.querySelectorAll(".generated-page")
 
   const first = document.querySelector("#root>svg")
-  const [_x, _y, width, height] = first.getAttribute("viewBox").split(" ")
+  const [_x, _y, width, height] = first.getAttribute("viewBox").split(" ").map(val => Math.floor(val))
 
-  const pages = [...first.querySelectorAll(`:not(defs)>rect[width="${width}"][height="${height}"]`)]
+  const pages = [...first.querySelectorAll(`:not(defs)>rect[width^="${width}"][height^="${height}"]`)]
     .map(element => ({x: element.getAttribute("x"), y: element.getAttribute("y")}))
-    .filter(page => +page.x || +page.y)
+    .filter(page => +Math.round(page.x) || +Math.round(page.y))
 
   pages.map(page => {
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
