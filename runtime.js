@@ -1,6 +1,5 @@
 const SLIDE_WORD = navigator.language.includes("ru") ? "Слайд" : "Slide";
 
-let slides = [];
 let currentSlide = 0;
 let lastIntervalId = 0;
 
@@ -36,8 +35,6 @@ const videoObserver = new IntersectionObserver(async ([{isIntersecting, target}]
 })
 
 function reload() {
-  slides = document.querySelectorAll("#root>svg");
-
   showAll()
   try {
     createVideos(root);
@@ -92,11 +89,12 @@ function firstSlide() {
   showSlide(0);
 }
 function lastSlide() {
+  const slides = document.querySelectorAll("#root>svg");
   showSlide(slides.length - 1);
 }
 
 function nextSlide() {
-  console.log(currentSlide, slides.length, slides);
+  const slides = document.querySelectorAll("#root>svg");
   if (currentSlide + 1 === slides.length) {
     firstSlide();
   } else {
@@ -113,6 +111,7 @@ function prevSlide() {
 }
 
 function showAll() {
+  const slides = document.querySelectorAll("#root>svg");
   slides.forEach((slide) => {
     slide.classList.add("visible");
   });
@@ -127,6 +126,7 @@ function showSlide(idx, quiet = false) {
 
   currentSlide = idx;
 
+  const slides = document.querySelectorAll("#root>svg");
   slides.forEach((slide, currentIdx) => {
     let videos = Array.from(slide.querySelectorAll("video"));
     if (currentIdx !== idx) {
@@ -146,8 +146,8 @@ function showSlide(idx, quiet = false) {
 }
 
 function findNotes() {
-  const slideList = [...slides]
-  return slideList.map((slide) => {
+  const slides = [...document.querySelectorAll("#root>svg")]
+  return slides.map((slide) => {
     const textObjects = Array.from(slide.querySelectorAll("g>text"))
       .map(it => it.parentElement)
       .filter(it => it.id?.startsWith("note") || it.getAttribute("inkscape:label")?.startsWith("note"))
