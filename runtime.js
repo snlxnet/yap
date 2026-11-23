@@ -1,5 +1,11 @@
 const SLIDE_WORD = navigator.language.includes("ru") ? "Слайд" : "Slide";
 
+const ua = navigator.userAgent;
+const isWebkit = (
+  (ua.includes("AppleWebKit") && !ua.includes("Chrome") && !ua.includes("Chromium")) ||
+  /\b(iPhone|iPad|iPod)\b/.test(ua)
+);
+
 let slides = [];
 let currentSlide = 0;
 let lastIntervalId = 0;
@@ -244,7 +250,7 @@ function createVideos(root) {
       const originalId = element.id
       const video = document.createElement("video");
       video.id = `video-${idx}`
-      video.dataset.typstLabel = crypto.randomUUID()
+      video.dataset.typstLabel = "vi-" + label.slice(-15)
       const fill = element.querySelector(".typst-shape");
       fill?.remove();
       let image = element.querySelector("image");
@@ -278,7 +284,9 @@ function createVideos(root) {
       video.preload = "auto";
 
       let canvas = document.createElement("canvas")
-      image.appendChild(canvas);
+      if (isWebkit) {
+        image.appendChild(canvas);
+      }
       image.appendChild(video);
 
       image.outerHTML =
@@ -342,9 +350,8 @@ function fixVideos(root) {
     }
     controlBox.innerHTML = ""
 
-    video.style.visibility = "hidden"
-    const canvas = video.parentElement.querySelector("canvas")
-    const ctx = canvas.getContext("2d");
+    let canvas = video.parentElement.querySelector("canvas")
+    const ctx = canvas?.getContext("2d");
     let loaded = false
     function frame() {
       requestAnimationFrame(frame);
@@ -356,7 +363,12 @@ function fixVideos(root) {
       canvas.height = video.videoHeight;
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     }
-    frame()
+    if (isWebkit) {
+      video.style.visibility = "hidden"
+      frame()
+    } else {
+      canvas = video
+    }
 
     if (Object.values(controls).every(v => v !== undefined)) {
       addControls(canvas, video, controlBox, controls)
@@ -413,7 +425,6 @@ function addControls(canvas, video, box, template) {
   video.addEventListener("timeupdate", () => {
     const full = size.width - gap.width*3 - pauseSize.width
     const progress = (video.currentTime / video.duration * full) || 0
-    console.log({t: video.currentTime, d: video.duration, full, progress})
     pf.setAttribute("width", progress)
     head.setAttribute("transform", `translate(${gap.width*2 + pauseSize.width + progress - headSize.width/2}, ${size.height - playSize.height/2 - gap.height - headSize.height/2})`)
   })
