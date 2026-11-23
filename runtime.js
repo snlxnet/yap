@@ -1,5 +1,11 @@
 const SLIDE_WORD = navigator.language.includes("ru") ? "Слайд" : "Slide";
 
+const ua = navigator.userAgent;
+const isWebkit = (
+  (ua.includes("AppleWebKit") && !ua.includes("Chrome") && !ua.includes("Chromium")) ||
+  /\b(iPhone|iPad|iPod)\b/.test(ua)
+);
+
 let slides = [];
 let currentSlide = 0;
 let lastIntervalId = 0;
@@ -19,15 +25,19 @@ window.addEventListener("load", () => {
   })
 });
 
-const videoObserver = new IntersectionObserver(([{isIntersecting, target}]) => {
+const videoObserver = new IntersectionObserver(async ([{isIntersecting, target}]) => {
   if (target.closest(".book-mode")) {
     return
   }
 
-  if (isIntersecting && target.play) {
-    target.play()
-  } else if (target.pause) {
-    target.pause()
+  try {
+    if (isIntersecting && target.play) {
+      await target.play()
+    } else if (target.pause) {
+      await target.pause()
+    }
+  } catch (e) {
+    console.warn(e)
   }
 })
 
@@ -133,11 +143,7 @@ function showSlide(idx, quiet = false) {
       });
     } else {
       slide.classList.add("visible");
-      try {
-        videos.forEach((video) => video.play());
-      } catch (e) {
-        console.error(e);
-      }
+      Promise.allSettled(videos.map((video) => video.play()))
     }
   });
   if (!quiet) {
@@ -243,8 +249,9 @@ function createVideos(root) {
       console.log({label, element})
       const originalId = element.id
       const video = document.createElement("video");
+      video.setAttribute("playsinline", "")
       video.id = `video-${idx}`
-      video.dataset.typstLabel = crypto.randomUUID()
+      video.dataset.typstLabel = "vi-" + label.slice(-15)
       const fill = element.querySelector(".typst-shape");
       fill?.remove();
       let image = element.querySelector("image");
@@ -276,7 +283,13 @@ function createVideos(root) {
       video.loop = true;
       video.style.background = "transparent"
       video.preload = "auto";
+
+      let canvas = document.createElement("canvas")
+      if (isWebkit) {
+        image.appendChild(canvas);
+      }
       image.appendChild(video);
+
       image.outerHTML =
         `<foreignObject data-original-id="${originalId}" transform="${image.attributes.transform?.value || ""}" width="${image.attributes.width.value}" height="${image.attributes.height.value}" clip-path="url(#clip-${element.id})">` +
         image.innerHTML +
@@ -330,21 +343,41 @@ function fixVideos(root) {
     .forEach(forVideo)
 
   function forVideo(label) {
-    const addedVideo = findLabel(root, label)[0].element
-    videoObserver.observe(addedVideo)
+    const video = findLabel(root, label)[0].element
+    videoObserver.observe(video)
     const controlBox = findLabel(root, "controls-"+label)[0]?.element
     if (!controlBox) {
       return
     }
     controlBox.innerHTML = ""
+
+    let canvas = video.parentElement.querySelector("canvas")
+    const ctx = canvas?.getContext("2d");
+    let loaded = false
+    function frame() {
+      requestAnimationFrame(frame);
+      if (video.loaded && loaded) {
+        if (video.paused) return;
+      }
+      loaded = video.loaded
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    }
+    if (isWebkit) {
+      video.style.visibility = "hidden"
+      frame()
+    } else {
+      canvas = video
+    }
+
     if (Object.values(controls).every(v => v !== undefined)) {
-      console.log({addedVideo, controlBox, label})
-      addControls(addedVideo, controlBox, controls)
+      addControls(canvas, video, controlBox, controls)
     }
   }
 }
 
-function addControls(video, box, template) {
+function addControls(canvas, video, box, template) {
   const size = video.parentElement.getBBox()
   const gap = template.gap
 
@@ -392,7 +425,7 @@ function addControls(video, box, template) {
 
   video.addEventListener("timeupdate", () => {
     const full = size.width - gap.width*3 - pauseSize.width
-    const progress = video.currentTime / video.duration * full
+    const progress = (video.currentTime / video.duration * full) || 0
     pf.setAttribute("width", progress)
     head.setAttribute("transform", `translate(${gap.width*2 + pauseSize.width + progress - headSize.width/2}, ${size.height - playSize.height/2 - gap.height - headSize.height/2})`)
   })
@@ -407,7 +440,7 @@ function addControls(video, box, template) {
 
     video.currentTime = video.duration * progress
   }
-  video.addEventListener("mousemove", handleMouse)
+  canvas.addEventListener("mousemove", handleMouse)
   pb.addEventListener("mousemove", handleMouse)
   pb.addEventListener("mousedown", handleMouse)
   pb.addEventListener("touchmove", ({touches}) => handleMouse({buttons: 1, x: touches[0].clientX}))
@@ -418,7 +451,7 @@ function addControls(video, box, template) {
       video.pause()
     }
   }
-  video.addEventListener("click", playPause)
+  canvas.addEventListener("click", playPause)
   play.addEventListener("click", playPause)
 }
 
