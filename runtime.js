@@ -469,28 +469,6 @@ function createImages(root) {
     });
 }
 
-function getTypstLabel(label) {
-  const anchor = findLabel(document, label)[0]?.element;
-
-  if (!anchor) {
-    return undefined;
-  }
-
-  const existing = anchor.querySelector("foreignObject");
-
-  if (existing) {
-    return existing;
-  }
-
-  const foreign = document.createElementNS(
-    "http://www.w3.org/2000/svg",
-    "foreignObject",
-  );
-  anchor.appendChild(foreign);
-
-  return foreign;
-}
-
 // Utility function mostly by GPT-6 Luna
 function getBox(element) {
   if (!element) {

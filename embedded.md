@@ -34,3 +34,20 @@ What does runtime currently expose?
 
 That's a lot of functions! And 530 LOC.
 
+Where the builder plugs in:
+- isInViewBox
+- firstSlide
+- reload
+
+Intentionally keep open:
+- SLIDE_WORD
+- currentSlide
+- reload
+- showSlide
+- isInViewBox
+
+This is kind of a mess:
+- findLabel
+- getTypstLabel
+
+However, getTypstLabel is no longer used.
