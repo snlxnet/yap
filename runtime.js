@@ -19,16 +19,16 @@ window.addEventListener("load", () => {
   })
 });
 
-const videoObserver = new IntersectionObserver(([{isIntersecting, target}]) => {
+const videoObserver = new IntersectionObserver(async ([{isIntersecting, target}]) => {
   if (target.closest(".book-mode")) {
     return
   }
 
   try {
     if (isIntersecting && target.play) {
-      target.play()
+      await target.play()
     } else if (target.pause) {
-      target.pause()
+      await target.pause()
     }
   } catch (e) {
     console.warn(e)
@@ -137,11 +137,7 @@ function showSlide(idx, quiet = false) {
       });
     } else {
       slide.classList.add("visible");
-      try {
-        videos.forEach((video) => video.play());
-      } catch (e) {
-        console.warn(e);
-      }
+      Promise.allSettled(videos.map((video) => video.play()))
     }
   });
   if (!quiet) {

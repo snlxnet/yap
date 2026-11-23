@@ -294,6 +294,7 @@ async function download() {
   const html = Array.from(document.children)
     .map((child) => child.innerHTML)
     .join("\n")
+    .replace(`<script src="builder2.js"></script>`, "")
     .replace(
       `<script src="runtime.js"></script>`,
       `<script>${runtime}</script>`,
