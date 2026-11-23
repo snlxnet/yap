@@ -1,11 +1,5 @@
 const SLIDE_WORD = navigator.language.includes("ru") ? "Слайд" : "Slide";
 
-const ua = navigator.userAgent;
-const isWebkit = (
-  (ua.includes("AppleWebKit") && !ua.includes("Chrome") && !ua.includes("Chromium")) ||
-  /\b(iPhone|iPad|iPod)\b/.test(ua)
-);
-
 let slides = [];
 let currentSlide = 0;
 let lastIntervalId = 0;
@@ -284,10 +278,8 @@ function createVideos(root) {
       video.style.background = "transparent"
       video.preload = "auto";
 
-      let canvas = document.createElement("canvas")
-      if (isWebkit) {
-        image.appendChild(canvas);
-      }
+      const canvas = document.createElement("canvas")
+      image.appendChild(canvas);
       image.appendChild(video);
 
       image.outerHTML =
@@ -302,6 +294,12 @@ function createVideos(root) {
 }
 
 function fixVideos(root) {
+  const ua = navigator.userAgent;
+  const isWebkit = (
+    (ua.includes("AppleWebKit") && !ua.includes("Chrome") && !ua.includes("Chromium")) ||
+    /\b(iPhone|iPad|iPod)\b/.test(ua)
+  );
+
   const controls = {
     gap: getBox(findLabel(root, "player-gap")[0]?.element),
     progressNotFilled: findLabel(root, "player-progress-not-filled")[0]?.element,
@@ -352,7 +350,7 @@ function fixVideos(root) {
     controlBox.innerHTML = ""
 
     let canvas = video.parentElement.querySelector("canvas")
-    const ctx = canvas?.getContext("2d");
+    const ctx = canvas.getContext("2d");
     let loaded = false
     function frame() {
       requestAnimationFrame(frame);
@@ -368,6 +366,7 @@ function fixVideos(root) {
       video.style.visibility = "hidden"
       frame()
     } else {
+      canvas.remove()
       canvas = video
     }
 
