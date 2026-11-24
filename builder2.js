@@ -221,7 +221,7 @@ async function insertVideoUrls() {
     const elements = [...document.querySelectorAll("#" + id)]
 
     const promises = elements.map(async (element) => {
-      console.log(element, isInViewBox(element))
+      console.log(element, isInPage(element))
       const handle = await fs.getFileHandle(filename)
       const file = await handle.getFile()
       const url = await fileToUrl(file);

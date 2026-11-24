@@ -45,7 +45,7 @@ function reloadNotes() {
     const textObjects = Array.from(slide.querySelectorAll("g>text"))
       .map(it => it.parentElement)
       .filter(it => it.id?.startsWith("note") || it.getAttribute("inkscape:label")?.startsWith("note"))
-      .filter(isInViewBox)
+      .filter(isInPage)
       .flatMap(it => it.firstElementChild?.children.length ? Array.from(it.firstElementChild.children) : it)
       .map(it => `${it.textContent}\n`)
     const typstObjects = Array.from(findLabel(slide))
@@ -85,6 +85,23 @@ function rebindControls() {
   );
   document.getElementById("next").onclick = nextSlide;
   document.getElementById("prev").onclick = prevSlide;
+}
+
+function resetTimer() {
+  const started = new Date();
+
+  clearInterval(lastIntervalId);
+  timer.textContent = "00:00";
+
+  lastIntervalId = setInterval(() => {
+    const seconds = (new Date() - started) / 1000;
+    timer.textContent =
+      pad(seconds / 60) + ":" + pad(seconds % 60);
+  }, 1000);
+
+  function pad(x) {
+    return ("00" + Math.floor(x)).slice(-2);
+  }
 }
 
 document.addEventListener("keydown", (event) => {
@@ -133,6 +150,7 @@ function showAll() {
   });
 }
 
+// SHOW SLIDE
 function showSlide(idx) {
   currentSlide = idx;
   highlightNote(idx)
@@ -161,31 +179,14 @@ function highlightNote(idx) {
   console.log("notes" + idx, document.getElementById("notes" + idx));
 }
 
-function resetTimer() {
-  const started = new Date();
-
-  clearInterval(lastIntervalId);
-  timer.textContent = "00:00";
-
-  lastIntervalId = setInterval(() => {
-    const seconds = (new Date() - started) / 1000;
-    timer.textContent =
-      pad(seconds / 60) + ":" + pad(seconds % 60);
-  }, 1000);
-
-  function pad(x) {
-    return ("00" + Math.floor(x)).slice(-2);
-  }
-}
-
-
-function decodeXUriComponent(s) {
-  return s.replace(/_x([0-9A-Fa-f]{2,4})_/g, (_, hex) =>
-    String.fromCharCode(parseInt(hex, 16)),
-  );
-}
-
+// UTILITY / READ
 function findLabel(root, label = "") {
+  function decodeXUriComponent(s) {
+    return s.replace(/_x([0-9A-Fa-f]{2,4})_/g, (_, hex) =>
+      String.fromCharCode(parseInt(hex, 16)),
+    );
+  }
+
   const value = label ? `="${label}"` : "";
 
   const typst = Array.from(
@@ -197,55 +198,51 @@ function findLabel(root, label = "") {
     element,
     label: decodeXUriComponent(element.getAttribute("inkscape:label")),
   }));
-  const illustratorCorel = Array.from(
+  const generic = Array.from(
     root.querySelectorAll(`svg [id${value}]`),
   ).map((element) => ({ element, label: decodeXUriComponent(element.id) }));
 
-  return [...typst, ...inkscape, ...illustratorCorel];
+  return [...typst, ...inkscape, ...generic];
 }
 
-function isInViewBox(element) {
+function isInPage(element) {
   const [pageX, pageY, pageW, pageH] = element.closest("svg").getAttribute("viewBox").split(" ").map(it => +it)
   const { x, y, width, height } = element.getBBox();
-  if (x > pageX+pageW ||
+  return !(x > pageX+pageW ||
       y > pageY+pageH ||
       x+width < pageX ||
       y+height < pageY
-  ) {
-    return false
-  }
-
-  return true
+  )
 }
 
+// UTILITY / WRITE
 function createVideos(root) {
   Array.from(findLabel(root))
     .filter(({ label }) => label.startsWith("vid://"))
-    .map(({ label, element }, idx) => {
-      console.log({label, element})
-      const originalId = element.id
-      const video = document.createElement("video");
-      video.setAttribute("playsinline", "")
-      video.id = `video-${idx}`
-      video.dataset.typstLabel = "vi-" + label.slice(-15)
-      const fill = element.querySelector(".typst-shape");
+    .map(({ label, element: parent }, idx) => {
+      if (!isInPage(parent)) {
+        return
+      }
+
+      const originalId = parent.id
+      const uiid = "vi-" + label.slice(-15) // Unique Ish IDentifier
+
+      const fill = parent.querySelector(".typst-shape");
       fill?.remove();
-      let image = element.querySelector("image");
+
+      let image = parent.querySelector("image");
       if (!image) {
-        const { x, y, width, height } = element.getBBox();
-        if (!isInViewBox(element)) {
-          return
-        }
-        const transform = [element.getAttribute("transform"), `translate(${x} ${y})`].filter(Boolean).join(" ")
+        const { x, y, width, height } = parent.getBBox();
+        const transform = [parent.getAttribute("transform"), `translate(${x} ${y})`].filter(Boolean).join(" ")
         const invTransform = `translate(${-x} ${-y})`
-        element.setAttribute("transform", invTransform)
-        element.id = "path-" + video.dataset.typstLabel
-        element.removeAttribute("inkscape:label")
-        delete element.dataset.typstLabel
-        element.outerHTML = `
+        parent.setAttribute("transform", invTransform)
+        parent.id = "path-" + uiid
+        parent.removeAttribute("inkscape:label")
+        delete parent.dataset.typstLabel
+        parent.outerHTML = `
           <defs>
-            <clipPath id="clip-${element.id}">
-              ${element.outerHTML}
+            <clipPath id="clip-${parent.id}">
+              ${parent.outerHTML}
             </clipPath>
           </defs>
           <g>
@@ -255,20 +252,26 @@ function createVideos(root) {
         `;
         image = root.querySelector(`[data-label="${label}"]`);
       }
-      video.src = label.replace("vid://", "");
+
+      const video = document.createElement("video");
+      video.id = `video-${idx}`
+      video.dataset.typstLabel = uiid
       video.loop = true;
+      video.setAttribute("playsinline", "")
       video.style.background = "transparent"
       video.preload = "auto";
+      video.src = label.replace("vid://", "");
 
+      // Works around WebKit's bug 23113
       const canvas = document.createElement("canvas")
       image.appendChild(canvas);
       image.appendChild(video);
 
       image.outerHTML =
-        `<foreignObject data-original-id="${originalId}" transform="${image.attributes.transform?.value || ""}" width="${image.attributes.width.value}" height="${image.attributes.height.value}" clip-path="url(#clip-${element.id})">` +
+        `<foreignObject data-original-id="${originalId}" transform="${image.attributes.transform?.value || ""}" width="${image.attributes.width.value}" height="${image.attributes.height.value}" clip-path="url(#clip-${parent.id})">` +
         image.innerHTML +
         `</foreignObject>
-        <g id=${"controls-" + video.dataset.typstLabel} class="controls" transform="${image.attributes.transform?.value || ""}" width="${image.attributes.width.value}" height="${image.attributes.height.value}" clip-path="url(#clip-${element.id})">
+        <g id=${"controls-" + video.dataset.typstLabel} class="controls" transform="${image.attributes.transform?.value || ""}" width="${image.attributes.width.value}" height="${image.attributes.height.value}" clip-path="url(#clip-${parent.id})">
         </g>`;
     });
 
