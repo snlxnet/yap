@@ -45,23 +45,50 @@ function reload() {
     console.log("Images and videos appear to alerady be in place");
     console.warn(e);
   }
-  updateDisplayMode()
+  reloadNotes()
   rebindControls()
 
   chDom.postMessage(root.innerHTML)
   showSlide(currentSlide);
 }
 
-function updateDisplayMode() {
+function reloadNotes() {
   const notes = document.getElementById("notes");
   notes.innerHTML = "";
-  const noteBlocks = findNotes();
+
+  const slides = [...document.querySelectorAll("#root>svg")]
+  const noteBlocks = slides.map((slide) => {
+    const textObjects = Array.from(slide.querySelectorAll("g>text"))
+      .map(it => it.parentElement)
+      .filter(it => it.id?.startsWith("note") || it.getAttribute("inkscape:label")?.startsWith("note"))
+      .filter(isInViewBox)
+      .flatMap(it => it.firstElementChild?.children.length ? Array.from(it.firstElementChild.children) : it)
+      .map(it => `${it.textContent}\n`)
+    const typstObjects = Array.from(findLabel(slide))
+      .filter(({ label }) => label.startsWith("note://"))
+      .map(
+        ({ label, element }) =>
+          label.replace("note://", "") || `<p>${element.textContent}</p>`,
+      )
+    return [...textObjects, ...typstObjects].join("").replaceAll("\n\n", "</p><p>")
+  })
 
   if (noteBlocks.filter(Boolean).length > 0) {
     noteBlocks.map(wrapNotes).forEach((el) => notes.appendChild(el));
     document.body.classList.remove("book-mode");
   } else {
     document.body.classList.add("book-mode");
+  }
+
+  function wrapNotes(note, slideIdx) {
+    const container = document.createElement("div");
+    container.innerHTML = note || "<p></p>";
+    const heading = document.createElement("h2");
+    heading.textContent = `${SLIDE_WORD} ${slideIdx + 1}`;
+    heading.id = "notes" + slideIdx;
+    heading.classList.add("note-title");
+    container.prepend(heading);
+    return container;
   }
 }
 
@@ -145,36 +172,6 @@ function showSlide(idx) {
     }
   });
   chSlide.postMessage(idx);
-}
-
-function findNotes() {
-  const slides = [...document.querySelectorAll("#root>svg")]
-  return slides.map((slide) => {
-    const textObjects = Array.from(slide.querySelectorAll("g>text"))
-      .map(it => it.parentElement)
-      .filter(it => it.id?.startsWith("note") || it.getAttribute("inkscape:label")?.startsWith("note"))
-      .filter(isInViewBox)
-      .flatMap(it => it.firstElementChild?.children.length ? Array.from(it.firstElementChild.children) : it)
-      .map(it => `${it.textContent}\n`)
-    const typstObjects = Array.from(findLabel(slide))
-      .filter(({ label }) => label.startsWith("note://"))
-      .map(
-        ({ label, element }) =>
-          label.replace("note://", "") || `<p>${element.textContent}</p>`,
-      )
-    return [...textObjects, ...typstObjects].join("").replaceAll("\n\n", "</p><p>")
-  })
-}
-
-function wrapNotes(note, slideIdx) {
-  const container = document.createElement("div");
-  container.innerHTML = note || "<p></p>";
-  const heading = document.createElement("h2");
-  heading.textContent = `${SLIDE_WORD} ${slideIdx + 1}`;
-  heading.id = "notes" + slideIdx;
-  heading.classList.add("note-title");
-  container.prepend(heading);
-  return container;
 }
 
 function resetTimer() {
