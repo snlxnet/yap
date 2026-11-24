@@ -1,3 +1,4 @@
+// INIT-RELATED STUFF
 const SLIDE_WORD = navigator.language.includes("ru") ? "Слайд" : "Slide";
 
 let currentSlide = 0;
@@ -18,24 +19,7 @@ window.addEventListener("load", () => {
   })
 });
 
-const videoObserver = new IntersectionObserver(async ([{isIntersecting, target}]) => {
-  if (target.closest(".book-mode")) {
-    return
-  }
-
-  try {
-    if (isIntersecting && target.play) {
-      chPlay.postMessage({id: target.id, play: true})
-      await target.play()
-    } else if (target.pause) {
-      chPlay.postMessage({id: target.id, play: false})
-      await target.pause()
-    }
-  } catch (e) {
-    console.warn(e)
-  }
-})
-
+// RELOAD FUNCTIONS
 function reload() {
   showAll()
   try {
@@ -92,6 +76,7 @@ function reloadNotes() {
   }
 }
 
+// CONTROLS
 function rebindControls() {
   document.querySelectorAll("a").forEach((el) =>
     el.addEventListener("click", (event) => {
@@ -149,29 +134,31 @@ function showAll() {
 }
 
 function showSlide(idx) {
+  currentSlide = idx;
+  highlightNote(idx)
+
+  document
+    .querySelectorAll("#root>svg")
+    .forEach((slide, currentIdx) => {
+      slide
+        .classList
+        .toggle("visible", currentIdx === idx)
+      slide
+        .querySelectorAll("video")
+        .forEach(v => {
+          v.currentTime = 0
+          currentIdx === idx ? v.play() : v.pause()
+        })
+    });
+  chSlide.postMessage(idx);
+}
+
+function highlightNote(idx) {
   document
     .querySelectorAll(".note-title")
     .forEach((el) => el.classList.remove("highlight"));
   document.getElementById("notes" + idx)?.classList.add("highlight");
   console.log("notes" + idx, document.getElementById("notes" + idx));
-
-  currentSlide = idx;
-
-  const slides = document.querySelectorAll("#root>svg");
-  slides.forEach((slide, currentIdx) => {
-    let videos = Array.from(slide.querySelectorAll("video"));
-    if (currentIdx !== idx) {
-      slide.classList.remove("visible");
-      videos.forEach((video) => {
-        video.pause();
-        requestAnimationFrame(() => (video.currentTime = 0));
-      });
-    } else {
-      slide.classList.add("visible");
-      Promise.allSettled(videos.map((video) => video.play()))
-    }
-  });
-  chSlide.postMessage(idx);
 }
 
 function resetTimer() {
@@ -337,7 +324,6 @@ function fixVideos(root) {
 
   function forVideo(label) {
     const video = findLabel(root, label)[0].element
-    videoObserver.observe(video)
     const controlBox = findLabel(root, "controls-"+label)[0]?.element
     if (!controlBox) {
       return
