@@ -3,16 +3,16 @@ const SLIDE_WORD = navigator.language.includes("ru") ? "Слайд" : "Slide";
 let currentSlide = 0;
 let lastIntervalId = 0;
 
-const channel = new BroadcastChannel("control");
-const domshare = new BroadcastChannel("domshare");
+const chSlide = new BroadcastChannel("slide");
+const chPlay = new BroadcastChannel("play");
+const chDom = new BroadcastChannel("domshare");
 window.addEventListener("load", () => {
   reload();
   firstSlide()
   document.querySelector(".loading")?.remove()
-  channel.addEventListener("message", ({ data: idx }) => showSlide(idx, true));
-  domshare.addEventListener("message", ({ data }) => {
+  chDom.addEventListener("message", ({ data }) => {
     if (data === "Hi!") {
-      domshare.postMessage(root.innerHTML)
+      chDom.postMessage(root.innerHTML)
       return
     }
   })
@@ -25,8 +25,10 @@ const videoObserver = new IntersectionObserver(async ([{isIntersecting, target}]
 
   try {
     if (isIntersecting && target.play) {
+      chPlay.postMessage({id: target.id, play: true})
       await target.play()
     } else if (target.pause) {
+      chPlay.postMessage({id: target.id, play: false})
       await target.pause()
     }
   } catch (e) {
@@ -45,7 +47,7 @@ function reload() {
   }
   updateDisplayMode();
 
-  domshare.postMessage(root.innerHTML)
+  chDom.postMessage(root.innerHTML)
   showSlide(currentSlide);
 }
 
@@ -117,7 +119,7 @@ function showAll() {
   });
 }
 
-function showSlide(idx, quiet = false) {
+function showSlide(idx) {
   document
     .querySelectorAll(".note-title")
     .forEach((el) => el.classList.remove("highlight"));
@@ -140,9 +142,7 @@ function showSlide(idx, quiet = false) {
       Promise.allSettled(videos.map((video) => video.play()))
     }
   });
-  if (!quiet) {
-    channel.postMessage(idx);
-  }
+  chSlide.postMessage(idx);
 }
 
 function findNotes() {
@@ -438,12 +438,14 @@ function addControls(canvas, video, box, template) {
     const progress = (x - left) / width
 
     video.currentTime = video.duration * progress
+    chPlay.postMessage({id: video.id, time: video.currentTime})
   }
   canvas.addEventListener("mousemove", handleMouse)
   pb.addEventListener("mousemove", handleMouse)
   pb.addEventListener("mousedown", handleMouse)
   pb.addEventListener("touchmove", ({touches}) => handleMouse({buttons: 1, x: touches[0].clientX}))
   function playPause()  {
+    chPlay.postMessage({id: video.id, play: video.paused})
     if (video.paused) {
       video.play()
     } else {

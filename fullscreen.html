@@ -80,19 +80,9 @@
       Press to start
     </div>
     <script>
-      const channel = new BroadcastChannel("control");
+      const channel = new BroadcastChannel("slide");
+      const play = new BroadcastChannel("play");
       const domshare = new BroadcastChannel("domshare");
-      const videoObserver = new IntersectionObserver(([{isIntersecting, target}]) => {
-        if (target.closest(".book-mode")) {
-          return
-        }
-
-        if (isIntersecting && target.play) {
-          target.play()
-        } else if (target.pause) {
-          target.pause()
-        }
-      })
       
       window.addEventListener("load", () => {
         domshare.postMessage("Hi!")
@@ -102,16 +92,31 @@
           }
           root.innerHTML = data
           document.querySelectorAll(".controls").forEach(it => it.remove())
-          document.querySelectorAll("video").forEach(it => videoObserver.observe(it))
         })
       })
 
       document.getElementById("card-wrapper").addEventListener("click", () => {
-        document.body.requestFullscreen();
+        <!-- document.body.requestFullscreen(); -->
         root.style.display = ""
         document.getElementById("card-wrapper")?.remove()
         channel.addEventListener("message", ({ data: idx }) => showSlide(idx));
+        play.addEventListener("message", ({data}) => handlePlay(data))
       })
+
+      function handlePlay({id, play, time}) {
+        const vid = document.getElementById(id)
+
+        if (play) {
+          vid.play()
+        } else if (play === false) {
+          vid.pause()
+        }
+        console.log({play})
+
+        if (time !== undefined) {
+          vid.currentTime = time
+        }
+      }
 
       function showSlide(idx) {
         const slides = document.querySelectorAll("#root>svg");
