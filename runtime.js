@@ -8,7 +8,7 @@ const chPlay = new BroadcastChannel("play");
 const chDom = new BroadcastChannel("domshare");
 window.addEventListener("load", () => {
   reload();
-  firstSlide()
+  resetTimer();
   document.querySelector(".loading")?.remove()
   chDom.addEventListener("message", ({ data }) => {
     if (data === "Hi!") {
@@ -45,7 +45,8 @@ function reload() {
     console.log("Images and videos appear to alerady be in place");
     console.warn(e);
   }
-  updateDisplayMode();
+  updateDisplayMode()
+  rebindControls()
 
   chDom.postMessage(root.innerHTML)
   showSlide(currentSlide);
@@ -62,7 +63,9 @@ function updateDisplayMode() {
   } else {
     document.body.classList.add("book-mode");
   }
+}
 
+function rebindControls() {
   document.querySelectorAll("a").forEach((el) =>
     el.addEventListener("click", (event) => {
       event.stopPropagation();
@@ -86,8 +89,7 @@ document.addEventListener("keydown", (event) => {
 });
 
 function firstSlide() {
-  createTimer();
-
+  resetTimer();
   showSlide(0);
 }
 function lastSlide() {
@@ -98,7 +100,7 @@ function lastSlide() {
 function nextSlide() {
   const slides = document.querySelectorAll("#root>svg");
   if (currentSlide + 1 === slides.length) {
-    firstSlide();
+    showSlide(0)
   } else {
     showSlide(currentSlide + 1);
   }
@@ -175,27 +177,23 @@ function wrapNotes(note, slideIdx) {
   return container;
 }
 
-function createTimer() {
+function resetTimer() {
   const started = new Date();
 
   clearInterval(lastIntervalId);
-  // implicit getElementById
   timer.textContent = "00:00";
 
   lastIntervalId = setInterval(() => {
     const seconds = (new Date() - started) / 1000;
     timer.textContent =
-      prettifyNumber(seconds / 60) + ":" + prettifyNumber(seconds % 60);
+      pad(seconds / 60) + ":" + pad(seconds % 60);
   }, 1000);
-}
 
-function prettifyNumber(x) {
-  if (x > 100) {
-    return Math.floor(x);
+  function pad(x) {
+    return ("00" + Math.floor(x)).slice(-2);
   }
-
-  return ("00" + Math.floor(x)).slice(-2);
 }
+
 
 function decodeXUriComponent(s) {
   return s.replace(/_x([0-9A-Fa-f]{2,4})_/g, (_, hex) =>
