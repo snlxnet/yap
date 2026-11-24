@@ -92,16 +92,31 @@
           }
           root.innerHTML = data
           document.querySelectorAll(".controls").forEach(it => it.remove())
+          document.querySelectorAll("canvas").forEach(bindCanvas)
         })
       })
 
       document.getElementById("card-wrapper").addEventListener("click", () => {
-        <!-- document.body.requestFullscreen(); -->
+        document.body.requestFullscreen();
         root.style.display = ""
         document.getElementById("card-wrapper")?.remove()
         channel.addEventListener("message", ({ data: idx }) => showSlide(idx));
         play.addEventListener("message", ({data}) => handlePlay(data))
+        showSlide(0)
       })
+
+      function bindCanvas(canvas) {
+        const video = canvas.parentElement.querySelector("video")
+        const ctx = canvas.getContext("2d");
+        function frame() {
+          requestAnimationFrame(frame);
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        }
+        video.style.visibility = "hidden"
+        frame()
+      }
 
       function handlePlay({id, play, time}) {
         const vid = document.getElementById(id)
